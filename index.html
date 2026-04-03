@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SALTUS — Vol. I · 20 Jun 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,700;1,300&family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C9A84C;
+  --gold-l:#E8C96A;
+  --black:#060606;
+  --white:#FFFFFF;
+  --wdim:#cccccc;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 40px;
+}
+
+.nav-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:20px;font-weight:700;letter-spacing:8px;
+  color:var(--white);text-decoration:none;
+  display:flex;flex-direction:column;align-items:center;gap:0;
+}
+.nav-logo .logo-rules{width:100%;display:flex;flex-direction:column;gap:4px;}
+.nav-logo .r1{height:.7px;background:var(--gold);}
+.nav-logo .r2{height:.3px;background:var(--gold);opacity:.5;}
+.nav-logo .logo-word{font-size:20px;letter-spacing:7px;color:var(--white);line-height:1;padding:3px 0;}
+.nav-logo .logo-dia{width:6px;height:6px;border:.7px solid var(--gold);transform:rotate(45deg);margin:2px auto 0;}
+
+.nav-pill{
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(12px);
+  border-radius:100px;
+  padding:12px 28px;
+  display:flex;gap:28px;align-items:center;
+  border:1px solid rgba(255,255,255,.12);
+}
+.nav-pill a{
+  font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;
+  color:var(--white);text-decoration:none;opacity:.85;transition:opacity .2s;
+  white-space:nowrap;
+}
+.nav-pill a:hover{opacity:1;}
+
+.nav-right{
+  font-size:11px;letter-spacing:2px;color:var(--white);opacity:.7;
+  display:flex;align-items:center;gap:8px;
+}
+
+/* ── HERO ── */
+.hero{
+  position:relative;
+  height:100vh;min-height:600px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;
+  overflow:hidden;
+}
+
+/* Concert background — CSS + SVG art */
+.concert-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 120% 60% at 50% 30%, rgba(255,140,0,.18) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 40% at 30% 40%, rgba(255,60,0,.12) 0%, transparent 45%),
+    radial-gradient(ellipse 80% 40% at 70% 40%, rgba(0,180,255,.10) 0%, transparent 45%),
+    radial-gradient(ellipse 60% 30% at 50% 10%, rgba(255,200,0,.15) 0%, transparent 40%),
+    linear-gradient(to bottom, #0a0505 0%, #1a0800 30%, #0d0408 60%, #000 100%);
+}
+
+/* Stage structure */
+.stage-svg{position:absolute;inset:0;width:100%;height:100%;}
+
+/* Dark overlay for text readability */
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom, rgba(0,0,0,.4) 0%, rgba(0,0,0,.2) 40%, rgba(0,0,0,.5) 80%, rgba(0,0,0,.9) 100%);
+}
+
+.hero-content{position:relative;z-index:10;padding:0 40px;}
+
+.hero-eyebrow{
+  font-size:11px;font-weight:500;letter-spacing:7px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:32px;
+  animation:fadeUp 1s ease both;
+}
+
+.hero-date{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(60px,11vw,130px);
+  letter-spacing:6px;line-height:.95;
+  color:var(--white);
+  text-shadow:0 0 60px rgba(0,0,0,.8);
+  animation:fadeUp 1s .1s ease both;
+  margin-bottom:12px;
+}
+
+.hero-venue{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(24px,4vw,44px);
+  letter-spacing:8px;
+  color:rgba(255,255,255,.85);
+  animation:fadeUp 1s .2s ease both;
+  margin-bottom:48px;
+}
+
+.hero-btns{
+  display:flex;gap:16px;justify-content:center;flex-wrap:wrap;
+  animation:fadeUp 1s .35s ease both;
+}
+
+.btn-primary{
+  background:var(--gold);
+  color:var(--black);
+  font-size:13px;font-weight:700;letter-spacing:4px;text-transform:uppercase;
+  padding:18px 44px;text-decoration:none;
+  display:inline-flex;align-items:center;gap:10px;
+  border-radius:4px;
+  transition:background .2s,transform .15s;
+}
+.btn-primary:hover{background:var(--gold-l);transform:translateY(-2px);}
+
+.btn-secondary{
+  background:rgba(255,255,255,.15);
+  backdrop-filter:blur(8px);
+  color:var(--white);
+  font-size:13px;font-weight:700;letter-spacing:4px;text-transform:uppercase;
+  padding:18px 44px;text-decoration:none;
+  display:inline-flex;align-items:center;gap:10px;
+  border-radius:4px;
+  border:1px solid rgba(255,255,255,.3);
+  transition:background .2s,transform .15s;
+}
+.btn-secondary:hover{background:rgba(255,255,255,.25);transform:translateY(-2px);}
+
+.chevron{font-size:16px;transition:transform .2s;}
+.btn-primary:hover .chevron,.btn-secondary:hover .chevron{transform:translateX(4px);}
+
+/* ── COUNTDOWN ── */
+.countdown-bar{
+  position:absolute;bottom:0;left:0;right:0;
+  background:var(--gold);
+  display:flex;justify-content:center;gap:0;
+  padding:16px 40px;
+  z-index:10;
+}
+.count-block{
+  display:flex;flex-direction:column;align-items:center;
+  padding:0 32px;
+  border-right:1px solid rgba(0,0,0,.2);
+}
+.count-block:last-child{border-right:none;}
+.count-num{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;color:var(--black);line-height:1;}
+.count-label{font-size:8px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(0,0,0,.6);}
+
+/* ── SECTIONS COMÚN ── */
+.section{padding:100px 80px;}
+.section-sm{padding:80px 80px;}
+.s-tag{font-size:9px;font-weight:500;letter-spacing:6px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.s-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,8vw,100px);letter-spacing:4px;line-height:.95;margin-bottom:0;}
+.s-sub{font-size:15px;color:var(--wdim);line-height:1.8;max-width:600px;margin-top:20px;}
+
+/* ── LINEUP ── */
+.lineup-section{background:#0a0a0a;padding:100px 0;}
+.lineup-header{padding:0 80px;margin-bottom:60px;}
+
+.lineup-artists{
+  display:flex;flex-direction:column;
+}
+
+.artist-row{
+  display:flex;align-items:center;
+  padding:28px 80px;
+  border-bottom:1px solid #1a1a1a;
+  cursor:pointer;
+  transition:background .25s, padding-left .25s;
+  position:relative;
+}
+.artist-row:hover{background:#111;padding-left:96px;}
+.artist-row:hover .a-name{color:var(--gold);}
+.artist-row:hover .a-arrow{opacity:1;transform:translateX(0);}
+
+.a-num{font-family:'Cormorant Garamond',serif;font-size:13px;color:#444;min-width:50px;}
+.a-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(38px,6vw,76px);
+  letter-spacing:3px;flex:1;
+  transition:color .25s;
+}
+.artist-row.headliner .a-name{font-size:clamp(54px,8vw,100px);}
+
+.a-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
+.a-genre{font-size:9px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--gold);opacity:.7;}
+.a-time{font-size:13px;color:#666;font-weight:400;}
+.a-arrow{
+  font-size:20px;color:var(--gold);
+  opacity:0;transform:translateX(-8px);
+  transition:opacity .25s,transform .25s;
+  margin-left:24px;
+}
+
+/* ── ABOUT ── */
+.about-section{
+  display:grid;grid-template-columns:1fr 1fr;gap:0;
+  background:#0d0d0d;
+}
+.about-text{padding:100px 80px;display:flex;flex-direction:column;justify-content:center;}
+.about-visual{
+  position:relative;overflow:hidden;
+  background:#080808;
+  display:flex;align-items:center;justify-content:center;
+  min-height:500px;
+}
+
+.about-nums{
+  display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#1a1a1a;margin-top:48px;border:1px solid #1a1a1a;
+}
+.about-num{background:#0d0d0d;padding:32px;text-align:center;}
+.an-val{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:2px;color:var(--gold);line-height:1;}
+.an-label{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:#666;margin-top:4px;}
+
+/* ── SCHEDULE ── */
+.sched-section{padding:100px 80px;background:var(--black);}
+.sched-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#1a1a1a;border:1px solid #1a1a1a;margin-top:60px;}
+.sched-item{background:#0a0a0a;padding:40px 28px;}
+.si-time{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--gold);line-height:1;margin-bottom:8px;}
+.si-tag{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);opacity:.6;border:1px solid rgba(201,168,76,.3);padding:2px 8px;display:inline-block;margin-bottom:12px;}
+.si-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;margin-bottom:8px;}
+.si-desc{font-size:12px;color:#666;line-height:1.7;}
+
+/* ── TICKETS ── */
+.tickets-section{
+  padding:120px 80px;
+  background:#070707;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.tickets-section::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 50% at 50% 50%,rgba(201,168,76,.06) 0%,transparent 70%);
+}
+
+.ticket-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:2px;background:#1a1a1a;border:1px solid #1a1a1a;
+  max-width:860px;margin:60px auto;
+  position:relative;
+}
+
+.tcard{background:#0a0a0a;padding:52px 44px;text-align:left;position:relative;}
+.tcard.vip{border:1px solid rgba(201,168,76,.4);}
+.tcard.vip::before{
+  content:'MÁS POPULAR';position:absolute;
+  top:-11px;left:24px;background:var(--gold);
+  color:var(--black);font-size:7px;letter-spacing:3px;font-weight:700;padding:3px 12px;
+}
+.t-type{font-size:9px;font-weight:500;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+.t-price{font-family:'Bebas Neue',sans-serif;font-size:80px;line-height:1;color:var(--white);margin-bottom:4px;}
+.t-price sup{font-size:28px;vertical-align:top;margin-top:14px;display:inline-block;color:#666;}
+.t-note{font-size:11px;color:#444;margin-bottom:28px;letter-spacing:1px;}
+.t-feats{list-style:none;margin-bottom:36px;}
+.t-feats li{font-size:13px;color:var(--wdim);padding:10px 0;border-bottom:1px solid #141414;display:flex;align-items:center;gap:10px;}
+.t-feats li::before{content:'';width:4px;height:4px;background:var(--gold);border-radius:50%;flex-shrink:0;}
+
+.t-btn{
+  display:block;text-align:center;text-decoration:none;
+  font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;
+  padding:16px;transition:all .2s;cursor:pointer;
+}
+.t-btn-outline{border:1px solid var(--gold);color:var(--gold);}
+.t-btn-outline:hover{background:var(--gold);color:var(--black);}
+.t-btn-solid{background:var(--gold);color:var(--black);}
+.t-btn-solid:hover{background:var(--gold-l);}
+
+/* ── VENUE ── */
+.venue-section{
+  display:grid;grid-template-columns:1fr 1fr;
+  min-height:520px;
+}
+.venue-left{
+  padding:80px;background:#0d0d0d;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.venue-right{
+  background:#080808;
+  display:flex;align-items:center;justify-content:center;
+  padding:60px;
+}
+.venue-details{margin-top:36px;display:flex;flex-direction:column;gap:14px;}
+.vd-item{display:flex;align-items:center;gap:16px;font-size:13px;color:var(--wdim);}
+.vd-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;flex-shrink:0;}
+
+/* ── FOOTER ── */
+footer{
+  padding:60px 80px;
+  border-top:1px solid #111;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;
+}
+.f-links{display:flex;gap:28px;}
+.f-links a{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#555;text-decoration:none;transition:color .2s;}
+.f-links a:hover{color:var(--gold);}
+.f-copy{font-size:10px;letter-spacing:2px;color:#333;}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes beamL{0%,100%{transform:rotate(-25deg) scaleX(1);opacity:.6}50%{transform:rotate(-20deg) scaleX(1.1);opacity:.9}}
+@keyframes beamR{0%,100%{transform:rotate(25deg) scaleX(1);opacity:.6}50%{transform:rotate(20deg) scaleX(1.1);opacity:.9}}
+@keyframes crowd{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes ringPulse{0%,100%{opacity:.3}50%{opacity:.7}}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .9s ease,transform .9s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* MOBILE */
+@media(max-width:768px){
+  nav{padding:14px 20px;}
+  .nav-pill{padding:10px 16px;gap:16px;}
+  .nav-pill a{font-size:10px;}
+  .section,.section-sm{padding:60px 24px;}
+  .lineup-header{padding:0 24px;}
+  .artist-row{padding:20px 24px;}
+  .artist-row:hover{padding-left:32px;}
+  .about-section,.venue-section{grid-template-columns:1fr;}
+  .sched-grid{grid-template-columns:1fr 1fr;}
+  .ticket-grid{grid-template-columns:1fr;}
+  .about-text{padding:60px 24px;}
+  .venue-left{padding:60px 24px;}
+  .sched-section{padding:60px 24px;}
+  .tickets-section{padding:80px 24px;}
+  footer{padding:40px 24px;flex-direction:column;}
+  .countdown-bar{gap:0;padding:12px 20px;}
+  .count-block{padding:0 16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="#">
+    <div class="logo-rules"><div class="r1"></div><div class="r2"></div></div>
+    <div class="logo-word">SALTUS</div>
+    <div class="logo-rules" style="transform:scaleY(-1)"><div class="r2"></div><div class="r1"></div></div>
+    <div class="logo-dia"></div>
+  </a>
+
+  <div class="nav-pill">
+    <a href="#boletos">Boletos</a>
+    <a href="#lineup">Lineup</a>
+    <a href="#horarios">Horarios</a>
+    <a href="#venue">Venue</a>
+  </div>
+
+  <div class="nav-right">@saltus.mty</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="concert-bg"></div>
+
+  <!-- SVG CONCERT SCENE -->
+  <svg class="stage-svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <!-- Sky gradient -->
+    <defs>
+      <radialGradient id="stageGlow" cx="50%" cy="35%" r="50%">
+        <stop offset="0%" stop-color="#FF8C00" stop-opacity=".3"/>
+        <stop offset="100%" stop-color="#FF8C00" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="blueGlow" cx="25%" cy="40%" r="30%">
+        <stop offset="0%" stop-color="#00AAFF" stop-opacity=".2"/>
+        <stop offset="100%" stop-color="#00AAFF" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="blueGlow2" cx="75%" cy="40%" r="30%">
+        <stop offset="0%" stop-color="#0060FF" stop-opacity=".15"/>
+        <stop offset="100%" stop-color="#0060FF" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="crowdGlow" cx="50%" cy="70%" r="40%">
+        <stop offset="0%" stop-color="#FF6600" stop-opacity=".15"/>
+        <stop offset="100%" stop-color="#FF6600" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+
+    <!-- Glows -->
+    <rect width="1440" height="900" fill="url(#stageGlow)"/>
+    <rect width="1440" height="900" fill="url(#blueGlow)"/>
+    <rect width="1440" height="900" fill="url(#blueGlow2)"/>
+    <rect width="1440" height="900" fill="url(#crowdGlow)"/>
+
+    <!-- Stage structure back wall -->
+    <rect x="220" y="120" width="1000" height="420" rx="4" fill="#0a0505" opacity=".9"/>
+
+    <!-- LED screen panels -->
+    <rect x="240" y="140" width="960" height="380" rx="2" fill="#050202" opacity=".95"/>
+
+    <!-- Screen grid lines -->
+    <g opacity=".15" stroke="#FF6600" stroke-width=".5">
+      <line x1="240" y1="200" x2="1200" y2="200"/>
+      <line x1="240" y1="260" x2="1200" y2="260"/>
+      <line x1="240" y1="320" x2="1200" y2="320"/>
+      <line x1="240" y1="380" x2="1200" y2="380"/>
+      <line x1="240" y1="440" x2="1200" y2="440"/>
+      <line x1="360" y1="140" x2="360" y2="520"/>
+      <line x1="480" y1="140" x2="480" y2="520"/>
+      <line x1="600" y1="140" x2="600" y2="520"/>
+      <line x1="720" y1="140" x2="720" y2="520"/>
+      <line x1="840" y1="140" x2="840" y2="520"/>
+      <line x1="960" y1="140" x2="960" y2="520"/>
+      <line x1="1080" y1="140" x2="1080" y2="520"/>
+    </g>
+
+    <!-- Concentric rings on screen -->
+    <g transform="translate(720,330)">
+      <circle r="250" fill="none" stroke="#1a6a99" stroke-width="14" opacity=".4"/>
+      <circle r="200" fill="none" stroke="#1a6a99" stroke-width="12" opacity=".5"/>
+      <circle r="150" fill="none" stroke="#1a6a99" stroke-width="10" opacity=".6"/>
+      <circle r="100" fill="none" stroke="#1a6a99" stroke-width="8" opacity=".7"/>
+      <circle r="50" fill="none" stroke="#1a6a99" stroke-width="6" opacity=".8"/>
+      <circle r="20" fill="#1a6a99" opacity=".5"/>
+    </g>
+
+    <!-- SALTUS text on screen -->
+    <text x="720" y="345" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-size="38" font-weight="700" letter-spacing="18" fill="#C9A84C" opacity=".7">SALTUS</text>
+
+    <!-- Warm center glow on screen -->
+    <ellipse cx="720" cy="330" rx="200" ry="120" fill="#FF7700" opacity=".08"/>
+
+    <!-- Stage floor -->
+    <rect x="100" y="530" width="1240" height="60" fill="#0f0704" opacity=".9"/>
+    <rect x="100" y="530" width="1240" height="4" fill="#FF7700" opacity=".3"/>
+
+    <!-- Truss left -->
+    <rect x="220" y="120" width="24" height="420" fill="#111" opacity=".9"/>
+    <!-- Truss right -->
+    <rect x="1196" y="120" width="24" height="420" fill="#111" opacity=".9"/>
+
+    <!-- Moving head lights — left side -->
+    <g style="animation:beamL 4s ease-in-out infinite;transform-origin:280px 200px">
+      <line x1="280" y1="200" x2="0" y2="900" stroke="#FFE0A0" stroke-width="80" opacity=".06"/>
+      <line x1="280" y1="200" x2="60" y2="900" stroke="#FFE0A0" stroke-width="40" opacity=".08"/>
+    </g>
+    <g style="animation:beamL 3.5s 1s ease-in-out infinite;transform-origin:380px 180px">
+      <line x1="380" y1="180" x2="100" y2="900" stroke="#88CCFF" stroke-width="60" opacity=".05"/>
+    </g>
+
+    <!-- Moving head lights — right side -->
+    <g style="animation:beamR 4.5s ease-in-out infinite;transform-origin:1160px 200px">
+      <line x1="1160" y1="200" x2="1440" y2="900" stroke="#FFE0A0" stroke-width="80" opacity=".06"/>
+      <line x1="1160" y1="200" x2="1380" y2="900" stroke="#FFE0A0" stroke-width="40" opacity=".08"/>
+    </g>
+    <g style="animation:beamR 3.5s 1.5s ease-in-out infinite;transform-origin:1060px 180px">
+      <line x1="1060" y1="180" x2="1340" y2="900" stroke="#88CCFF" stroke-width="60" opacity=".05"/>
+    </g>
+
+    <!-- Spotlight center -->
+    <ellipse cx="720" cy="540" rx="120" ry="20" fill="#FF8800" opacity=".2"/>
+    <line x1="720" y1="200" x2="720" y2="540" stroke="#FFD080" stroke-width="100" opacity=".04"/>
+
+    <!-- Crowd silhouettes -->
+    <g opacity="1" style="animation:crowd 2s ease-in-out infinite">
+      <!-- Back crowd - tiny -->
+      <g fill="#0d0d0d" opacity=".95">
+        <rect x="0" y="610" width="1440" height="290"/>
+        <!-- Crowd heads pattern -->
+        <ellipse cx="60" cy="620" rx="22" ry="28"/>
+        <ellipse cx="110" cy="618" rx="20" ry="26"/>
+        <ellipse cx="158" cy="622" rx="24" ry="30"/>
+        <ellipse cx="210" cy="617" rx="21" ry="27"/>
+        <ellipse cx="260" cy="621" rx="23" ry="29"/>
+        <ellipse cx="308" cy="616" rx="20" ry="26"/>
+        <ellipse cx="355" cy="620" rx="22" ry="28"/>
+        <ellipse cx="404" cy="618" rx="21" ry="27"/>
+        <ellipse cx="452" cy="622" rx="24" ry="30"/>
+        <ellipse cx="502" cy="616" rx="20" ry="26"/>
+        <ellipse cx="550" cy="620" rx="22" ry="28"/>
+        <ellipse cx="598" cy="617" rx="21" ry="25"/>
+        <ellipse cx="648" cy="621" rx="23" ry="29"/>
+        <ellipse cx="696" cy="615" rx="20" ry="26"/>
+        <ellipse cx="744" cy="620" rx="22" ry="28"/>
+        <ellipse cx="792" cy="618" rx="21" ry="27"/>
+        <ellipse cx="840" cy="622" rx="24" ry="30"/>
+        <ellipse cx="890" cy="616" rx="20" ry="26"/>
+        <ellipse cx="938" cy="620" rx="22" ry="28"/>
+        <ellipse cx="986" cy="617" rx="21" ry="27"/>
+        <ellipse cx="1036" cy="621" rx="23" ry="29"/>
+        <ellipse cx="1084" cy="616" rx="20" ry="26"/>
+        <ellipse cx="1132" cy="620" rx="22" ry="28"/>
+        <ellipse cx="1180" cy="618" rx="21" ry="27"/>
+        <ellipse cx="1228" cy="622" rx="24" ry="30"/>
+        <ellipse cx="1278" cy="616" rx="20" ry="26"/>
+        <ellipse cx="1326" cy="620" rx="22" ry="28"/>
+        <ellipse cx="1374" cy="617" rx="21" ry="25"/>
+        <ellipse cx="1420" cy="621" rx="23" ry="29"/>
+      </g>
+    </g>
+
+    <!-- Phones / lights in crowd -->
+    <g opacity=".5">
+      <rect x="155" y="608" width="3" height="5" rx="1" fill="#fff"/>
+      <rect x="312" y="604" width="3" height="5" rx="1" fill="#88CCFF"/>
+      <rect x="480" y="607" width="3" height="5" rx="1" fill="#fff"/>
+      <rect x="640" y="605" width="3" height="5" rx="1" fill="#FFCC00"/>
+      <rect x="780" y="608" width="3" height="5" rx="1" fill="#fff"/>
+      <rect x="920" y="603" width="3" height="5" rx="1" fill="#88CCFF"/>
+      <rect x="1070" y="607" width="3" height="5" rx="1" fill="#fff"/>
+      <rect x="1220" y="605" width="3" height="5" rx="1" fill="#FFCC00"/>
+      <rect x="1360" y="608" width="3" height="5" rx="1" fill="#fff"/>
+      <rect x="240" y="613" width="3" height="5" rx="1" fill="#fff"/>
+      <rect x="560" y="611" width="3" height="5" rx="1" fill="#fff"/>
+      <rect x="860" y="612" width="3" height="5" rx="1" fill="#88CCFF"/>
+      <rect x="1140" y="611" width="3" height="5" rx="1" fill="#fff"/>
+    </g>
+
+    <!-- Bottom gradient over crowd -->
+    <rect x="0" y="700" width="1440" height="200" fill="url(#crowdFade)"/>
+    <defs>
+      <linearGradient id="crowdFade" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#000" stop-opacity="0"/>
+        <stop offset="100%" stop-color="#000" stop-opacity=".7"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Vol. I · Festival de Música en Vivo</div>
+    <div class="hero-date">VIERNES<br>20 DE JUNIO</div>
+    <div class="hero-venue">Alboa · Monterrey, México</div>
+    <div class="hero-btns">
+      <a href="#boletos" class="btn-primary">Boletos <span class="chevron">›</span></a>
+      <a href="#lineup" class="btn-secondary">Lineup <span class="chevron">›</span></a>
+    </div>
+  </div>
+
+  <!-- Countdown -->
+  <div class="countdown-bar" id="countdown">
+    <div class="count-block"><div class="count-num" id="cd-dias">78</div><div class="count-label">Días</div></div>
+    <div class="count-block"><div class="count-num" id="cd-hrs">00</div><div class="count-label">Horas</div></div>
+    <div class="count-block"><div class="count-num" id="cd-min">00</div><div class="count-label">Min</div></div>
+    <div class="count-block"><div class="count-num" id="cd-seg">00</div><div class="count-label">Seg</div></div>
+  </div>
+</section>
+
+<!-- LINEUP -->
+<section id="lineup" class="lineup-section">
+  <div class="lineup-header reveal">
+    <div class="s-tag">Artistas</div>
+    <h2 class="s-title">Lineup</h2>
+  </div>
+  <div class="lineup-artists">
+    <div class="artist-row headliner reveal">
+      <div class="a-num">01</div>
+      <div class="a-name">Artista 1</div>
+      <div class="a-right">
+        <div class="a-genre">Headliner</div>
+        <div class="a-time">11:00 PM</div>
+      </div>
+      <div class="a-arrow">›</div>
+    </div>
+    <div class="artist-row reveal">
+      <div class="a-num">02</div>
+      <div class="a-name">Artista 2</div>
+      <div class="a-right"><div class="a-genre">En Vivo</div><div class="a-time">10:15 PM</div></div>
+      <div class="a-arrow">›</div>
+    </div>
+    <div class="artist-row reveal">
+      <div class="a-num">03</div>
+      <div class="a-name">Artista 3</div>
+      <div class="a-right"><div class="a-genre">En Vivo</div><div class="a-time">9:30 PM</div></div>
+      <div class="a-arrow">›</div>
+    </div>
+    <div class="artist-row reveal">
+      <div class="a-num">04</div>
+      <div class="a-name">Artista 4</div>
+      <div class="a-right"><div class="a-genre">En Vivo</div><div class="a-time">8:45 PM</div></div>
+      <div class="a-arrow">›</div>
+    </div>
+    <div class="artist-row reveal">
+      <div class="a-num">05</div>
+      <div class="a-name">Artista 5</div>
+      <div class="a-right"><div class="a-genre">Abre el Show</div><div class="a-time">8:00 PM</div></div>
+      <div class="a-arrow">›</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section reveal">
+  <div class="about-text">
+    <div class="s-tag">El Festival</div>
+    <h2 class="s-title" style="font-size:clamp(44px,6vw,72px)">Una noche.<br>Cinco artistas.<br>Un salto.</h2>
+    <p class="s-sub">SALTUS es un festival de música en vivo íntimo y producción premium. No es un evento masivo — es el tipo de noche que no se olvida. Donde los artistas emergentes de Monterrey dan su primer salto real.</p>
+    <div class="about-nums">
+      <div class="about-num"><div class="an-val">5h</div><div class="an-label">De evento</div></div>
+      <div class="about-num"><div class="an-val">5</div><div class="an-label">Artistas</div></div>
+      <div class="about-num"><div class="an-val">192</div><div class="an-label">Asistentes</div></div>
+      <div class="about-num"><div class="an-val">Vol.1</div><div class="an-label">Primera edición</div></div>
+    </div>
+  </div>
+  <div class="about-visual">
+    <!-- Stage art illustration -->
+    <svg width="100%" height="100%" viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <rect width="600" height="500" fill="#050505"/>
+      <radialGradient id="ag" cx="50%" cy="40%" r="50%">
+        <stop offset="0%" stop-color="#C9A84C" stop-opacity=".12"/>
+        <stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/>
+      </radialGradient>
+      <rect width="600" height="500" fill="url(#ag)"/>
+      <!-- Big S monogram -->
+      <text x="300" y="300" text-anchor="middle" dominant-baseline="middle"
+        font-family="'Cormorant Garamond',serif" font-size="280" font-weight="700" font-style="italic"
+        fill="#C9A84C" opacity=".06">S</text>
+      <!-- Logo centered -->
+      <line x1="160" y1="200" x2="440" y2="200" stroke="#C9A84C" stroke-width=".8"/>
+      <line x1="160" y1="205" x2="440" y2="205" stroke="#C9A84C" stroke-width=".3" opacity=".4"/>
+      <text x="300" y="248" text-anchor="middle"
+        font-family="'Cormorant Garamond',serif" font-size="52" font-weight="700" letter-spacing="20"
+        fill="#C9A84C" opacity=".7">SALTUS</text>
+      <line x1="160" y1="265" x2="440" y2="265" stroke="#C9A84C" stroke-width=".3" opacity=".4"/>
+      <line x1="160" y1="270" x2="440" y2="270" stroke="#C9A84C" stroke-width=".8"/>
+      <text x="300" y="296" text-anchor="middle"
+        font-family="sans-serif" font-size="9" letter-spacing="7"
+        fill="#C9A84C" opacity=".35">VOL. I · MMXXV</text>
+      <!-- Diamond -->
+      <polygon points="300,310 305,318 300,326 295,318" fill="none" stroke="#C9A84C" stroke-width=".8" opacity=".5"/>
+    </svg>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section class="sched-section reveal" id="horarios">
+  <div class="s-tag">Rundown</div>
+  <h2 class="s-title">La Noche</h2>
+  <div class="sched-grid">
+    <div class="sched-item">
+      <div class="si-tag">Apertura</div>
+      <div class="si-time">7PM</div>
+      <div class="si-title">Puertas abren</div>
+      <div class="si-desc">DJ ambiental, barra abierta. El público llega y la energía se construye.</div>
+    </div>
+    <div class="sched-item">
+      <div class="si-tag">Show</div>
+      <div class="si-time">8PM</div>
+      <div class="si-title">5 Sets en vivo</div>
+      <div class="si-desc">Cinco artistas, 30 minutos cada uno con 15 de transición entre sets.</div>
+    </div>
+    <div class="sched-item">
+      <div class="si-tag">Finale</div>
+      <div class="si-time">11:30</div>
+      <div class="si-title">Encore colectivo</div>
+      <div class="si-desc">Los 5 artistas regresan al escenario juntos. El momento que no se olvida.</div>
+    </div>
+    <div class="sched-item">
+      <div class="si-tag">Cierre</div>
+      <div class="si-time">12AM</div>
+      <div class="si-title">Fin de SALTUS</div>
+      <div class="si-desc">DJ de cierre y desalojo. Hasta el Vol. II.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKETS -->
+<section class="tickets-section reveal" id="boletos">
+  <div class="s-tag" style="display:inline-block">Acceso</div>
+  <h2 class="s-title" style="font-size:clamp(60px,12vw,130px);letter-spacing:6px;">Boletos</h2>
+  <p style="font-size:14px;color:#555;letter-spacing:3px;margin-top:12px;">192 lugares · No hay reembolsos</p>
+
+  <div class="ticket-grid">
+    <div class="tcard">
+      <div class="t-type">General</div>
+      <div class="t-price"><sup>$</sup>350</div>
+      <div class="t-note">MXN + cargo por servicio</div>
+      <ul class="t-feats">
+        <li>Acceso general al evento</li>
+        <li>5 artistas en vivo</li>
+        <li>Encore colectivo</li>
+        <li>Barra disponible toda la noche</li>
+      </ul>
+      <a href="#" class="t-btn t-btn-outline">Comprar ahora</a>
+    </div>
+    <div class="tcard vip">
+      <div class="t-type">VIP</div>
+      <div class="t-price"><sup>$</sup>700</div>
+      <div class="t-note">MXN + cargo por servicio</div>
+      <ul class="t-feats">
+        <li>Zona VIP exclusiva</li>
+        <li>5 artistas en vivo</li>
+        <li>Meet &amp; greet con artistas</li>
+        <li>Acceso prioritario sin fila</li>
+        <li>Encore colectivo</li>
+        <li>Barra disponible toda la noche</li>
+      </ul>
+      <a href="#" class="t-btn t-btn-solid">Comprar ahora</a>
+    </div>
+  </div>
+</section>
+
+<!-- VENUE -->
+<section class="venue-section reveal" id="venue">
+  <div class="venue-left">
+    <div class="s-tag">Venue</div>
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,6vw,72px);letter-spacing:4px;line-height:1;margin-bottom:16px;">Alboa<br>Monterrey</h2>
+    <p style="font-size:14px;color:#666;line-height:1.8;max-width:420px;">Un espacio con carácter en Monterrey. Producción técnica de nivel, capacidad para 192 personas y el ambiente correcto para la primera edición de SALTUS.</p>
+    <div class="venue-details">
+      <div class="vd-item"><div class="vd-dot"></div>Viernes 20 de Junio, 2025</div>
+      <div class="vd-item"><div class="vd-dot"></div>7:00 PM — 12:00 AM</div>
+      <div class="vd-item"><div class="vd-dot"></div>Alboa · Monterrey, Nuevo León</div>
+      <div class="vd-item"><div class="vd-dot"></div>192 asistentes máximo</div>
+    </div>
+  </div>
+  <div class="venue-right">
+    <svg width="100%" height="100%" viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg">
+      <rect width="480" height="380" fill="#060606"/>
+      <!-- Streets -->
+      <rect x="0" y="168" width="480" height="24" fill="#111"/>
+      <rect x="204" y="0" width="24" height="380" fill="#111"/>
+      <rect x="0" y="84" width="480" height="12" fill="#0e0e0e"/>
+      <rect x="0" y="264" width="480" height="12" fill="#0e0e0e"/>
+      <rect x="100" y="0" width="12" height="380" fill="#0e0e0e"/>
+      <rect x="340" y="0" width="12" height="380" fill="#0e0e0e"/>
+      <!-- Blocks -->
+      <rect x="4" y="4" width="88" height="72" rx="2" fill="#0d0d0d"/>
+      <rect x="120" y="4" width="76" height="72" rx="2" fill="#0d0d0d"/>
+      <rect x="236" y="4" width="96" height="72" rx="2" fill="#0d0d0d"/>
+      <rect x="360" y="4" width="116" height="72" rx="2" fill="#0d0d0d"/>
+      <rect x="4" y="100" width="88" height="60" rx="2" fill="#0d0d0d"/>
+      <rect x="360" y="100" width="116" height="60" rx="2" fill="#0d0d0d"/>
+      <rect x="4" y="200" width="88" height="56" rx="2" fill="#0d0d0d"/>
+      <rect x="120" y="200" width="76" height="56" rx="2" fill="#0d0d0d"/>
+      <rect x="360" y="200" width="116" height="56" rx="2" fill="#0d0d0d"/>
+      <rect x="4" y="284" width="88" height="92" rx="2" fill="#0d0d0d"/>
+      <rect x="120" y="284" width="76" height="92" rx="2" fill="#0d0d0d"/>
+      <rect x="236" y="284" width="96" height="92" rx="2" fill="#0d0d0d"/>
+      <rect x="360" y="284" width="116" height="92" rx="2" fill="#0d0d0d"/>
+      <!-- ALBOA BLOCK highlighted -->
+      <rect x="120" y="100" width="76" height="60" rx="2" fill="rgba(201,168,76,.1)"/>
+      <rect x="120" y="100" width="76" height="60" rx="2" fill="none" stroke="#C9A84C" stroke-width="1.5"/>
+      <text x="158" y="135" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#C9A84C" font-weight="700" letter-spacing="1">ALBOA</text>
+      <!-- Pin -->
+      <circle cx="158" cy="122" r="6" fill="#C9A84C"/>
+      <circle cx="158" cy="122" r="3" fill="#060606"/>
+      <!-- Pulsing ring -->
+      <circle cx="158" cy="122" r="12" fill="none" stroke="#C9A84C" stroke-width=".8" opacity=".4" style="animation:ringPulse 2s ease-in-out infinite"/>
+      <circle cx="158" cy="122" r="20" fill="none" stroke="#C9A84C" stroke-width=".5" opacity=".2" style="animation:ringPulse 2s .5s ease-in-out infinite"/>
+    </svg>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;letter-spacing:10px;color:var(--gold)">SALTUS</div>
+  <div class="f-links">
+    <a href="https://www.instagram.com/saltus.mty/" target="_blank">Instagram</a>
+    <a href="#">Contacto</a>
+    <a href="#">Patrocinadores</a>
+    <a href="#">Artistas</a>
+  </div>
+  <div class="f-copy">Vol. I · Monterrey · 2025</div>
+</footer>
+
+<script>
+// Nav scroll effect
+window.addEventListener('scroll',()=>{
+  const nav=document.getElementById('nav');
+  if(window.scrollY>80){nav.style.background='rgba(6,6,6,0.95)';nav.style.borderBottom='1px solid rgba(201,168,76,0.1)';}
+  else{nav.style.background='transparent';nav.style.borderBottom='none';}
+});
+
+// Countdown
+function updateCountdown(){
+  const target=new Date('2025-06-20T19:00:00-06:00');
+  const now=new Date();
+  const diff=target-now;
+  if(diff<0){document.getElementById('countdown').style.display='none';return;}
+  const d=Math.floor(diff/864e5);
+  const h=Math.floor((diff%864e5)/36e5);
+  const m=Math.floor((diff%36e5)/6e4);
+  const s=Math.floor((diff%6e4)/1e3);
+  document.getElementById('cd-dias').textContent=String(d).padStart(2,'0');
+  document.getElementById('cd-hrs').textContent=String(h).padStart(2,'0');
+  document.getElementById('cd-min').textContent=String(m).padStart(2,'0');
+  document.getElementById('cd-seg').textContent=String(s).padStart(2,'0');
+}
+updateCountdown();
+setInterval(updateCountdown,1000);
+
+// Reveal on scroll
+const obs=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}
+}),{threshold:0.06});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
