@@ -3,348 +3,1001 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SALTUS — Vol. I · 20 Jun 2025</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,700;1,300&family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<title>SALTUS — Vol. I · 20 Jun 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,700;1,300&display=swap" rel="stylesheet">
 <style>
 :root{
   --gold:#C9A84C;
   --gold-l:#E8C96A;
-  --black:#060606;
+  --black:#0f0f0f;
+  --surface:#141414;
+  --surface2:#1c1c1c;
   --white:#FFFFFF;
-  --wdim:#cccccc;
+  --gray:#bbbbbb;
+  --line:#2e2e2e;
+  color-scheme:dark;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
+body{
+  background:
+    linear-gradient(160deg,
+      #0d1020 0%,
+      #161030 15%,
+      #221540 28%,
+      #2e1848 40%,
+      #3a1a45 52%,
+      #2a1330 65%,
+      #180d1e 78%,
+      #0e0810 90%,
+      #080608 100%);
+  background-attachment:fixed;
+  color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden;
+}
 
-/* ── NAV ── */
+/* ═══════════════════════════════
+   NAV  (Pal Norte style — flat, full-width)
+═══════════════════════════════ */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:200;
   display:flex;align-items:center;justify-content:space-between;
-  padding:18px 40px;
+  padding:0 40px;
+  height:64px;
+  transition:background .3s, border-color .3s;
+  border-bottom:1px solid transparent;
+}
+nav.scrolled{
+  background:rgba(0,0,0,.96);
+  border-bottom-color:var(--line);
 }
 
 .nav-logo{
-  font-family:'Cormorant Garamond',serif;
-  font-size:20px;font-weight:700;letter-spacing:8px;
-  color:var(--white);text-decoration:none;
+  text-decoration:none;
   display:flex;flex-direction:column;align-items:center;gap:0;
+  flex-shrink:0;
 }
 .nav-logo .logo-rules{width:100%;display:flex;flex-direction:column;gap:4px;}
-.nav-logo .r1{height:.7px;background:var(--gold);}
+.nav-logo .r1{height:.8px;background:var(--gold);}
 .nav-logo .r2{height:.3px;background:var(--gold);opacity:.5;}
-.nav-logo .logo-word{font-size:20px;letter-spacing:7px;color:var(--white);line-height:1;padding:3px 0;}
-.nav-logo .logo-dia{width:6px;height:6px;border:.7px solid var(--gold);transform:rotate(45deg);margin:2px auto 0;}
+.nav-logo .logo-word{
+  font-family:'Cormorant Garamond',serif;
+  font-size:18px;font-weight:700;letter-spacing:8px;
+  color:var(--white);line-height:1;padding:3px 0;
+}
+.nav-logo .logo-dia{
+  width:5px;height:5px;
+  border:.7px solid var(--gold);
+  transform:rotate(45deg);
+  margin:2px auto 0;
+}
 
-.nav-pill{
-  background:rgba(255,255,255,0.12);
-  backdrop-filter:blur(12px);
-  border-radius:100px;
-  padding:12px 28px;
-  display:flex;gap:28px;align-items:center;
-  border:1px solid rgba(255,255,255,.12);
+.nav-links{
+  display:flex;align-items:center;gap:36px;
 }
-.nav-pill a{
-  font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;
-  color:var(--white);text-decoration:none;opacity:.85;transition:opacity .2s;
-  white-space:nowrap;
+.nav-links a{
+  font-size:11px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;
+  color:rgba(255,255,255,.75);text-decoration:none;
+  transition:color .2s;
 }
-.nav-pill a:hover{opacity:1;}
+.nav-links a:hover{color:var(--white);}
 
 .nav-right{
-  font-size:11px;letter-spacing:2px;color:var(--white);opacity:.7;
-  display:flex;align-items:center;gap:8px;
+  display:flex;align-items:center;gap:20px;
 }
+.nav-right a{
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,.5);text-decoration:none;
+  transition:color .2s;
+}
+.nav-right a:hover{color:var(--white);}
+.nav-ticket-btn{
+  background:var(--gold);
+  color:var(--black) !important;
+  font-size:10px !important;font-weight:700 !important;letter-spacing:2px !important;
+  padding:8px 20px;
+  transition:background .2s !important;
+}
+.nav-ticket-btn:hover{background:var(--gold-l) !important;color:var(--black) !important;}
 
-/* ── HERO ── */
+/* ═══════════════════════════════
+   HERO
+═══════════════════════════════ */
 .hero{
   position:relative;
-  height:100vh;min-height:600px;
+  height:100vh;min-height:640px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;
-  overflow:hidden;
+  text-align:center;overflow:hidden;
 }
 
-/* Concert background — CSS + SVG art */
-.concert-bg{
-  position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse 120% 60% at 50% 30%, rgba(255,140,0,.18) 0%, transparent 55%),
-    radial-gradient(ellipse 80% 40% at 30% 40%, rgba(255,60,0,.12) 0%, transparent 45%),
-    radial-gradient(ellipse 80% 40% at 70% 40%, rgba(0,180,255,.10) 0%, transparent 45%),
-    radial-gradient(ellipse 60% 30% at 50% 10%, rgba(255,200,0,.15) 0%, transparent 40%),
-    linear-gradient(to bottom, #0a0505 0%, #1a0800 30%, #0d0408 60%, #000 100%);
+.hero-bg{
+  position:absolute;inset:0;pointer-events:none;
+  background: linear-gradient(to bottom, rgba(0,0,0,.45) 0%, rgba(0,0,0,.15) 50%, rgba(0,0,0,.75) 100%);
+  z-index:2;
+}
+.hero-video{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;pointer-events:none;z-index:0;
+  filter: brightness(.85) saturate(1.2);
 }
 
-/* Stage structure */
-.stage-svg{position:absolute;inset:0;width:100%;height:100%;}
+.hero-stage{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
 
-/* Dark overlay for text readability */
 .hero-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(to bottom, rgba(0,0,0,.4) 0%, rgba(0,0,0,.2) 40%, rgba(0,0,0,.5) 80%, rgba(0,0,0,.9) 100%);
+  position:absolute;inset:0;pointer-events:none;z-index:4;
+  background:linear-gradient(to bottom,
+    rgba(0,0,0,.25) 0%,
+    rgba(0,0,0,.05) 35%,
+    rgba(0,0,0,.35) 70%,
+    rgba(0,0,0,.92) 100%);
 }
 
-.hero-content{position:relative;z-index:10;padding:0 40px;}
+.hero-content{
+  position:relative;z-index:10;
+  display:flex;flex-direction:column;align-items:center;
+  gap:0;
+}
 
 .hero-eyebrow{
-  font-size:11px;font-weight:500;letter-spacing:7px;text-transform:uppercase;
-  color:var(--gold);margin-bottom:32px;
-  animation:fadeUp 1s ease both;
+  font-size:10px;font-weight:500;letter-spacing:8px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:28px;
 }
 
-.hero-date{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(60px,11vw,130px);
-  letter-spacing:6px;line-height:.95;
-  color:var(--white);
-  text-shadow:0 0 60px rgba(0,0,0,.8);
-  animation:fadeUp 1s .1s ease both;
-  margin-bottom:12px;
-}
 
-.hero-venue{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(24px,4vw,44px);
-  letter-spacing:8px;
-  color:rgba(255,255,255,.85);
-  animation:fadeUp 1s .2s ease both;
-  margin-bottom:48px;
+.hero-meta{
+  font-size:clamp(13px,2vw,17px);
+  letter-spacing:6px;text-transform:uppercase;
+  color:rgba(255,255,255,.7);
+  margin-top:20px;
 }
+.hero-meta span{color:var(--gold);margin:0 12px;}
 
 .hero-btns{
-  display:flex;gap:16px;justify-content:center;flex-wrap:wrap;
-  animation:fadeUp 1s .35s ease both;
+  display:flex;gap:14px;margin-top:44px;
 }
-
-.btn-primary{
-  background:var(--gold);
-  color:var(--black);
-  font-size:13px;font-weight:700;letter-spacing:4px;text-transform:uppercase;
-  padding:18px 44px;text-decoration:none;
-  display:inline-flex;align-items:center;gap:10px;
-  border-radius:4px;
+.btn-gold{
+  background:var(--gold);color:var(--black);
+  font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  padding:16px 40px;text-decoration:none;
   transition:background .2s,transform .15s;
+  display:inline-flex;align-items:center;gap:8px;
 }
-.btn-primary:hover{background:var(--gold-l);transform:translateY(-2px);}
-
-.btn-secondary{
-  background:rgba(255,255,255,.15);
-  backdrop-filter:blur(8px);
-  color:var(--white);
-  font-size:13px;font-weight:700;letter-spacing:4px;text-transform:uppercase;
-  padding:18px 44px;text-decoration:none;
-  display:inline-flex;align-items:center;gap:10px;
-  border-radius:4px;
-  border:1px solid rgba(255,255,255,.3);
-  transition:background .2s,transform .15s;
+.btn-gold:hover{background:var(--gold-l);transform:translateY(-2px);}
+.btn-outline{
+  background:transparent;color:var(--white);
+  font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  padding:16px 40px;text-decoration:none;
+  border:1px solid rgba(255,255,255,.35);
+  transition:border-color .2s,transform .15s,background .2s;
+  display:inline-flex;align-items:center;gap:8px;
 }
-.btn-secondary:hover{background:rgba(255,255,255,.25);transform:translateY(-2px);}
+.btn-outline:hover{border-color:var(--white);background:rgba(255,255,255,.06);transform:translateY(-2px);}
 
-.chevron{font-size:16px;transition:transform .2s;}
-.btn-primary:hover .chevron,.btn-secondary:hover .chevron{transform:translateX(4px);}
-
-/* ── COUNTDOWN ── */
+/* Countdown bar */
 .countdown-bar{
-  position:absolute;bottom:0;left:0;right:0;
-  background:var(--gold);
-  display:flex;justify-content:center;gap:0;
-  padding:16px 40px;
-  z-index:10;
+  position:absolute;bottom:0;left:0;right:0;z-index:10;
+  display:flex;align-items:stretch;
+  background:rgba(6,4,10,.82);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  border-top:1px solid rgba(201,168,76,.22);
 }
+.count-prefix{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:18px 32px 18px 40px;
+  border-right:1px solid rgba(201,168,76,.12);
+  gap:3px;
+}
+.count-prefix-date{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:15px;letter-spacing:5px;color:var(--gold);line-height:1;
+}
+.count-prefix-sub{
+  font-size:7px;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,.3);
+}
+.count-blocks{display:flex;align-items:stretch;flex:1;justify-content:center;}
 .count-block{
-  display:flex;flex-direction:column;align-items:center;
-  padding:0 32px;
-  border-right:1px solid rgba(0,0,0,.2);
-}
-.count-block:last-child{border-right:none;}
-.count-num{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;color:var(--black);line-height:1;}
-.count-label{font-size:8px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(0,0,0,.6);}
-
-/* ── SECTIONS COMÚN ── */
-.section{padding:100px 80px;}
-.section-sm{padding:80px 80px;}
-.s-tag{font-size:9px;font-weight:500;letter-spacing:6px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
-.s-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,8vw,100px);letter-spacing:4px;line-height:.95;margin-bottom:0;}
-.s-sub{font-size:15px;color:var(--wdim);line-height:1.8;max-width:600px;margin-top:20px;}
-
-/* ── LINEUP ── */
-.lineup-section{background:#0a0a0a;padding:100px 0;}
-.lineup-header{padding:0 80px;margin-bottom:60px;}
-
-.lineup-artists{
-  display:flex;flex-direction:column;
-}
-
-.artist-row{
-  display:flex;align-items:center;
-  padding:28px 80px;
-  border-bottom:1px solid #1a1a1a;
-  cursor:pointer;
-  transition:background .25s, padding-left .25s;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:18px 36px;
+  border-right:1px solid rgba(201,168,76,.1);
   position:relative;
 }
-.artist-row:hover{background:#111;padding-left:96px;}
-.artist-row:hover .a-name{color:var(--gold);}
-.artist-row:hover .a-arrow{opacity:1;transform:translateX(0);}
+.count-block:last-child{border-right:none;}
+.count-num{
+  font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:4px;
+  color:var(--gold);line-height:1;font-variant-numeric:tabular-nums;
+  text-shadow:0 0 32px rgba(201,168,76,.4);
+}
+.count-label{
+  font-size:7px;font-weight:700;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(255,255,255,.35);margin-top:5px;
+}
 
-.a-num{font-family:'Cormorant Garamond',serif;font-size:13px;color:#444;min-width:50px;}
-.a-name{
+/* ═══════════════════════════════
+   LINEUP  (Pal Norte card grid)
+═══════════════════════════════ */
+.lineup-section{
+  padding:40px 0 0;
+  background:transparent;
+  position:relative;z-index:1;
+}
+.section-header{
+  padding:0 60px 28px;
+  display:flex;align-items:flex-end;justify-content:space-between;
+}
+.s-eyebrow{
+  font-size:9px;font-weight:500;letter-spacing:6px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:10px;
+}
+.s-title{
   font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(38px,6vw,76px);
-  letter-spacing:3px;flex:1;
+  font-size:clamp(36px,5vw,64px);
+  letter-spacing:4px;line-height:.9;
+}
+.s-link{
+  font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);text-decoration:none;
+  display:flex;align-items:center;gap:8px;padding-bottom:6px;
+  border-bottom:1px solid rgba(201,168,76,.4);
+  transition:border-color .2s;
+}
+.s-link:hover{border-color:var(--gold);}
+
+/* Artist cards */
+.artist-grid{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  grid-template-rows:auto auto;
+  gap:2px;
+}
+.artist-card{
+  position:relative;overflow:hidden;
+  cursor:pointer;
+  aspect-ratio:unset;
+}
+.artist-card:first-child{
+  grid-row:1/3;
+  min-height:640px;
+}
+.artist-card:not(:first-child){
+  min-height:319px;
+}
+.artist-card-bg{
+  position:absolute;inset:0;
+  transition:transform .7s cubic-bezier(.25,.46,.45,.94);
+}
+.artist-card:hover .artist-card-bg{transform:scale(1.04);}
+.artist-card-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,.92) 0%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.1) 100%);
+  transition:opacity .3s;
+}
+.artist-card:hover .artist-card-overlay{opacity:.85;}
+.artist-card-info{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:28px 32px;
+}
+.ac-genre{
+  font-size:8px;font-weight:700;letter-spacing:4px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:8px;
+}
+.ac-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(36px,5vw,64px);
+  letter-spacing:3px;line-height:.95;
   transition:color .25s;
 }
-.artist-row.headliner .a-name{font-size:clamp(54px,8vw,100px);}
-
-.a-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
-.a-genre{font-size:9px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--gold);opacity:.7;}
-.a-time{font-size:13px;color:#666;font-weight:400;}
-.a-arrow{
-  font-size:20px;color:var(--gold);
-  opacity:0;transform:translateX(-8px);
-  transition:opacity .25s,transform .25s;
-  margin-left:24px;
+.artist-card:first-child .ac-name{font-size:clamp(52px,6vw,88px);}
+.artist-card:hover .ac-name{color:var(--gold);}
+.ac-time{
+  font-size:12px;color:rgba(255,255,255,.5);
+  margin-top:8px;letter-spacing:1px;
 }
 
-/* ── ABOUT ── */
+/* Artist card background designs */
+.bg-a1{background:radial-gradient(ellipse 90% 80% at 40% 30%, rgba(255,120,0,.20),transparent 70%),
+        radial-gradient(ellipse 60% 50% at 70% 60%, rgba(200,60,200,.08),transparent 60%),
+        linear-gradient(160deg,#0e0803 0%,#1a0d00 50%,#08040a 100%);}
+.bg-a2{background:radial-gradient(ellipse 80% 80% at 30% 40%, rgba(0,180,255,.15),transparent 70%),
+        linear-gradient(140deg,#030710 0%,#060e1a 50%,#000 100%);}
+.bg-a3{background:radial-gradient(ellipse 80% 80% at 70% 40%, rgba(255,30,80,.12),transparent 70%),
+        linear-gradient(140deg,#0a0203 0%,#160409 50%,#000 100%);}
+.bg-a4{background:radial-gradient(ellipse 80% 80% at 50% 30%, rgba(80,255,120,.10),transparent 70%),
+        linear-gradient(140deg,#020a04 0%,#050e06 50%,#000 100%);}
+.bg-a5{background:radial-gradient(ellipse 80% 80% at 50% 40%, rgba(255,200,0,.12),transparent 70%),
+        linear-gradient(140deg,#090800 0%,#100e00 50%,#000 100%);}
+
+/* Monogram / visual for each card */
+.card-mono{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(120px,16vw,220px);
+  letter-spacing:-4px;
+  color:rgba(255,255,255,.04);
+  pointer-events:none;
+  user-select:none;
+  line-height:1;
+}
+.artist-card:first-child .card-mono{font-size:clamp(180px,22vw,320px);}
+
+/* ═══════════════════════════════
+   EXPERIENCE GRID  (Pal Norte style 4-col)
+═══════════════════════════════ */
+.exp-section{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:2px;background:rgba(46,46,46,.3);
+  border-top:2px solid var(--line);border-bottom:2px solid var(--line);
+  position:relative;z-index:1;
+}
+.exp-card{
+  background:rgba(20,20,20,.55);
+  padding:52px 40px;
+  transition:background .3s;
+}
+.exp-card:hover{background:rgba(28,28,28,.7);}
+.exp-val{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(52px,6vw,80px);
+  letter-spacing:2px;color:var(--gold);line-height:1;
+  margin-bottom:10px;
+}
+.exp-label{
+  font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gray);
+}
+.exp-sub{
+  font-size:13px;color:rgba(255,255,255,.35);margin-top:6px;line-height:1.5;
+}
+
+/* ═══════════════════════════════
+   ABOUT
+═══════════════════════════════ */
 .about-section{
-  display:grid;grid-template-columns:1fr 1fr;gap:0;
-  background:#0d0d0d;
+  display:grid;grid-template-columns:1fr;
+  background:transparent;
+  position:relative;z-index:1;
 }
-.about-text{padding:100px 80px;display:flex;flex-direction:column;justify-content:center;}
-.about-visual{
-  position:relative;overflow:hidden;
-  background:#080808;
-  display:flex;align-items:center;justify-content:center;
-  min-height:500px;
-}
-
-.about-nums{
-  display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#1a1a1a;margin-top:48px;border:1px solid #1a1a1a;
-}
-.about-num{background:#0d0d0d;padding:32px;text-align:center;}
-.an-val{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:2px;color:var(--gold);line-height:1;}
-.an-label{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:#666;margin-top:4px;}
-
-/* ── SCHEDULE ── */
-.sched-section{padding:100px 80px;background:var(--black);}
-.sched-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#1a1a1a;border:1px solid #1a1a1a;margin-top:60px;}
-.sched-item{background:#0a0a0a;padding:40px 28px;}
-.si-time{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--gold);line-height:1;margin-bottom:8px;}
-.si-tag{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);opacity:.6;border:1px solid rgba(201,168,76,.3);padding:2px 8px;display:inline-block;margin-bottom:12px;}
-.si-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;margin-bottom:8px;}
-.si-desc{font-size:12px;color:#666;line-height:1.7;}
-
-/* ── TICKETS ── */
-.tickets-section{
-  padding:120px 80px;
-  background:#070707;
+.about-text{
+  padding:48px 40px;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
   text-align:center;
+  max-width:760px;margin:0 auto;
+}
+.about-body{
+  font-size:14px;color:rgba(255,255,255,.55);line-height:1.8;
+  max-width:560px;margin-top:16px;
+}
+.about-visual{
+  padding:100px 80px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--surface);
   position:relative;overflow:hidden;
+}
+.about-visual::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 70% 60% at 50% 50%, rgba(201,168,76,.07) 0%, transparent 70%);
+}
+
+/* ═══════════════════════════════
+   SCHEDULE
+═══════════════════════════════ */
+.sched-section{
+  padding:100px 60px;
+  background:rgba(20,20,20,.55);
+  border-top:1px solid var(--line);
+  position:relative;z-index:1;
+}
+.sched-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:2px;background:var(--line);
+  border:1px solid var(--line);
+  margin-top:60px;
+}
+.sched-item{
+  background:rgba(20,20,20,.6);
+  padding:44px 32px;
+  transition:background .3s;
+}
+.sched-item:hover{background:#0e0e0e;}
+.si-tag{
+  font-size:7px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);
+  border:1px solid rgba(201,168,76,.25);
+  padding:3px 10px;display:inline-block;margin-bottom:16px;
+}
+.si-time{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:64px;color:var(--white);
+  line-height:1;margin-bottom:12px;letter-spacing:2px;
+}
+.si-title{
+  font-size:15px;font-weight:500;margin-bottom:8px;
+  color:var(--white);letter-spacing:.5px;
+}
+.si-desc{font-size:12px;color:var(--gray);line-height:1.75;}
+
+/* ═══════════════════════════════
+   TICKETS
+═══════════════════════════════ */
+.tickets-section{
+  padding:120px 60px;
+  background:transparent;
+  position:relative;overflow:hidden;
+  z-index:1;
 }
 .tickets-section::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 70% 50% at 50% 50%,rgba(201,168,76,.06) 0%,transparent 70%);
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,.05) 0%, transparent 65%);
+}
+.tickets-inner{position:relative;z-index:1;}
+.tickets-header{text-align:center;margin-bottom:70px;}
+.tickets-sub{
+  font-size:12px;color:var(--gray);letter-spacing:3px;text-transform:uppercase;
+  margin-top:14px;
 }
 
 .ticket-grid{
   display:grid;grid-template-columns:repeat(2,1fr);
-  gap:2px;background:#1a1a1a;border:1px solid #1a1a1a;
-  max-width:860px;margin:60px auto;
+  gap:2px;max-width:900px;margin:0 auto;
+  background:var(--line);border:1px solid var(--line);
+}
+.tcard{
+  background:rgba(20,20,20,.65);
+  padding:56px 48px;
   position:relative;
+  transition:background .3s;
 }
-
-.tcard{background:#0a0a0a;padding:52px 44px;text-align:left;position:relative;}
-.tcard.vip{border:1px solid rgba(201,168,76,.4);}
-.tcard.vip::before{
-  content:'MÁS POPULAR';position:absolute;
-  top:-11px;left:24px;background:var(--gold);
-  color:var(--black);font-size:7px;letter-spacing:3px;font-weight:700;padding:3px 12px;
+.tcard:hover{background:rgba(28,28,28,.8);}
+.tcard.vip{
+  border:1px solid rgba(201,168,76,.3);
+  background:rgba(10,9,0,.75);
 }
-.t-type{font-size:9px;font-weight:500;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
-.t-price{font-family:'Bebas Neue',sans-serif;font-size:80px;line-height:1;color:var(--white);margin-bottom:4px;}
-.t-price sup{font-size:28px;vertical-align:top;margin-top:14px;display:inline-block;color:#666;}
-.t-note{font-size:11px;color:#444;margin-bottom:28px;letter-spacing:1px;}
-.t-feats{list-style:none;margin-bottom:36px;}
-.t-feats li{font-size:13px;color:var(--wdim);padding:10px 0;border-bottom:1px solid #141414;display:flex;align-items:center;gap:10px;}
-.t-feats li::before{content:'';width:4px;height:4px;background:var(--gold);border-radius:50%;flex-shrink:0;}
-
+.tcard.vip:hover{background:#0e0c00;}
+.tcard-badge{
+  position:absolute;top:-1px;left:32px;
+  background:var(--gold);color:var(--black);
+  font-size:7px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  padding:4px 14px;
+}
+.t-type{
+  font-size:8px;font-weight:700;letter-spacing:5px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:24px;
+}
+.t-price{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:88px;line-height:1;color:var(--white);
+}
+.t-price sup{font-size:32px;vertical-align:top;margin-top:18px;display:inline-block;color:var(--gray);}
+.t-note{font-size:11px;color:#444;margin-bottom:36px;letter-spacing:.5px;margin-top:4px;}
+.t-divider{height:1px;background:var(--line);margin-bottom:28px;}
+.t-feats{list-style:none;margin-bottom:40px;}
+.t-feats li{
+  font-size:13px;color:rgba(255,255,255,.7);
+  padding:11px 0;
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:12px;
+}
+.t-feats li:last-child{border-bottom:none;}
+.t-dot{width:5px;height:5px;background:var(--gold);border-radius:50%;flex-shrink:0;}
 .t-btn{
   display:block;text-align:center;text-decoration:none;
-  font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;
-  padding:16px;transition:all .2s;cursor:pointer;
+  font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  padding:16px;cursor:pointer;
+  transition:background .2s, border-color .2s, color .2s;
+  touch-action:manipulation;
 }
-.t-btn-outline{border:1px solid var(--gold);color:var(--gold);}
-.t-btn-outline:hover{background:var(--gold);color:var(--black);}
-.t-btn-solid{background:var(--gold);color:var(--black);}
-.t-btn-solid:hover{background:var(--gold-l);}
+/* Focus visible for keyboard nav */
+a:focus-visible, button:focus-visible{
+  outline:2px solid var(--gold);
+  outline-offset:3px;
+}
+.t-btn-outline{border:1px solid rgba(255,255,255,.25);color:var(--white);}
+.t-btn-outline:hover{border-color:var(--white);background:rgba(255,255,255,.05);}
+.t-btn-gold{background:var(--gold);color:var(--black);}
+.t-btn-gold:hover{background:var(--gold-l);}
 
-/* ── VENUE ── */
+/* ═══════════════════════════════
+   VENUE
+═══════════════════════════════ */
 .venue-section{
   display:grid;grid-template-columns:1fr 1fr;
-  min-height:520px;
+  border-top:1px solid var(--line);
+  position:relative;z-index:1;
 }
 .venue-left{
-  padding:80px;background:#0d0d0d;
+  padding:100px 80px;
+  background:var(--surface);
+  border-right:1px solid var(--line);
   display:flex;flex-direction:column;justify-content:center;
 }
+.venue-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(48px,6vw,80px);
+  letter-spacing:4px;line-height:.95;margin-top:14px;
+}
+.venue-desc{
+  font-size:14px;color:var(--gray);line-height:1.85;
+  max-width:440px;margin-top:24px;
+}
+.venue-details{display:flex;flex-direction:column;gap:0;margin-top:36px;}
+.vd-item{
+  display:flex;align-items:center;gap:16px;
+  font-size:13px;color:rgba(255,255,255,.65);
+  padding:14px 0;border-bottom:1px solid var(--line);
+  letter-spacing:.5px;
+}
+.vd-item:last-child{border-bottom:none;}
+.vd-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:12px;letter-spacing:2px;
+  color:var(--gold);min-width:24px;
+}
 .venue-right{
-  background:#080808;
-  display:flex;align-items:center;justify-content:center;
-  padding:60px;
+  background:var(--black);
+  padding:0;overflow:hidden;position:relative;
 }
-.venue-details{margin-top:36px;display:flex;flex-direction:column;gap:14px;}
-.vd-item{display:flex;align-items:center;gap:16px;font-size:13px;color:var(--wdim);}
-.vd-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;flex-shrink:0;}
+.venue-photo-link{
+  display:block;width:100%;height:100%;min-height:500px;
+  position:relative;overflow:hidden;text-decoration:none;
+}
+.venue-photo{
+  width:100%;height:100%;
+  position:absolute;inset:0;
+  object-fit:cover;display:block;
+  transition:transform .5s ease;
+}
+.venue-photo-link:hover .venue-photo{
+  transform:scale(1.04);filter:brightness(.65);
+}
+.venue-photo-overlay{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:32px 36px;
+  background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 100%);
+  display:flex;align-items:flex-end;justify-content:space-between;
+  pointer-events:none;
+}
+.venue-photo-overlay span{
+  font-family:'Bebas Neue',sans-serif;font-size:13px;
+  letter-spacing:2px;color:#C9A84C;
+  border:1px solid rgba(201,168,76,.5);
+  padding:7px 16px;border-radius:2px;
+  background:rgba(0,0,0,.4);
+  transition:background .3s;
+}
+.venue-photo-link:hover .venue-photo-overlay span{
+  background:rgba(201,168,76,.15);
+}
+.venue-photo-placeholder{
+  width:100%;height:100%;min-height:500px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:12px;color:#333;font-size:13px;letter-spacing:1px;
+  background:var(--black);
+}
+.venue-photo-placeholder svg{ opacity:.25; }
 
-/* ── FOOTER ── */
+/* ═══════════════════════════════
+   SPONSORS BAR
+═══════════════════════════════ */
+.sponsors-bar{
+  padding:28px 60px;
+  border-top:1px solid rgba(201,168,76,.15);border-bottom:1px solid var(--line);
+  background:rgba(10,8,14,.7);
+  display:flex;align-items:center;gap:20px;
+  position:relative;z-index:1;
+}
+.sponsors-label{
+  font-size:8px;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(201,168,76,.5);white-space:nowrap;min-width:130px;
+}
+.sponsors-list{
+  display:flex;align-items:center;gap:40px;flex-wrap:wrap;
+}
+.sponsor-name{
+  font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,.45);transition:color .2s;cursor:default;
+}
+.sponsor-name:hover{color:rgba(255,255,255,.75);}
+
+/* ═══════════════════════════════
+   FOOTER
+═══════════════════════════════ */
 footer{
-  padding:60px 80px;
-  border-top:1px solid #111;
-  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;
+  padding:24px 60px;
+  background:rgba(10,8,12,.8);
+  display:flex;align-items:center;justify-content:space-between;
+  position:relative;z-index:1;
+  flex-wrap:wrap;gap:16px;
+  border-top:1px solid var(--line);
 }
-.f-links{display:flex;gap:28px;}
-.f-links a{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#555;text-decoration:none;transition:color .2s;}
-.f-links a:hover{color:var(--gold);}
-.f-copy{font-size:10px;letter-spacing:2px;color:#333;}
+.f-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:18px;letter-spacing:8px;color:var(--gold);
+}
+.f-links{display:flex;gap:24px;flex-wrap:wrap;}
+.f-links a{
+  font-size:9px;letter-spacing:2.5px;text-transform:uppercase;
+  color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s;
+}
+.f-links a:hover{color:rgba(255,255,255,.75);}
+.f-copy{font-size:9px;letter-spacing:2px;color:#333;}
 
-/* ── ANIMATIONS ── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
-@keyframes beamL{0%,100%{transform:rotate(-25deg) scaleX(1);opacity:.6}50%{transform:rotate(-20deg) scaleX(1.1);opacity:.9}}
-@keyframes beamR{0%,100%{transform:rotate(25deg) scaleX(1);opacity:.6}50%{transform:rotate(20deg) scaleX(1.1);opacity:.9}}
-@keyframes crowd{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-@keyframes ringPulse{0%,100%{opacity:.3}50%{opacity:.7}}
+/* ═══════════════════════════════
+   ANIMATIONS
+═══════════════════════════════ */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(32px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes beamL{
+  0%,100%{transform:rotate(-25deg) scaleX(1);opacity:.6}
+  50%{transform:rotate(-20deg) scaleX(1.1);opacity:.9}
+}
+@keyframes beamR{
+  0%,100%{transform:rotate(25deg) scaleX(1);opacity:.6}
+  50%{transform:rotate(20deg) scaleX(1.1);opacity:.9}
+}
+@keyframes crowd{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-3px)}
+}
+@keyframes ringPulse{
+  0%,100%{opacity:.3}50%{opacity:.7}
+}
 
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .9s ease,transform .9s ease;}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s ease;}
 .reveal.visible{opacity:1;transform:translateY(0);}
 
-/* MOBILE */
+/* Hero logo mark */
+.hero-logo{
+  display:flex;flex-direction:column;align-items:center;gap:0;
+  margin-bottom:28px;
+}
+.hl-rules{width:260px;display:flex;flex-direction:column;gap:5px;}
+.hl-r1{height:1px;background:var(--gold);}
+.hl-r2{height:.4px;background:var(--gold);opacity:.5;}
+.hl-word{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(52px,10vw,110px);
+  font-weight:700;letter-spacing:clamp(14px,3vw,30px);
+  color:var(--white);line-height:1;padding:10px 0;
+  text-shadow:0 0 80px rgba(0,0,0,.9);
+}
+.hl-dia{
+  width:9px;height:9px;
+  border:1px solid var(--gold);
+  transform:rotate(45deg);
+  margin:5px auto 0;
+}
+
+/* ── SEAT SELECTION MODAL ── */
+.seat-modal{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(0,0,0,.93);
+  backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;
+  padding:16px;
+  opacity:0;pointer-events:none;
+  transition:opacity .3s;
+}
+.seat-modal.open{opacity:1;pointer-events:all;}
+.seat-modal-box{
+  background:#080808;
+  border:1px solid #1e1e1e;
+  width:100%;max-width:940px;
+  max-height:92vh;
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+.seat-modal-header{
+  padding:20px 28px;
+  border-bottom:1px solid #1e1e1e;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.seat-modal-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:24px;letter-spacing:4px;
+}
+.seat-modal-sub{
+  font-size:11px;color:#555;letter-spacing:1px;margin-top:2px;
+}
+.seat-close{
+  background:none;border:1px solid #222;color:#fff;
+  font-size:20px;cursor:pointer;
+  width:36px;height:36px;
+  display:flex;align-items:center;justify-content:center;
+  opacity:.6;transition:opacity .2s, border-color .2s;
+  flex-shrink:0;
+}
+.seat-close:hover{opacity:1;border-color:#444;}
+
+.seat-legend{
+  padding:12px 28px;
+  display:flex;gap:20px;flex-wrap:wrap;
+  border-bottom:1px solid #1e1e1e;
+  flex-shrink:0;
+}
+.leg-item{
+  display:flex;align-items:center;gap:7px;
+  font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#666;
+}
+.leg-dot{width:12px;height:12px;border-radius:2px;flex-shrink:0;}
+.leg-vip{background:#2a1c00;border:1px solid #C9A84C;}
+.leg-gen{background:#141414;border:1px solid #333;}
+.leg-sel{background:#C9A84C;}
+
+/* Quantity selector */
+.seat-qty-bar{
+  padding:12px 28px;border-bottom:1px solid #1a1a1a;
+  display:flex;align-items:center;gap:18px;flex-shrink:0;
+  background:#050505;flex-wrap:wrap;
+}
+.qty-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#555;white-space:nowrap;}
+.qty-controls{display:flex;align-items:center;gap:10px;}
+.qty-btn{
+  background:#111;border:1px solid #2a2a2a;color:#fff;
+  width:32px;height:32px;font-size:20px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .15s,border-color .15s;flex-shrink:0;line-height:1;
+}
+.qty-btn:hover{background:#1c1c1c;border-color:#444;}
+.qty-num{
+  font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;
+  color:#fff;min-width:36px;text-align:center;line-height:1;
+}
+.qty-status{font-size:10px;color:#555;letter-spacing:1px;}
+
+.seat-map-wrap{
+  flex:1;overflow:auto;padding:16px 20px;
+}
+.venue-svg{width:100%;min-width:680px;display:block;}
+
+/* SVG table states */
+.tg{cursor:pointer;}
+.tg .tr{transition:fill .18s,stroke .18s,stroke-width .18s;}
+.tg.vip .tr{fill:#1a1200;stroke:#C9A84C;stroke-width:1.2;}
+.tg.gen .tr{fill:#111;stroke:#2e2e2e;stroke-width:1;}
+.tg.sel .tr{fill:#C9A84C !important;stroke:#FFD700 !important;stroke-width:2.5 !important;}
+.tg.sel .tt{fill:#000 !important;}
+.tg:hover:not(.sel).vip .tr{fill:#2c1f00;stroke:#E8C96A;}
+.tg:hover:not(.sel).gen .tr{fill:#1a1a1a;stroke:#444;}
+.tt{font-family:'Bebas Neue',sans-serif;font-size:10px;fill:#fff;pointer-events:none;user-select:none;}
+.tg.vip .tt{fill:#C9A84C;}
+.zone-label{font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:3px;text-transform:uppercase;fill:#666;pointer-events:none;}
+.zone-label.vip-label{fill:#C9A84C;opacity:.85;}
+.cabin-rect{fill:#141414;stroke:#484848;stroke-width:1;}
+.cabin-text{font-family:'DM Sans',sans-serif;font-size:7px;fill:#777;letter-spacing:1px;pointer-events:none;}
+.stage-rect{fill:#1a1000;stroke:#604e20;stroke-width:1.2;}
+.stage-text{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:8px;fill:#C9A84C;pointer-events:none;}
+.zone-line{stroke:#333;stroke-width:1.5;stroke-dasharray:5 4;}
+
+.seat-panel{
+  padding:18px 28px;
+  border-top:1px solid #1e1e1e;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  background:#040404;
+  flex-shrink:0;flex-wrap:wrap;
+}
+.seat-info{font-size:12px;color:#555;line-height:1.5;}
+.seat-info strong{
+  display:block;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:22px;letter-spacing:3px;
+  color:#fff;margin-bottom:2px;
+}
+.seat-pay{
+  background:#C9A84C;color:#000;
+  font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  padding:14px 28px;text-decoration:none;
+  transition:background .2s;
+  opacity:.35;pointer-events:none;cursor:default;white-space:nowrap;
+}
+.seat-pay.ready{opacity:1;pointer-events:all;cursor:pointer;}
+.seat-pay.ready:hover{background:#E8C96A;}
+
+/* touch-action on all interactive elements */
+.btn-gold,.btn-outline,.nav-ticket-btn,.t-btn,.artist-card{touch-action:manipulation;}
+
+/* prefers-reduced-motion */
+@media(prefers-reduced-motion:reduce){
+  *{animation:none !important;transition-duration:.01ms !important;}
+  html{scroll-behavior:auto;}
+  /* Ensure animated elements are visible when animations are disabled */
+  .hero-eyebrow,.hero-logo,.hero-meta,.hero-btns,
+  .reveal{opacity:1 !important;transform:none !important;}
+}
+
+/* ── SCARCITY BAR ── */
+.scarcity-bar{
+  background:#0d0900;
+  border:1px solid rgba(201,168,76,.2);
+  max-width:900px;margin:0 auto 32px;
+  padding:14px 24px;
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);
+}
+.scarcity-dot{
+  width:6px;height:6px;background:#ff4444;border-radius:50%;
+  animation:blink 1.4s ease-in-out infinite;flex-shrink:0;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ── VIP SCARCITY ── */
+.vip-scarcity{
+  font-size:9px;letter-spacing:2px;color:#ff8844;text-transform:uppercase;
+  margin-bottom:14px;
+}
+
+/* ── EMAIL CAPTURE ── */
+.email-section{
+  padding:80px 60px;
+  background:rgba(20,20,20,.55);
+  border-top:1px solid var(--line);
+  text-align:center;
+  position:relative;z-index:1;
+}
+.email-section h3{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(36px,5vw,56px);letter-spacing:4px;
+  margin-bottom:12px;
+}
+.email-section p{
+  font-size:13px;color:var(--gray);letter-spacing:1px;
+  margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto;
+}
+.email-form{
+  display:flex;gap:0;max-width:480px;margin:0 auto;
+}
+.email-input{
+  flex:1;background:#111;border:1px solid var(--line);border-right:none;
+  color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;
+  padding:14px 20px;outline:none;
+  transition:border-color .2s;
+}
+.email-input:focus{border-color:var(--gold);}
+.email-input::placeholder{color:#444;}
+.email-submit{
+  background:var(--gold);color:var(--black);
+  font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  padding:14px 24px;border:none;cursor:pointer;
+  transition:background .2s;white-space:nowrap;touch-action:manipulation;
+}
+.email-submit:hover{background:var(--gold-l);}
+
+/* ── STICKY MOBILE CTA ── */
+.sticky-cta{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;z-index:300;
+  background:rgba(0,0,0,.97);
+  border-top:1px solid var(--line);
+  padding:14px 24px;
+  align-items:center;justify-content:space-between;gap:14px;
+}
+.sticky-cta-text{
+  font-size:12px;color:var(--gray);letter-spacing:1px;
+  line-height:1.4;
+}
+.sticky-cta-text strong{display:block;color:var(--white);font-size:13px;}
+.sticky-cta-btn{
+  background:var(--gold);color:var(--black);
+  font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  padding:13px 22px;text-decoration:none;white-space:nowrap;flex-shrink:0;
+  touch-action:manipulation;transition:background .2s;
+}
+.sticky-cta-btn:hover{background:var(--gold-l);}
+
+/* ── TRUST BAR ── */
+.trust-bar{
+  background:var(--surface);
+  border-bottom:1px solid var(--line);
+  padding:16px 60px;
+  display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap;
+}
+.trust-item{
+  font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  color:#444;display:flex;align-items:center;gap:8px;
+}
+.trust-item::before{content:'✓';color:var(--gold);font-size:10px;}
+
+/* ═══════════════════════════════
+   MOBILE
+═══════════════════════════════ */
+@media(max-width:900px){
+  nav{padding:0 20px;}
+  .nav-links{gap:18px;}
+  .nav-links a{font-size:10px;}
+}
+/* ── HAMBURGER ── */
+.nav-ham{
+  display:none;flex-direction:column;gap:5px;
+  background:none;border:none;cursor:pointer;padding:6px;flex-shrink:0;
+}
+.nav-ham span{
+  display:block;width:22px;height:2px;background:var(--white);
+  transition:transform .25s,opacity .2s;
+}
+.nav-ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.nav-ham.open span:nth-child(2){opacity:0;}
+.nav-ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* Mobile nav overlay */
+.mobile-nav{
+  display:none;
+  position:fixed;top:64px;left:0;right:0;bottom:0;z-index:199;
+  background:rgba(0,0,0,.97);
+  flex-direction:column;align-items:center;justify-content:center;gap:32px;
+  border-top:1px solid var(--line);
+}
+.mobile-nav.open{display:flex;}
+.mobile-nav a{
+  font-size:12px;font-weight:500;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(255,255,255,.75);text-decoration:none;transition:color .2s;
+}
+.mobile-nav a:hover{color:var(--white);}
+.mobile-nav .mob-ticket{
+  background:var(--gold);color:var(--black) !important;
+  font-weight:700 !important;letter-spacing:2px;
+  padding:14px 36px;margin-top:12px;
+}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);
+  background:#111;border:1px solid var(--gold);
+  color:var(--white);font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  padding:14px 28px;z-index:9999;white-space:nowrap;
+  opacity:0;pointer-events:none;
+  transition:opacity .3s,transform .3s;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
 @media(max-width:768px){
-  nav{padding:14px 20px;}
-  .nav-pill{padding:10px 16px;gap:16px;}
-  .nav-pill a{font-size:10px;}
-  .section,.section-sm{padding:60px 24px;}
-  .lineup-header{padding:0 24px;}
-  .artist-row{padding:20px 24px;}
-  .artist-row:hover{padding-left:32px;}
+  .nav-links{display:none;}
+  .nav-right .nav-ticket-btn{display:none;}
+  .nav-ham{display:flex;}
+
+  .hero-btns{flex-direction:column;align-items:center;}
+  .countdown-bar{flex-wrap:wrap;}
+  .count-prefix{padding:14px 20px;border-right:none;border-bottom:1px solid rgba(201,168,76,.12);width:100%;flex-direction:row;align-items:center;gap:12px;}
+  .count-blocks{flex-wrap:wrap;width:100%;}
+  .count-block{padding:12px 0;flex:1;min-width:70px;}
+
+  .lineup-section{padding:70px 0 0;}
+  .section-header{padding:0 24px 40px;flex-direction:column;align-items:flex-start;gap:16px;}
+  .artist-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto;}
+  .artist-card:first-child{grid-row:auto;grid-column:1/3;min-height:360px;}
+  .artist-card:not(:first-child){min-height:220px;}
+
+  .exp-section{grid-template-columns:1fr 1fr;}
+
   .about-section,.venue-section{grid-template-columns:1fr;}
+  .about-text,.about-visual{padding:60px 24px;}
+  .venue-left{padding:60px 24px;border-right:none;border-bottom:1px solid var(--line);}
+  .venue-right{min-height:320px;padding:40px 24px;}
+
+  .sched-section{padding:70px 24px;}
   .sched-grid{grid-template-columns:1fr 1fr;}
-  .ticket-grid{grid-template-columns:1fr;}
-  .about-text{padding:60px 24px;}
-  .venue-left{padding:60px 24px;}
-  .sched-section{padding:60px 24px;}
+
   .tickets-section{padding:80px 24px;}
-  footer{padding:40px 24px;flex-direction:column;}
-  .countdown-bar{gap:0;padding:12px 20px;}
-  .count-block{padding:0 16px;}
+  .ticket-grid{grid-template-columns:1fr;}
+
+  .sponsors-bar{padding:28px 24px;}
+  footer{padding:20px 24px;flex-direction:column;align-items:center;text-align:center;}
+  .sticky-cta{display:flex;}
+  .email-section{padding:60px 24px;}
+  .email-form{flex-direction:column;}
+  .email-input{border-right:1px solid var(--line);border-bottom:none;}
+  .trust-bar{padding:14px 24px;gap:20px;}
 }
 </style>
 </head>
 <body>
+<canvas id="starsCanvas" style="position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:0;opacity:.65;"></canvas>
 
-<!-- NAV -->
-<nav id="nav">
+<!-- ══ NAV ══════════════════════════════════════ -->
+<nav id="nav" role="navigation" aria-label="Navegación principal">
   <a class="nav-logo" href="#">
     <div class="logo-rules"><div class="r1"></div><div class="r2"></div></div>
     <div class="logo-word">SALTUS</div>
@@ -352,299 +1005,455 @@ footer{
     <div class="logo-dia"></div>
   </a>
 
-  <div class="nav-pill">
+  <div class="nav-links">
     <a href="#boletos">Boletos</a>
     <a href="#lineup">Lineup</a>
     <a href="#horarios">Horarios</a>
     <a href="#venue">Venue</a>
+    <a href="https://www.instagram.com/saltus.mty/" target="_blank" rel="noopener">Instagram</a>
   </div>
 
-  <div class="nav-right">@saltus.mty</div>
+  <div class="nav-right">
+    <a href="#boletos" class="nav-ticket-btn">Comprar boletos</a>
+  </div>
+  <button class="nav-ham" id="navHam" aria-label="Menú" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="concert-bg"></div>
+<!-- ══ MOBILE NAV ═══════════════════════════════ -->
+<div class="mobile-nav" id="mobileNav" aria-hidden="true">
+  <a href="#boletos" onclick="closeMobileNav()">Boletos</a>
+  <a href="#lineup" onclick="closeMobileNav()">Lineup</a>
+  <a href="#horarios" onclick="closeMobileNav()">Horarios</a>
+  <a href="#venue" onclick="closeMobileNav()">Venue</a>
+  <a href="https://www.instagram.com/saltus.mty/" target="_blank" rel="noopener" onclick="closeMobileNav()">Instagram</a>
+  <a href="#boletos" class="mob-ticket" onclick="closeMobileNav()">Comprar boletos</a>
+</div>
 
-  <!-- SVG CONCERT SCENE -->
-  <svg class="stage-svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-    <!-- Sky gradient -->
+<!-- ══ HERO ══════════════════════════════════════ -->
+<section class="hero">
+  <video class="hero-video" autoplay muted loop playsinline>
+    <source src="https://assets.mixkit.co/videos/31626/31626-720.mp4" type="video/mp4">
+  </video>
+  <div class="hero-bg"></div>
+
+  <!-- Stage SVG -->
+  <svg class="hero-stage" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:none;">
     <defs>
-      <radialGradient id="stageGlow" cx="50%" cy="35%" r="50%">
-        <stop offset="0%" stop-color="#FF8C00" stop-opacity=".3"/>
+      <radialGradient id="sGlow" cx="50%" cy="35%" r="50%">
+        <stop offset="0%" stop-color="#FF8C00" stop-opacity=".28"/>
         <stop offset="100%" stop-color="#FF8C00" stop-opacity="0"/>
       </radialGradient>
-      <radialGradient id="blueGlow" cx="25%" cy="40%" r="30%">
-        <stop offset="0%" stop-color="#00AAFF" stop-opacity=".2"/>
+      <radialGradient id="bGlow1" cx="25%" cy="40%" r="30%">
+        <stop offset="0%" stop-color="#00AAFF" stop-opacity=".18"/>
         <stop offset="100%" stop-color="#00AAFF" stop-opacity="0"/>
       </radialGradient>
-      <radialGradient id="blueGlow2" cx="75%" cy="40%" r="30%">
-        <stop offset="0%" stop-color="#0060FF" stop-opacity=".15"/>
-        <stop offset="100%" stop-color="#0060FF" stop-opacity="0"/>
+      <radialGradient id="bGlow2" cx="75%" cy="40%" r="30%">
+        <stop offset="0%" stop-color="#6633FF" stop-opacity=".12"/>
+        <stop offset="100%" stop-color="#6633FF" stop-opacity="0"/>
       </radialGradient>
-      <radialGradient id="crowdGlow" cx="50%" cy="70%" r="40%">
-        <stop offset="0%" stop-color="#FF6600" stop-opacity=".15"/>
-        <stop offset="100%" stop-color="#FF6600" stop-opacity="0"/>
-      </radialGradient>
-    </defs>
-
-    <!-- Glows -->
-    <rect width="1440" height="900" fill="url(#stageGlow)"/>
-    <rect width="1440" height="900" fill="url(#blueGlow)"/>
-    <rect width="1440" height="900" fill="url(#blueGlow2)"/>
-    <rect width="1440" height="900" fill="url(#crowdGlow)"/>
-
-    <!-- Stage structure back wall -->
-    <rect x="220" y="120" width="1000" height="420" rx="4" fill="#0a0505" opacity=".9"/>
-
-    <!-- LED screen panels -->
-    <rect x="240" y="140" width="960" height="380" rx="2" fill="#050202" opacity=".95"/>
-
-    <!-- Screen grid lines -->
-    <g opacity=".15" stroke="#FF6600" stroke-width=".5">
-      <line x1="240" y1="200" x2="1200" y2="200"/>
-      <line x1="240" y1="260" x2="1200" y2="260"/>
-      <line x1="240" y1="320" x2="1200" y2="320"/>
-      <line x1="240" y1="380" x2="1200" y2="380"/>
-      <line x1="240" y1="440" x2="1200" y2="440"/>
-      <line x1="360" y1="140" x2="360" y2="520"/>
-      <line x1="480" y1="140" x2="480" y2="520"/>
-      <line x1="600" y1="140" x2="600" y2="520"/>
-      <line x1="720" y1="140" x2="720" y2="520"/>
-      <line x1="840" y1="140" x2="840" y2="520"/>
-      <line x1="960" y1="140" x2="960" y2="520"/>
-      <line x1="1080" y1="140" x2="1080" y2="520"/>
-    </g>
-
-    <!-- Concentric rings on screen -->
-    <g transform="translate(720,330)">
-      <circle r="250" fill="none" stroke="#1a6a99" stroke-width="14" opacity=".4"/>
-      <circle r="200" fill="none" stroke="#1a6a99" stroke-width="12" opacity=".5"/>
-      <circle r="150" fill="none" stroke="#1a6a99" stroke-width="10" opacity=".6"/>
-      <circle r="100" fill="none" stroke="#1a6a99" stroke-width="8" opacity=".7"/>
-      <circle r="50" fill="none" stroke="#1a6a99" stroke-width="6" opacity=".8"/>
-      <circle r="20" fill="#1a6a99" opacity=".5"/>
-    </g>
-
-    <!-- SALTUS text on screen -->
-    <text x="720" y="345" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-size="38" font-weight="700" letter-spacing="18" fill="#C9A84C" opacity=".7">SALTUS</text>
-
-    <!-- Warm center glow on screen -->
-    <ellipse cx="720" cy="330" rx="200" ry="120" fill="#FF7700" opacity=".08"/>
-
-    <!-- Stage floor -->
-    <rect x="100" y="530" width="1240" height="60" fill="#0f0704" opacity=".9"/>
-    <rect x="100" y="530" width="1240" height="4" fill="#FF7700" opacity=".3"/>
-
-    <!-- Truss left -->
-    <rect x="220" y="120" width="24" height="420" fill="#111" opacity=".9"/>
-    <!-- Truss right -->
-    <rect x="1196" y="120" width="24" height="420" fill="#111" opacity=".9"/>
-
-    <!-- Moving head lights — left side -->
-    <g style="animation:beamL 4s ease-in-out infinite;transform-origin:280px 200px">
-      <line x1="280" y1="200" x2="0" y2="900" stroke="#FFE0A0" stroke-width="80" opacity=".06"/>
-      <line x1="280" y1="200" x2="60" y2="900" stroke="#FFE0A0" stroke-width="40" opacity=".08"/>
-    </g>
-    <g style="animation:beamL 3.5s 1s ease-in-out infinite;transform-origin:380px 180px">
-      <line x1="380" y1="180" x2="100" y2="900" stroke="#88CCFF" stroke-width="60" opacity=".05"/>
-    </g>
-
-    <!-- Moving head lights — right side -->
-    <g style="animation:beamR 4.5s ease-in-out infinite;transform-origin:1160px 200px">
-      <line x1="1160" y1="200" x2="1440" y2="900" stroke="#FFE0A0" stroke-width="80" opacity=".06"/>
-      <line x1="1160" y1="200" x2="1380" y2="900" stroke="#FFE0A0" stroke-width="40" opacity=".08"/>
-    </g>
-    <g style="animation:beamR 3.5s 1.5s ease-in-out infinite;transform-origin:1060px 180px">
-      <line x1="1060" y1="180" x2="1340" y2="900" stroke="#88CCFF" stroke-width="60" opacity=".05"/>
-    </g>
-
-    <!-- Spotlight center -->
-    <ellipse cx="720" cy="540" rx="120" ry="20" fill="#FF8800" opacity=".2"/>
-    <line x1="720" y1="200" x2="720" y2="540" stroke="#FFD080" stroke-width="100" opacity=".04"/>
-
-    <!-- Crowd silhouettes -->
-    <g opacity="1" style="animation:crowd 2s ease-in-out infinite">
-      <!-- Back crowd - tiny -->
-      <g fill="#0d0d0d" opacity=".95">
-        <rect x="0" y="610" width="1440" height="290"/>
-        <!-- Crowd heads pattern -->
-        <ellipse cx="60" cy="620" rx="22" ry="28"/>
-        <ellipse cx="110" cy="618" rx="20" ry="26"/>
-        <ellipse cx="158" cy="622" rx="24" ry="30"/>
-        <ellipse cx="210" cy="617" rx="21" ry="27"/>
-        <ellipse cx="260" cy="621" rx="23" ry="29"/>
-        <ellipse cx="308" cy="616" rx="20" ry="26"/>
-        <ellipse cx="355" cy="620" rx="22" ry="28"/>
-        <ellipse cx="404" cy="618" rx="21" ry="27"/>
-        <ellipse cx="452" cy="622" rx="24" ry="30"/>
-        <ellipse cx="502" cy="616" rx="20" ry="26"/>
-        <ellipse cx="550" cy="620" rx="22" ry="28"/>
-        <ellipse cx="598" cy="617" rx="21" ry="25"/>
-        <ellipse cx="648" cy="621" rx="23" ry="29"/>
-        <ellipse cx="696" cy="615" rx="20" ry="26"/>
-        <ellipse cx="744" cy="620" rx="22" ry="28"/>
-        <ellipse cx="792" cy="618" rx="21" ry="27"/>
-        <ellipse cx="840" cy="622" rx="24" ry="30"/>
-        <ellipse cx="890" cy="616" rx="20" ry="26"/>
-        <ellipse cx="938" cy="620" rx="22" ry="28"/>
-        <ellipse cx="986" cy="617" rx="21" ry="27"/>
-        <ellipse cx="1036" cy="621" rx="23" ry="29"/>
-        <ellipse cx="1084" cy="616" rx="20" ry="26"/>
-        <ellipse cx="1132" cy="620" rx="22" ry="28"/>
-        <ellipse cx="1180" cy="618" rx="21" ry="27"/>
-        <ellipse cx="1228" cy="622" rx="24" ry="30"/>
-        <ellipse cx="1278" cy="616" rx="20" ry="26"/>
-        <ellipse cx="1326" cy="620" rx="22" ry="28"/>
-        <ellipse cx="1374" cy="617" rx="21" ry="25"/>
-        <ellipse cx="1420" cy="621" rx="23" ry="29"/>
-      </g>
-    </g>
-
-    <!-- Phones / lights in crowd -->
-    <g opacity=".5">
-      <rect x="155" y="608" width="3" height="5" rx="1" fill="#fff"/>
-      <rect x="312" y="604" width="3" height="5" rx="1" fill="#88CCFF"/>
-      <rect x="480" y="607" width="3" height="5" rx="1" fill="#fff"/>
-      <rect x="640" y="605" width="3" height="5" rx="1" fill="#FFCC00"/>
-      <rect x="780" y="608" width="3" height="5" rx="1" fill="#fff"/>
-      <rect x="920" y="603" width="3" height="5" rx="1" fill="#88CCFF"/>
-      <rect x="1070" y="607" width="3" height="5" rx="1" fill="#fff"/>
-      <rect x="1220" y="605" width="3" height="5" rx="1" fill="#FFCC00"/>
-      <rect x="1360" y="608" width="3" height="5" rx="1" fill="#fff"/>
-      <rect x="240" y="613" width="3" height="5" rx="1" fill="#fff"/>
-      <rect x="560" y="611" width="3" height="5" rx="1" fill="#fff"/>
-      <rect x="860" y="612" width="3" height="5" rx="1" fill="#88CCFF"/>
-      <rect x="1140" y="611" width="3" height="5" rx="1" fill="#fff"/>
-    </g>
-
-    <!-- Bottom gradient over crowd -->
-    <rect x="0" y="700" width="1440" height="200" fill="url(#crowdFade)"/>
-    <defs>
       <linearGradient id="crowdFade" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stop-color="#000" stop-opacity="0"/>
-        <stop offset="100%" stop-color="#000" stop-opacity=".7"/>
+        <stop offset="100%" stop-color="#000" stop-opacity=".8"/>
       </linearGradient>
     </defs>
+
+    <rect width="1440" height="900" fill="url(#sGlow)"/>
+    <rect width="1440" height="900" fill="url(#bGlow1)"/>
+    <rect width="1440" height="900" fill="url(#bGlow2)"/>
+
+    <!-- Stage back wall -->
+    <rect x="180" y="100" width="1080" height="440" rx="3" fill="#070302" opacity=".95"/>
+    <!-- LED screen -->
+    <rect x="200" y="118" width="1040" height="400" rx="2" fill="#040100" opacity=".97"/>
+    <!-- Screen grid -->
+    <g opacity=".12" stroke="#FF6600" stroke-width=".5">
+      <line x1="200" y1="185" x2="1240" y2="185"/><line x1="200" y1="252" x2="1240" y2="252"/>
+      <line x1="200" y1="319" x2="1240" y2="319"/><line x1="200" y1="386" x2="1240" y2="386"/>
+      <line x1="200" y1="452" x2="1240" y2="452"/>
+      <line x1="330" y1="118" x2="330" y2="518"/><line x1="460" y1="118" x2="460" y2="518"/>
+      <line x1="590" y1="118" x2="590" y2="518"/><line x1="720" y1="118" x2="720" y2="518"/>
+      <line x1="850" y1="118" x2="850" y2="518"/><line x1="980" y1="118" x2="980" y2="518"/>
+      <line x1="1110" y1="118" x2="1110" y2="518"/>
+    </g>
+    <!-- Concentric rings -->
+    <g transform="translate(720,318)">
+      <circle r="260" fill="none" stroke="#0d4a6e" stroke-width="16" opacity=".35"/>
+      <circle r="200" fill="none" stroke="#0d4a6e" stroke-width="13" opacity=".45"/>
+      <circle r="140" fill="none" stroke="#0d4a6e" stroke-width="10" opacity=".55"/>
+      <circle r="80"  fill="none" stroke="#1a6a99" stroke-width="7"  opacity=".65"/>
+      <circle r="30"  fill="none" stroke="#1a6a99" stroke-width="5"  opacity=".75"/>
+      <circle r="8"   fill="#1a6a99" opacity=".5"/>
+    </g>
+    <!-- Warm glow on screen center -->
+    <ellipse cx="720" cy="318" rx="220" ry="130" fill="#FF7700" opacity=".06"/>
+
+    <!-- Stage floor -->
+    <rect x="80" y="530" width="1280" height="55" fill="#0c0600" opacity=".92"/>
+    <rect x="80" y="530" width="1280" height="3" fill="#FF8800" opacity=".25"/>
+    <!-- Trusses -->
+    <rect x="180" y="100" width="22" height="440" fill="#0e0e0e" opacity=".9"/>
+    <rect x="1238" y="100" width="22" height="440" fill="#0e0e0e" opacity=".9"/>
+
+    <!-- Beams left -->
+    <g style="animation:beamL 4.2s ease-in-out infinite;transform-origin:240px 190px">
+      <line x1="240" y1="190" x2="-40" y2="900" stroke="#FFE0A0" stroke-width="90" opacity=".055"/>
+      <line x1="240" y1="190" x2="30" y2="900"  stroke="#FFE0A0" stroke-width="45" opacity=".07"/>
+    </g>
+    <g style="animation:beamL 3.6s 1.1s ease-in-out infinite;transform-origin:360px 170px">
+      <line x1="360" y1="170" x2="80" y2="900" stroke="#88CCFF" stroke-width="65" opacity=".045"/>
+    </g>
+    <!-- Beams right -->
+    <g style="animation:beamR 4.7s ease-in-out infinite;transform-origin:1200px 190px">
+      <line x1="1200" y1="190" x2="1480" y2="900" stroke="#FFE0A0" stroke-width="90" opacity=".055"/>
+      <line x1="1200" y1="190" x2="1410" y2="900" stroke="#FFE0A0" stroke-width="45" opacity=".07"/>
+    </g>
+    <g style="animation:beamR 3.6s 1.6s ease-in-out infinite;transform-origin:1080px 170px">
+      <line x1="1080" y1="170" x2="1360" y2="900" stroke="#88CCFF" stroke-width="65" opacity=".045"/>
+    </g>
+
+    <!-- Center spotlight -->
+    <ellipse cx="720" cy="542" rx="130" ry="22" fill="#FF8800" opacity=".18"/>
+    <line x1="720" y1="190" x2="720" y2="542" stroke="#FFD080" stroke-width="110" opacity=".035"/>
+
+    <!-- Crowd -->
+    <g style="animation:crowd 2.2s ease-in-out infinite">
+      <rect x="0" y="608" width="1440" height="292" fill="#000"/>
+      <g fill="#050505" opacity=".98">
+        <ellipse cx="52"   cy="618" rx="22" ry="28"/><ellipse cx="102"  cy="615" rx="20" ry="26"/>
+        <ellipse cx="150"  cy="620" rx="24" ry="30"/><ellipse cx="202"  cy="615" rx="21" ry="27"/>
+        <ellipse cx="252"  cy="619" rx="23" ry="29"/><ellipse cx="300"  cy="614" rx="20" ry="26"/>
+        <ellipse cx="348"  cy="618" rx="22" ry="28"/><ellipse cx="398"  cy="616" rx="21" ry="27"/>
+        <ellipse cx="446"  cy="620" rx="24" ry="30"/><ellipse cx="496"  cy="614" rx="20" ry="26"/>
+        <ellipse cx="544"  cy="618" rx="22" ry="28"/><ellipse cx="592"  cy="615" rx="21" ry="25"/>
+        <ellipse cx="642"  cy="619" rx="23" ry="29"/><ellipse cx="690"  cy="613" rx="20" ry="26"/>
+        <ellipse cx="738"  cy="618" rx="22" ry="28"/><ellipse cx="786"  cy="616" rx="21" ry="27"/>
+        <ellipse cx="834"  cy="620" rx="24" ry="30"/><ellipse cx="884"  cy="614" rx="20" ry="26"/>
+        <ellipse cx="932"  cy="618" rx="22" ry="28"/><ellipse cx="980"  cy="615" rx="21" ry="27"/>
+        <ellipse cx="1030" cy="619" rx="23" ry="29"/><ellipse cx="1078" cy="614" rx="20" ry="26"/>
+        <ellipse cx="1126" cy="618" rx="22" ry="28"/><ellipse cx="1174" cy="616" rx="21" ry="27"/>
+        <ellipse cx="1222" cy="620" rx="24" ry="30"/><ellipse cx="1272" cy="614" rx="20" ry="26"/>
+        <ellipse cx="1320" cy="618" rx="22" ry="28"/><ellipse cx="1368" cy="615" rx="21" ry="25"/>
+        <ellipse cx="1416" cy="619" rx="23" ry="29"/>
+      </g>
+    </g>
+    <!-- Phone lights -->
+    <g opacity=".45">
+      <rect x="148" y="606" width="3" height="5" rx="1" fill="#fff"/>
+      <rect x="304" y="603" width="3" height="5" rx="1" fill="#88CCFF"/>
+      <rect x="472" y="606" width="3" height="5" rx="1" fill="#fff"/>
+      <rect x="634" y="604" width="3" height="5" rx="1" fill="#FFCC00"/>
+      <rect x="774" y="607" width="3" height="5" rx="1" fill="#fff"/>
+      <rect x="914" y="602" width="3" height="5" rx="1" fill="#88CCFF"/>
+      <rect x="1064" y="606" width="3" height="5" rx="1" fill="#fff"/>
+      <rect x="1214" y="604" width="3" height="5" rx="1" fill="#FFCC00"/>
+      <rect x="1354" y="607" width="3" height="5" rx="1" fill="#fff"/>
+    </g>
+    <rect x="0" y="700" width="1440" height="200" fill="url(#crowdFade)"/>
   </svg>
 
   <div class="hero-overlay"></div>
 
   <div class="hero-content">
-    <div class="hero-eyebrow">Vol. I · Festival de Música en Vivo</div>
-    <div class="hero-date">VIERNES<br>20 DE JUNIO</div>
-    <div class="hero-venue">Alboa · Monterrey, México</div>
+    <div class="hero-eyebrow">Edición Limitada · 192 Lugares · Monterrey</div>
+
+    <!-- Logo mark -->
+    <div class="hero-logo">
+      <div class="hl-rules"><div class="hl-r1"></div><div class="hl-r2"></div></div>
+      <div class="hl-word">SALTUS</div>
+      <div class="hl-rules" style="transform:scaleY(-1)"><div class="hl-r2"></div><div class="hl-r1"></div></div>
+      <div class="hl-dia"></div>
+    </div>
+
+    <div class="hero-meta">
+      Sábado 20 de Junio 2026<span>·</span>Alboa · Monterrey, México
+    </div>
     <div class="hero-btns">
-      <a href="#boletos" class="btn-primary">Boletos <span class="chevron">›</span></a>
-      <a href="#lineup" class="btn-secondary">Lineup <span class="chevron">›</span></a>
+      <a href="#boletos" class="btn-gold">Asegurar mi Lugar</a>
+      <a href="#lineup" class="btn-outline">Ver Lineup</a>
     </div>
   </div>
 
-  <!-- Countdown -->
-  <div class="countdown-bar" id="countdown">
-    <div class="count-block"><div class="count-num" id="cd-dias">78</div><div class="count-label">Días</div></div>
-    <div class="count-block"><div class="count-num" id="cd-hrs">00</div><div class="count-label">Horas</div></div>
-    <div class="count-block"><div class="count-num" id="cd-min">00</div><div class="count-label">Min</div></div>
-    <div class="count-block"><div class="count-num" id="cd-seg">00</div><div class="count-label">Seg</div></div>
+  <div class="countdown-bar" id="countdown" aria-live="polite" aria-label="Cuenta regresiva al evento">
+    <div class="count-prefix">
+      <div class="count-prefix-date">20 Jun 2026</div>
+      <div class="count-prefix-sub">Alboa · Monterrey</div>
+    </div>
+    <div class="count-blocks">
+      <div class="count-block"><div class="count-num" id="cd-dias">00</div><div class="count-label">Días</div></div>
+      <div class="count-block"><div class="count-num" id="cd-hrs">00</div><div class="count-label">Horas</div></div>
+      <div class="count-block"><div class="count-num" id="cd-min">00</div><div class="count-label">Min</div></div>
+      <div class="count-block"><div class="count-num" id="cd-seg">00</div><div class="count-label">Seg</div></div>
+    </div>
   </div>
 </section>
 
-<!-- LINEUP -->
+<!-- ══ LINEUP ════════════════════════════════════ -->
 <section id="lineup" class="lineup-section">
-  <div class="lineup-header reveal">
-    <div class="s-tag">Artistas</div>
-    <h2 class="s-title">Lineup</h2>
+  <div class="section-header reveal">
+    <div>
+      <div class="s-eyebrow">Artistas</div>
+      <h2 class="s-title">Lineup</h2>
+    </div>
+    <a href="#lineup" class="s-link">Ver todos los artistas &nbsp;›</a>
   </div>
-  <div class="lineup-artists">
-    <div class="artist-row headliner reveal">
-      <div class="a-num">01</div>
-      <div class="a-name">Artista 1</div>
-      <div class="a-right">
-        <div class="a-genre">Headliner</div>
-        <div class="a-time">11:00 PM</div>
+
+  <div class="artist-grid">
+    <!-- Headliner -->
+    <div class="artist-card">
+      <div class="artist-card-bg bg-a1"></div>
+      <div class="card-mono">A</div>
+      <div class="artist-card-overlay"></div>
+      <div class="artist-card-info">
+        <div class="ac-genre">Headliner</div>
+        <div class="ac-name">Artista 1</div>
+        <div class="ac-time">11:00 PM · Escenario Principal</div>
       </div>
-      <div class="a-arrow">›</div>
     </div>
-    <div class="artist-row reveal">
-      <div class="a-num">02</div>
-      <div class="a-name">Artista 2</div>
-      <div class="a-right"><div class="a-genre">En Vivo</div><div class="a-time">10:15 PM</div></div>
-      <div class="a-arrow">›</div>
+    <!-- Artist 2 -->
+    <div class="artist-card">
+      <div class="artist-card-bg bg-a2"></div>
+      <div class="card-mono">B</div>
+      <div class="artist-card-overlay"></div>
+      <div class="artist-card-info">
+        <div class="ac-genre">En Vivo</div>
+        <div class="ac-name">Artista 2</div>
+        <div class="ac-time">10:15 PM</div>
+      </div>
     </div>
-    <div class="artist-row reveal">
-      <div class="a-num">03</div>
-      <div class="a-name">Artista 3</div>
-      <div class="a-right"><div class="a-genre">En Vivo</div><div class="a-time">9:30 PM</div></div>
-      <div class="a-arrow">›</div>
+    <!-- Artist 3 -->
+    <div class="artist-card">
+      <div class="artist-card-bg bg-a3"></div>
+      <div class="card-mono">C</div>
+      <div class="artist-card-overlay"></div>
+      <div class="artist-card-info">
+        <div class="ac-genre">En Vivo</div>
+        <div class="ac-name">Artista 3</div>
+        <div class="ac-time">9:30 PM</div>
+      </div>
     </div>
-    <div class="artist-row reveal">
-      <div class="a-num">04</div>
-      <div class="a-name">Artista 4</div>
-      <div class="a-right"><div class="a-genre">En Vivo</div><div class="a-time">8:45 PM</div></div>
-      <div class="a-arrow">›</div>
+    <!-- Artist 4 -->
+    <div class="artist-card">
+      <div class="artist-card-bg bg-a4"></div>
+      <div class="card-mono">D</div>
+      <div class="artist-card-overlay"></div>
+      <div class="artist-card-info">
+        <div class="ac-genre">En Vivo</div>
+        <div class="ac-name">Artista 4</div>
+        <div class="ac-time">8:45 PM</div>
+      </div>
     </div>
-    <div class="artist-row reveal">
-      <div class="a-num">05</div>
-      <div class="a-name">Artista 5</div>
-      <div class="a-right"><div class="a-genre">Abre el Show</div><div class="a-time">8:00 PM</div></div>
-      <div class="a-arrow">›</div>
+    <!-- Artist 5 -->
+    <div class="artist-card">
+      <div class="artist-card-bg bg-a5"></div>
+      <div class="card-mono">E</div>
+      <div class="artist-card-overlay"></div>
+      <div class="artist-card-info">
+        <div class="ac-genre">Abre el Show</div>
+        <div class="ac-name">Artista 5</div>
+        <div class="ac-time">8:00 PM</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ABOUT -->
-<section class="about-section reveal">
+<!-- ══ EXPERIENCE GRID ════════════════════════════ -->
+<div class="exp-section reveal">
+  <div class="exp-card">
+    <div class="exp-val">5h</div>
+    <div class="exp-label">De evento</div>
+    <div class="exp-sub">7 PM a 12 AM sin parar</div>
+  </div>
+  <div class="exp-card">
+    <div class="exp-val">5</div>
+    <div class="exp-label">Artistas en vivo</div>
+    <div class="exp-sub">Sets de 30 min cada uno</div>
+  </div>
+  <div class="exp-card">
+    <div class="exp-val">192</div>
+    <div class="exp-label">Asistentes</div>
+    <div class="exp-sub">Experiencia íntima y exclusiva</div>
+  </div>
+  <div class="exp-card">
+    <div class="exp-val">Vol.1</div>
+    <div class="exp-label">Primera edición</div>
+    <div class="exp-sub">El inicio de algo grande</div>
+  </div>
+</div>
+
+<!-- ══ ABOUT ══════════════════════════════════════ -->
+<style>
+/* --- About animations --- */
+.about-line{
+  display:block;
+  opacity:0;
+  transform:translateY(32px);
+  transition:opacity .6s ease, transform .6s ease;
+}
+.about-line.visible{opacity:1;transform:translateY(0);}
+.about-line:nth-child(1){transition-delay:.0s;}
+.about-line:nth-child(2){transition-delay:.15s;}
+.about-line:nth-child(3){transition-delay:.3s;}
+
+.about-body-anim{
+  opacity:0;transform:translateY(20px);
+  transition:opacity .7s ease .5s, transform .7s ease .5s;
+}
+.about-body-anim.visible{opacity:1;transform:translateY(0);}
+
+.about-btn-anim{
+  opacity:0;transform:translateY(16px);
+  transition:opacity .6s ease .75s, transform .6s ease .75s;
+}
+.about-btn-anim.visible{opacity:1;transform:translateY(0);}
+
+.about-eyebrow-anim{
+  opacity:0;transform:translateY(12px);
+  transition:opacity .5s ease, transform .5s ease;
+}
+.about-eyebrow-anim.visible{opacity:1;transform:translateY(0);}
+
+/* Parallax visual */
+.about-visual-inner{
+  will-change:transform;
+  transition:transform .1s linear;
+}
+
+/* Gold pulse on SVG logo */
+@keyframes gold-pulse{
+  0%,100%{filter:drop-shadow(0 0 0px rgba(201,168,76,0));}
+  50%{filter:drop-shadow(0 0 18px rgba(201,168,76,.45));}
+}
+.about-svg-logo{animation:gold-pulse 3s ease-in-out infinite;}
+
+/* Typewriter cursor */
+.tw-cursor{
+  display:inline-block;
+  width:3px;height:.85em;
+  background:var(--gold);
+  margin-left:4px;
+  vertical-align:middle;
+  animation:blink .75s step-end infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+</style>
+
+<section class="about-section" id="about-section">
   <div class="about-text">
-    <div class="s-tag">El Festival</div>
-    <h2 class="s-title" style="font-size:clamp(44px,6vw,72px)">Una noche.<br>Cinco artistas.<br>Un salto.</h2>
-    <p class="s-sub">SALTUS es un festival de música en vivo íntimo y producción premium. No es un evento masivo — es el tipo de noche que no se olvida. Donde los artistas emergentes de Monterrey dan su primer salto real.</p>
-    <div class="about-nums">
-      <div class="about-num"><div class="an-val">5h</div><div class="an-label">De evento</div></div>
-      <div class="about-num"><div class="an-val">5</div><div class="an-label">Artistas</div></div>
-      <div class="about-num"><div class="an-val">192</div><div class="an-label">Asistentes</div></div>
-      <div class="about-num"><div class="an-val">Vol.1</div><div class="an-label">Primera edición</div></div>
+    <div class="s-eyebrow about-eyebrow-anim">El Festival</div>
+    <h2 id="about-title" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,4vw,48px);letter-spacing:4px;line-height:.95;margin-top:10px;">
+      <span class="about-line"></span>
+      <span class="about-line"></span>
+      <span class="about-line"></span>
+    </h2>
+    <p class="about-body about-body-anim">SALTUS es un festival de música en vivo íntimo y de producción premium. No es un evento masivo — es el tipo de noche que no se olvida. Donde los artistas emergentes de Monterrey dan su primer salto real.</p>
+    <div style="margin-top:36px;" class="about-btn-anim">
+      <a href="#boletos" class="btn-gold" style="display:inline-flex;">Conseguir boletos &nbsp;›</a>
     </div>
   </div>
-  <div class="about-visual">
-    <!-- Stage art illustration -->
-    <svg width="100%" height="100%" viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-      <rect width="600" height="500" fill="#050505"/>
-      <radialGradient id="ag" cx="50%" cy="40%" r="50%">
-        <stop offset="0%" stop-color="#C9A84C" stop-opacity=".12"/>
-        <stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/>
-      </radialGradient>
-      <rect width="600" height="500" fill="url(#ag)"/>
-      <!-- Big S monogram -->
-      <text x="300" y="300" text-anchor="middle" dominant-baseline="middle"
-        font-family="'Cormorant Garamond',serif" font-size="280" font-weight="700" font-style="italic"
-        fill="#C9A84C" opacity=".06">S</text>
-      <!-- Logo centered -->
-      <line x1="160" y1="200" x2="440" y2="200" stroke="#C9A84C" stroke-width=".8"/>
-      <line x1="160" y1="205" x2="440" y2="205" stroke="#C9A84C" stroke-width=".3" opacity=".4"/>
-      <text x="300" y="248" text-anchor="middle"
-        font-family="'Cormorant Garamond',serif" font-size="52" font-weight="700" letter-spacing="20"
-        fill="#C9A84C" opacity=".7">SALTUS</text>
-      <line x1="160" y1="265" x2="440" y2="265" stroke="#C9A84C" stroke-width=".3" opacity=".4"/>
-      <line x1="160" y1="270" x2="440" y2="270" stroke="#C9A84C" stroke-width=".8"/>
-      <text x="300" y="296" text-anchor="middle"
-        font-family="sans-serif" font-size="9" letter-spacing="7"
-        fill="#C9A84C" opacity=".35">VOL. I · MMXXV</text>
-      <!-- Diamond -->
-      <polygon points="300,310 305,318 300,326 295,318" fill="none" stroke="#C9A84C" stroke-width=".8" opacity=".5"/>
-    </svg>
+  <div class="about-visual" style="display:none;">
+    <div class="about-visual-inner">
+      <svg class="about-svg-logo" width="100%" height="100%" viewBox="0 0 580 480" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <rect width="580" height="480" fill="transparent"/>
+        <!-- Big italic S watermark -->
+        <text x="290" y="290" text-anchor="middle" dominant-baseline="middle"
+          font-family="'Bebas Neue',sans-serif" font-size="400" letter-spacing="-10"
+          fill="#C9A84C" opacity=".04">S</text>
+        <!-- Logo mark -->
+        <line x1="150" y1="190" x2="430" y2="190" stroke="#C9A84C" stroke-width="1"/>
+        <line x1="150" y1="195" x2="430" y2="195" stroke="#C9A84C" stroke-width=".4" opacity=".4"/>
+        <text x="290" y="240" text-anchor="middle"
+          font-family="'Bebas Neue',sans-serif" font-size="56" letter-spacing="22"
+          fill="#C9A84C" opacity=".65">SALTUS</text>
+        <line x1="150" y1="256" x2="430" y2="256" stroke="#C9A84C" stroke-width=".4" opacity=".4"/>
+        <line x1="150" y1="261" x2="430" y2="261" stroke="#C9A84C" stroke-width="1"/>
+        <text x="290" y="284" text-anchor="middle"
+          font-family="'DM Sans',sans-serif" font-size="8" letter-spacing="8"
+          fill="#C9A84C" opacity=".3">VOL. I · MMXXV · MONTERREY</text>
+        <!-- Diamond -->
+        <polygon points="290,298 296,308 290,318 284,308" fill="none" stroke="#C9A84C" stroke-width=".8" opacity=".45"/>
+      </svg>
+    </div>
   </div>
 </section>
 
-<!-- SCHEDULE -->
+<script>
+(function(){
+  /* ── 1. IntersectionObserver: fade-in por línea ── */
+  const aboutSection = document.getElementById('about-section');
+  const fadeEls = aboutSection.querySelectorAll(
+    '.about-eyebrow-anim,.about-line,.about-body-anim,.about-btn-anim'
+  );
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        fadeEls.forEach(el=>el.classList.add('visible'));
+        startTypewriter();
+        obs.disconnect();
+      }
+    });
+  },{threshold:0.2});
+  obs.observe(aboutSection);
+
+  /* ── 2. Typewriter en el título ── */
+  const lines = ['Una noche.','Cinco artistas.','Un salto.'];
+  const spans = aboutSection.querySelectorAll('.about-line');
+  let started = false;
+
+  function startTypewriter(){
+    if(started) return;
+    started = true;
+    let li = 0;
+    function typeLine(lineIdx){
+      if(lineIdx >= lines.length) return;
+      const span = spans[lineIdx];
+      const text = lines[lineIdx];
+      let ci = 0;
+      // add cursor to current span
+      const cursor = document.createElement('span');
+      cursor.className = 'tw-cursor';
+      span.appendChild(cursor);
+
+      const iv = setInterval(()=>{
+        span.textContent = text.slice(0, ++ci);
+        span.appendChild(cursor);
+        if(ci >= text.length){
+          clearInterval(iv);
+          cursor.remove();
+          // newline between lines
+          if(lineIdx < lines.length-1){
+            span.insertAdjacentHTML('afterend','<br>');
+          }
+          setTimeout(()=>typeLine(lineIdx+1), 180);
+        }
+      }, 60);
+    }
+    // small delay so the slide-in starts first
+    setTimeout(()=>typeLine(0), 200);
+  }
+
+  /* ── 3. Parallax en el logo ── */
+  const visualInner = aboutSection.querySelector('.about-visual-inner');
+  window.addEventListener('scroll', ()=>{
+    const rect = aboutSection.getBoundingClientRect();
+    const center = rect.top + rect.height/2 - window.innerHeight/2;
+    const offset = center * 0.12;
+    visualInner.style.transform = `translateY(${offset}px)`;
+  }, {passive:true});
+})();
+</script>
+
+<!-- ══ SCHEDULE ══════════════════════════════════ -->
 <section class="sched-section reveal" id="horarios">
-  <div class="s-tag">Rundown</div>
+  <div class="s-eyebrow">Rundown</div>
   <h2 class="s-title">La Noche</h2>
   <div class="sched-grid">
     <div class="sched-item">
       <div class="si-tag">Apertura</div>
       <div class="si-time">7PM</div>
       <div class="si-title">Puertas abren</div>
-      <div class="si-desc">DJ ambiental, barra abierta. El público llega y la energía se construye.</div>
+      <div class="si-desc">DJ ambiental y barra abierta. El público llega y la energía se construye.</div>
     </div>
     <div class="sched-item">
       <div class="si-tag">Show</div>
@@ -653,150 +1462,832 @@ footer{
       <div class="si-desc">Cinco artistas, 30 minutos cada uno con 15 de transición entre sets.</div>
     </div>
     <div class="sched-item">
-      <div class="si-tag">Finale</div>
-      <div class="si-time">11:30</div>
-      <div class="si-title">Encore colectivo</div>
-      <div class="si-desc">Los 5 artistas regresan al escenario juntos. El momento que no se olvida.</div>
-    </div>
-    <div class="sched-item">
       <div class="si-tag">Cierre</div>
       <div class="si-time">12AM</div>
       <div class="si-title">Fin de SALTUS</div>
-      <div class="si-desc">DJ de cierre y desalojo. Hasta el Vol. II.</div>
+      <div class="si-desc">DJ de cierre y desalojo gradual. Hasta el Vol. II.</div>
     </div>
   </div>
 </section>
 
-<!-- TICKETS -->
+<!-- ══ TICKETS ══════════════════════════════════ -->
 <section class="tickets-section reveal" id="boletos">
-  <div class="s-tag" style="display:inline-block">Acceso</div>
-  <h2 class="s-title" style="font-size:clamp(60px,12vw,130px);letter-spacing:6px;">Boletos</h2>
-  <p style="font-size:14px;color:#555;letter-spacing:3px;margin-top:12px;">192 lugares · No hay reembolsos</p>
-
-  <div class="ticket-grid">
-    <div class="tcard">
-      <div class="t-type">General</div>
-      <div class="t-price"><sup>$</sup>350</div>
-      <div class="t-note">MXN + cargo por servicio</div>
-      <ul class="t-feats">
-        <li>Acceso general al evento</li>
-        <li>5 artistas en vivo</li>
-        <li>Encore colectivo</li>
-        <li>Barra disponible toda la noche</li>
-      </ul>
-      <a href="#" class="t-btn t-btn-outline">Comprar ahora</a>
+  <div class="tickets-inner">
+    <div class="tickets-header">
+      <div class="s-eyebrow">Acceso</div>
+      <h2 class="s-title" style="font-size:clamp(64px,12vw,140px);letter-spacing:6px;">Boletos</h2>
+      <p class="tickets-sub">Capacidad total: 192 personas · La primera edición no se repite</p>
     </div>
-    <div class="tcard vip">
-      <div class="t-type">VIP</div>
-      <div class="t-price"><sup>$</sup>700</div>
-      <div class="t-note">MXN + cargo por servicio</div>
-      <ul class="t-feats">
-        <li>Zona VIP exclusiva</li>
-        <li>5 artistas en vivo</li>
-        <li>Meet &amp; greet con artistas</li>
-        <li>Acceso prioritario sin fila</li>
-        <li>Encore colectivo</li>
-        <li>Barra disponible toda la noche</li>
-      </ul>
-      <a href="#" class="t-btn t-btn-solid">Comprar ahora</a>
+
+    <div class="scarcity-bar">
+      <div class="scarcity-dot"></div>
+      Boletos disponibles — una vez agotados, no hay más
+    </div>
+
+    <div class="ticket-grid">
+      <div class="tcard">
+        <div class="t-type">Mesa General</div>
+        <div class="t-price"><sup>$</sup>800</div>
+        <div class="t-note">desde · MXN por mesa · precio según lugares</div>
+        <div class="t-divider"></div>
+        <ul class="t-feats">
+          <li><span class="t-dot"></span>Acceso general al evento</li>
+          <li><span class="t-dot"></span>5 artistas en vivo</li>
+
+          <li><span class="t-dot"></span>Barra disponible toda la noche</li>
+        </ul>
+        <div class="t-divider"></div>
+        <ul class="t-feats" style="margin-bottom:0;">
+          <li><span class="t-dot" style="background:var(--gold);"></span>Mesa de 4 boletos — <strong>$800</strong></li>
+          <li><span class="t-dot" style="background:var(--gold);"></span>Mesa de 5 boletos — <strong>$1,000</strong></li>
+          <li><span class="t-dot" style="background:var(--gold);"></span>Mesa de 6 boletos — <strong>$1,200</strong></li>
+          <li><span class="t-dot" style="background:var(--gold);"></span>Mesa de 7 boletos — <strong>$1,400</strong></li>
+        </ul>
+        <button onclick="openSeatModal('gen')" class="t-btn t-btn-outline" style="margin-top:20px;">Seleccionar mi mesa</button>
+      </div>
+      <div class="tcard vip">
+        <div class="tcard-badge">Recomendado</div>
+        <div class="vip-scarcity">⚡ Mesas VIP limitadas</div>
+        <div class="t-type">Mesa VIP</div>
+        <div class="t-price"><sup>$</sup>1,750</div>
+        <div class="t-note">MXN · mesa de 5 boletos ($350 c/u)</div>
+        <div class="t-divider"></div>
+        <ul class="t-feats">
+          <li><span class="t-dot"></span>Zona VIP exclusiva — Palco</li>
+          <li><span class="t-dot"></span>5 boletos incluidos por mesa</li>
+          <li><span class="t-dot"></span>5 artistas en vivo</li>
+          <li><span class="t-dot"></span>Meet &amp; greet con artistas</li>
+          <li><span class="t-dot"></span>Acceso prioritario sin fila</li>
+
+          <li><span class="t-dot"></span>Barra disponible toda la noche</li>
+        </ul>
+        <button onclick="openSeatModal('vip')" class="t-btn t-btn-gold">Seleccionar mi mesa VIP</button>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- VENUE -->
+<!-- ══ VENUE ══════════════════════════════════════ -->
 <section class="venue-section reveal" id="venue">
   <div class="venue-left">
-    <div class="s-tag">Venue</div>
-    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,6vw,72px);letter-spacing:4px;line-height:1;margin-bottom:16px;">Alboa<br>Monterrey</h2>
-    <p style="font-size:14px;color:#666;line-height:1.8;max-width:420px;">Un espacio con carácter en Monterrey. Producción técnica de nivel, capacidad para 192 personas y el ambiente correcto para la primera edición de SALTUS.</p>
-    <div class="venue-details">
-      <div class="vd-item"><div class="vd-dot"></div>Viernes 20 de Junio, 2025</div>
-      <div class="vd-item"><div class="vd-dot"></div>7:00 PM — 12:00 AM</div>
-      <div class="vd-item"><div class="vd-dot"></div>Alboa · Monterrey, Nuevo León</div>
-      <div class="vd-item"><div class="vd-dot"></div>192 asistentes máximo</div>
-    </div>
+    <div class="s-eyebrow">Venue</div>
+    <h2 class="venue-title">Alboa<br>Monterrey</h2>
+    <p class="venue-desc">El escenario perfecto para una noche que no se repite. Alboa reúne producción de clase mundial, sonido de nivel profesional y un ambiente que convierte cada set en algo memorable. 192 lugares. Sin segunda oportunidad.</p>
   </div>
   <div class="venue-right">
-    <svg width="100%" height="100%" viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg">
-      <rect width="480" height="380" fill="#060606"/>
-      <!-- Streets -->
-      <rect x="0" y="168" width="480" height="24" fill="#111"/>
-      <rect x="204" y="0" width="24" height="380" fill="#111"/>
-      <rect x="0" y="84" width="480" height="12" fill="#0e0e0e"/>
-      <rect x="0" y="264" width="480" height="12" fill="#0e0e0e"/>
-      <rect x="100" y="0" width="12" height="380" fill="#0e0e0e"/>
-      <rect x="340" y="0" width="12" height="380" fill="#0e0e0e"/>
-      <!-- Blocks -->
-      <rect x="4" y="4" width="88" height="72" rx="2" fill="#0d0d0d"/>
-      <rect x="120" y="4" width="76" height="72" rx="2" fill="#0d0d0d"/>
-      <rect x="236" y="4" width="96" height="72" rx="2" fill="#0d0d0d"/>
-      <rect x="360" y="4" width="116" height="72" rx="2" fill="#0d0d0d"/>
-      <rect x="4" y="100" width="88" height="60" rx="2" fill="#0d0d0d"/>
-      <rect x="360" y="100" width="116" height="60" rx="2" fill="#0d0d0d"/>
-      <rect x="4" y="200" width="88" height="56" rx="2" fill="#0d0d0d"/>
-      <rect x="120" y="200" width="76" height="56" rx="2" fill="#0d0d0d"/>
-      <rect x="360" y="200" width="116" height="56" rx="2" fill="#0d0d0d"/>
-      <rect x="4" y="284" width="88" height="92" rx="2" fill="#0d0d0d"/>
-      <rect x="120" y="284" width="76" height="92" rx="2" fill="#0d0d0d"/>
-      <rect x="236" y="284" width="96" height="92" rx="2" fill="#0d0d0d"/>
-      <rect x="360" y="284" width="116" height="92" rx="2" fill="#0d0d0d"/>
-      <!-- ALBOA BLOCK highlighted -->
-      <rect x="120" y="100" width="76" height="60" rx="2" fill="rgba(201,168,76,.1)"/>
-      <rect x="120" y="100" width="76" height="60" rx="2" fill="none" stroke="#C9A84C" stroke-width="1.5"/>
-      <text x="158" y="135" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#C9A84C" font-weight="700" letter-spacing="1">ALBOA</text>
-      <!-- Pin -->
-      <circle cx="158" cy="122" r="6" fill="#C9A84C"/>
-      <circle cx="158" cy="122" r="3" fill="#060606"/>
-      <!-- Pulsing ring -->
-      <circle cx="158" cy="122" r="12" fill="none" stroke="#C9A84C" stroke-width=".8" opacity=".4" style="animation:ringPulse 2s ease-in-out infinite"/>
-      <circle cx="158" cy="122" r="20" fill="none" stroke="#C9A84C" stroke-width=".5" opacity=".2" style="animation:ringPulse 2s .5s ease-in-out infinite"/>
-    </svg>
+    <a href="https://maps.app.goo.gl/V8QCrzYPywtAB5uXA" target="_blank" rel="noopener" class="venue-photo-link">
+      <img src="alboa.avif" alt="Alboa Monterrey" class="venue-photo">
+      <div class="venue-photo-overlay">
+        <span>Ver en Maps →</span>
+      </div>
+    </a>
   </div>
 </section>
 
-<!-- FOOTER -->
-<footer>
-  <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;letter-spacing:10px;color:var(--gold)">SALTUS</div>
-  <div class="f-links">
-    <a href="https://www.instagram.com/saltus.mty/" target="_blank">Instagram</a>
-    <a href="#">Contacto</a>
-    <a href="#">Patrocinadores</a>
-    <a href="#">Artistas</a>
+<!-- ══ EMAIL CAPTURE ══════════════════════════════ -->
+<section class="email-section reveal">
+  <div class="s-eyebrow">No te quedes fuera</div>
+  <h3>Avísame cuando salgan boletos</h3>
+  <p>Regístrate para recibir acceso anticipado a la venta de boletos y novedades de SALTUS Vol. I.</p>
+  <form class="email-form" onsubmit="return false;">
+    <input class="email-input" type="email" placeholder="tu@correo.com" aria-label="Correo electrónico" autocomplete="email">
+    <button class="email-submit" type="submit">Notificarme</button>
+  </form>
+</section>
+
+<!-- ══ SPONSORS ══════════════════════════════════ -->
+<div class="sponsors-bar">
+  <div class="sponsors-label">Patrocinadores</div>
+  <div class="sponsors-list">
+    <div class="sponsor-name">PATROCINADOR A</div>
+    <div class="sponsor-name">PATROCINADOR B</div>
+    <div class="sponsor-name">PATROCINADOR C</div>
+    <div class="sponsor-name">MEDIA PARTNER</div>
+    <div class="sponsor-name">PATROCINADOR D</div>
   </div>
-  <div class="f-copy">Vol. I · Monterrey · 2025</div>
+</div>
+
+<!-- ══ SEAT SELECTION MODAL ══════════════════════ -->
+<div class="seat-modal" id="seatModal" role="dialog" aria-modal="true" aria-label="Selecciona tu lugar">
+  <div class="seat-modal-box">
+    <div class="seat-modal-header">
+      <div>
+        <div class="seat-modal-title">Selecciona tu Mesa</div>
+        <div class="seat-modal-sub">Haz clic en una mesa disponible para reservarla</div>
+      </div>
+      <button class="seat-close" onclick="closeSeatModal()" aria-label="Cerrar">×</button>
+    </div>
+    <div class="seat-legend">
+      <div class="leg-item"><div class="leg-dot leg-vip"></div>Mesa VIP · Palco — $1,750 (5 boletos)</div>
+      <div class="leg-item"><div class="leg-dot leg-gen"></div>Mesa General — desde $800 (4 boletos)</div>
+      <div class="leg-item"><div class="leg-dot leg-sel"></div>Mesa seleccionada</div>
+    </div>
+    <div class="seat-qty-bar">
+      <span class="qty-label">Mesa seleccionada</span>
+      <span class="qty-status" id="qtyStatus">Haz clic en una mesa del mapa para seleccionarla</span>
+    </div>
+    <div class="seat-map-wrap">
+      <svg class="venue-svg" id="venueSvg" viewBox="0 0 860 710" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+    <div class="seat-panel">
+      <div class="seat-info">
+        <strong id="seatInfoTitle">— Selecciona tu mesa —</strong>
+        <span id="seatInfoSub">Elige una mesa en el mapa de arriba</span>
+      </div>
+      <a class="seat-pay" id="seatPayBtn" href="#" target="_blank" rel="noopener">Ir a pagar →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PRIVACY MODAL ═══════════════════════════════ -->
+<div id="privacyModal" style="
+  position:fixed;inset:0;z-index:2000;
+  background:rgba(0,0,0,.93);
+  opacity:0;pointer-events:none;
+  transition:opacity .3s;
+  display:flex;align-items:flex-start;justify-content:center;
+  padding:40px 20px;overflow-y:auto;
+" onclick="if(event.target===this){this.classList.remove('open');document.body.style.overflow='';}" class="">
+<style>
+#privacyModal.open{opacity:1 !important;pointer-events:all !important;}
+.priv-box{
+  background:#0d0b0f;border:1px solid #2a2a2a;
+  max-width:720px;width:100%;padding:48px 52px;
+  position:relative;
+}
+.priv-box h1{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:4px;margin-bottom:4px;}
+.priv-box .priv-date{font-size:11px;color:#555;letter-spacing:2px;text-transform:uppercase;margin-bottom:36px;}
+.priv-box h2{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;color:var(--gold);margin:28px 0 10px;}
+.priv-box p,.priv-box li{font-size:13px;color:rgba(255,255,255,.55);line-height:1.8;}
+.priv-box ul{padding-left:20px;margin-top:6px;}
+.priv-box li{margin-bottom:4px;}
+.priv-close{
+  position:absolute;top:20px;right:24px;
+  background:none;border:1px solid #222;color:#fff;
+  width:36px;height:36px;cursor:pointer;font-size:20px;
+  display:flex;align-items:center;justify-content:center;
+  opacity:.6;transition:opacity .2s;
+}
+.priv-close:hover{opacity:1;}
+</style>
+  <div class="priv-box">
+    <button class="priv-close" onclick="document.getElementById('privacyModal').classList.remove('open');document.body.style.overflow='';" aria-label="Cerrar">×</button>
+    <div class="s-eyebrow" style="margin-bottom:10px;">Legal</div>
+    <h1>Política de Privacidad</h1>
+    <div class="priv-date">Última actualización: Abril 2025 · SALTUS Vol. I</div>
+
+    <h2>1. Responsable de los datos</h2>
+    <p>SALTUS es el responsable del tratamiento de los datos personales que recopila a través de este sitio web y del proceso de compra de boletos. Para cualquier consulta relacionada con el manejo de tu información, puedes contactarnos en <strong style="color:rgba(255,255,255,.75);">vitaclo.mx@gmail.com</strong>.</p>
+
+    <h2>2. Datos que recopilamos</h2>
+    <p>Al adquirir un boleto o registrarte para recibir notificaciones, podemos recopilar:</p>
+    <ul>
+      <li>Nombre completo</li>
+      <li>Correo electrónico</li>
+      <li>Número de teléfono (cuando aplique)</li>
+      <li>Información de pago procesada por Clip (no almacenamos datos de tarjeta)</li>
+      <li>Mesa o asiento seleccionado</li>
+    </ul>
+
+    <h2>3. Uso de la información</h2>
+    <p>Utilizamos tus datos exclusivamente para:</p>
+    <ul>
+      <li>Confirmar y gestionar tu compra de boletos</li>
+      <li>Enviarte tu número de mesa y detalles del evento</li>
+      <li>Notificarte sobre cambios o actualizaciones del evento</li>
+      <li>Enviarte información sobre futuras ediciones de SALTUS si nos lo autorizas</li>
+    </ul>
+
+    <h2>4. Procesamiento de pagos</h2>
+    <p>Los pagos son procesados de forma segura a través de <strong style="color:rgba(255,255,255,.75);">Clip</strong>. SALTUS no almacena ni tiene acceso a tu información bancaria o de tarjeta de crédito/débito. El procesamiento está sujeto a los términos y privacidad de Clip.</p>
+
+    <h2>5. Compartir información</h2>
+    <p>No vendemos, cedemos ni compartimos tus datos personales con terceros, salvo en los siguientes casos:</p>
+    <ul>
+      <li>Proveedores de servicios necesarios para operar el evento (producción, seguridad)</li>
+      <li>Cuando sea requerido por autoridades competentes conforme a la ley</li>
+    </ul>
+
+    <h2>6. Cookies</h2>
+    <p>Este sitio puede utilizar cookies técnicas para garantizar el funcionamiento correcto de la página. No utilizamos cookies de rastreo publicitario de terceros.</p>
+
+    <h2>7. Tus derechos (ARCO)</h2>
+    <p>Conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (México), tienes derecho a <strong style="color:rgba(255,255,255,.75);">Acceder, Rectificar, Cancelar u Oponerte</strong> al tratamiento de tus datos. Para ejercer estos derechos escríbenos a <strong style="color:rgba(255,255,255,.75);">vitaclo.mx@gmail.com</strong>.</p>
+
+    <h2>8. Seguridad</h2>
+    <p>Implementamos medidas técnicas y organizativas razonables para proteger tu información contra accesos no autorizados, pérdida o alteración.</p>
+
+    <h2>9. Cambios a esta política</h2>
+    <p>SALTUS se reserva el derecho de actualizar esta política en cualquier momento. Cualquier cambio relevante será notificado por correo electrónico a quienes hayan adquirido boletos.</p>
+
+    <div style="margin-top:36px;padding-top:24px;border-top:1px solid #1e1e1e;">
+      <p style="font-size:11px;color:#444;">SALTUS Vol. I · Monterrey, Nuevo León, México · vitaclo.mx@gmail.com</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOAST ════════════════════════════════════ -->
+<div class="toast" id="toast" role="status" aria-live="polite">Registrado — Te avisaremos pronto</div>
+
+<!-- ══ STICKY MOBILE CTA ══════════════════════════ -->
+<div class="sticky-cta" id="stickyCta">
+  <div class="sticky-cta-text">
+    <strong>SALTUS Vol. I</strong>
+    Sábado 20 Jun · Mesas desde $800 MXN
+  </div>
+  <a href="#boletos" class="sticky-cta-btn">Comprar boletos</a>
+</div>
+
+<!-- ══ FOOTER ══════════════════════════════════ -->
+<footer style="flex-direction:column;align-items:center;text-align:center;gap:28px;">
+  <div class="f-logo">SALTUS</div>
+  <div class="f-links" style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px 32px;">
+    <a href="#boletos">Boletos</a>
+    <a href="#lineup">Lineup</a>
+    <a href="#horarios">Horarios</a>
+    <a href="#venue">Venue</a>
+    <a href="https://www.instagram.com/saltus.mty/" target="_blank" rel="noopener">Instagram</a>
+    <a href="mailto:vitaclo.mx@gmail.com">Contacto</a>
+    <a href="#">Patrocinadores</a>
+    <a href="#lineup">Artistas</a>
+    <a href="#" onclick="document.getElementById('privacyModal').classList.add('open');document.body.style.overflow='hidden';return false;">Política de privacidad</a>
+  </div>
+  <div class="f-copy">Vol. I · Monterrey · 2026</div>
 </footer>
 
 <script>
-// Nav scroll effect
+// Nav scroll
 window.addEventListener('scroll',()=>{
-  const nav=document.getElementById('nav');
-  if(window.scrollY>80){nav.style.background='rgba(6,6,6,0.95)';nav.style.borderBottom='1px solid rgba(201,168,76,0.1)';}
-  else{nav.style.background='transparent';nav.style.borderBottom='none';}
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
 });
 
 // Countdown
 function updateCountdown(){
-  const target=new Date('2025-06-20T19:00:00-06:00');
-  const now=new Date();
-  const diff=target-now;
-  if(diff<0){document.getElementById('countdown').style.display='none';return;}
-  const d=Math.floor(diff/864e5);
-  const h=Math.floor((diff%864e5)/36e5);
-  const m=Math.floor((diff%36e5)/6e4);
-  const s=Math.floor((diff%6e4)/1e3);
-  document.getElementById('cd-dias').textContent=String(d).padStart(2,'0');
-  document.getElementById('cd-hrs').textContent=String(h).padStart(2,'0');
-  document.getElementById('cd-min').textContent=String(m).padStart(2,'0');
-  document.getElementById('cd-seg').textContent=String(s).padStart(2,'0');
+  const target = new Date('2026-06-20T19:00:00-06:00');
+  const now    = new Date();
+  const diff   = target - now;
+  if(diff < 0){ document.getElementById('countdown').style.display='none'; return; }
+  const d = Math.floor(diff / 864e5);
+  const h = Math.floor((diff % 864e5) / 36e5);
+  const m = Math.floor((diff % 36e5)  / 6e4);
+  const s = Math.floor((diff % 6e4)   / 1e3);
+  document.getElementById('cd-dias').textContent = String(d).padStart(2,'0');
+  document.getElementById('cd-hrs').textContent  = String(h).padStart(2,'0');
+  document.getElementById('cd-min').textContent  = String(m).padStart(2,'0');
+  document.getElementById('cd-seg').textContent  = String(s).padStart(2,'0');
 }
 updateCountdown();
-setInterval(updateCountdown,1000);
+setInterval(updateCountdown, 1000);
 
 // Reveal on scroll
-const obs=new IntersectionObserver(es=>es.forEach(e=>{
-  if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}
-}),{threshold:0.06});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }
+  });
+}, { threshold: 0.05 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Hide sticky CTA when tickets section is visible
+const stickyCta = document.getElementById('stickyCta');
+const ticketsSec = document.getElementById('boletos');
+if(stickyCta && ticketsSec){
+  const ticketObs = new IntersectionObserver(entries => {
+    stickyCta.style.display = entries[0].isIntersecting ? 'none' : '';
+  }, { threshold: 0.2 });
+  ticketObs.observe(ticketsSec);
+}
+
+// ══════════════════════════════════════════════
+//  SEAT SELECTION MAP  (individual seats)
+// ══════════════════════════════════════════════
+const CLIP = {
+  gen: 'https://pago.clip.mx/v3/bf019ef1-6d77-492c-8281-97b440273aa4',
+  vip: 'https://pago.clip.mx/v3/e9db76db-d08d-43b8-a29e-0b664ade79b8'
+};
+
+// ── Table definitions ──────────────────────────────────────────────────────
+const TABLES = [
+  // VIP · PALCO — 30 seats (6 mesas × 5 sillas, centradas en el box)
+  // Sillas: 1 arriba, 2 izquierda (arriba/abajo), 2 derecha (arriba/abajo)
+  // Centros en x=500, 630, 760 (simétricos respecto al centro del PALCO x=630)
+  // Row 1: tables 39, 38, 37
+  // PALCO centrado en x=412 → tablas en x=289, 412, 535
+  // (289=227+62, 412=center, 535=227+308 → simétrico)
+  {n:39,x:289,y:72,  type:'vip',w:48,h:26,rect:true,
+   seats:[[0,-20],[-30,-10],[-30,10],[30,-10],[30,10]]},
+  {n:38,x:412,y:72,  type:'vip',w:48,h:26,rect:true,
+   seats:[[0,-20],[-30,-10],[-30,10],[30,-10],[30,10]]},
+  {n:37,x:535,y:72,  type:'vip',w:48,h:26,rect:true,
+   seats:[[0,-20],[-30,-10],[-30,10],[30,-10],[30,10]]},
+  // Row 2: tables 34, 35, 36
+  {n:34,x:289,y:157, type:'vip',w:48,h:26,rect:true,
+   seats:[[0,-20],[-30,-10],[-30,10],[30,-10],[30,10]]},
+  {n:35,x:412,y:157, type:'vip',w:48,h:26,rect:true,
+   seats:[[0,-20],[-30,-10],[-30,10],[30,-10],[30,10]]},
+  {n:36,x:535,y:157, type:'vip',w:48,h:26,rect:true,
+   seats:[[0,-20],[-30,-10],[-30,10],[30,-10],[30,10]]},
+
+  // RESTAURANTE — left cluster
+  // L-shaped sofa tables 33, 32 → 5 sillas
+  {n:33,x:58, y:242, type:'gen',w:28,h:18,rect:true,
+   seats:[[-9,14],[5,14],[19,14],[-14,4],[-14,-8]]},
+  {n:32,x:130,y:242, type:'gen',w:28,h:18,rect:true,
+   seats:[[-9,14],[5,14],[19,14],[-14,4],[-14,-8]]},
+  {n:31,x:200,y:258, type:'gen',w:22,h:22,rect:false,s:5},
+
+  // L-shaped tables 22 → 5 sillas, 21 → 6, 20 → 5
+  {n:22,x:58, y:318, type:'gen',w:26,h:18,rect:true,
+   seats:[[-9,14],[5,14],[19,4],[-14,2],[-14,-9]]},
+  {n:21,x:144,y:316, type:'gen',s:6,w:44,h:24,rect:true},
+  {n:20,x:66, y:384, type:'gen',w:26,h:18,rect:true,
+   seats:[[-10,14],[4,14],[18,4],[18,-6],[18,-16]]},
+
+  // RESTAURANTE — centro (DEBAJO de la cabina, sin tocarla)
+  // Cabina: x=300-422, y=248-294. Top seat a y=table_y-24 > 294 → table_y > 318
+  // Centradas bajo la cabina (centro x=361): 23 en x=316, 24 en x=406
+  {n:23,x:316,y:326, type:'gen',w:22,h:22,rect:false,s:4},
+  {n:24,x:406,y:326, type:'gen',w:22,h:22,rect:false,s:4},
+
+  // RESTAURANTE — right cluster
+  // 30 → 5 (round), 29/28/25 → 5, 27/26 → 7
+  {n:30,x:460,y:248, type:'gen',w:22,h:22,rect:false,s:5},
+  {n:29,x:538,y:252, type:'gen',w:34,h:18,rect:true,
+   seats:[[-12,14],[0,14],[12,14],[-17,0],[17,0]]},
+  {n:28,x:618,y:252, type:'gen',w:34,h:18,rect:true,
+   seats:[[-12,14],[0,14],[12,14],[-17,0],[17,0]]},
+  {n:27,x:698,y:252, type:'gen',w:34,h:18,rect:true,
+   seats:[[-12,14],[0,14],[12,14],[-17,-7],[-17,7],[17,-7],[17,7]]},
+  {n:25,x:538,y:322, type:'gen',w:34,h:18,rect:true,
+   seats:[[-12,14],[0,14],[12,14],[-17,0],[17,0]]},
+  {n:26,x:698,y:322, type:'gen',w:34,h:18,rect:true,
+   seats:[[-12,14],[0,14],[12,14],[-17,-7],[-17,7],[17,-7],[17,7]]},
+
+  // RESTAURANTE — large center-bottom: 19→8, 18/17/16→6
+  {n:19,x:146,y:398, type:'gen',s:8,w:56,h:22,rect:true},
+  {n:18,x:252,y:398, type:'gen',s:6,w:56,h:22,rect:true},
+  {n:17,x:358,y:398, type:'gen',s:6,w:56,h:22,rect:true},
+  {n:16,x:464,y:398, type:'gen',s:6,w:56,h:22,rect:true},
+
+  // FRONTAL — upper row (tables 12-15 + sofa tables 7, 6)
+  {n:12,x:152,y:462, type:'gen',w:26,h:22,rect:false,s:4},
+  {n:13,x:234,y:462, type:'gen',w:26,h:22,rect:false,s:4},
+  {n:14,x:316,y:462, type:'gen',w:26,h:22,rect:false,s:4},
+  {n:15,x:398,y:462, type:'gen',w:26,h:22,rect:false,s:4},
+  {n:7, x:542,y:460, type:'gen',w:32,h:20,rect:true,
+   seats:[[-12,14],[2,14],[16,14],[-17,1],[17,1]]},
+  {n:6, x:638,y:458, type:'gen',w:32,h:20,rect:true,
+   seats:[[-12,14],[2,14],[16,14],[-17,1],[17,1]]},
+
+  // FRONTAL — middle row (tables 8-11 + sofa table 5)
+  {n:11,x:152,y:513, type:'gen',w:26,h:22,rect:false,s:4},
+  {n:10,x:234,y:513, type:'gen',w:26,h:22,rect:false,s:4},
+  {n:9, x:316,y:513, type:'gen',w:26,h:22,rect:false,s:4},
+  {n:8, x:398,y:513, type:'gen',w:26,h:22,rect:false,s:4},
+  {n:5, x:574,y:508, type:'gen',w:32,h:20,rect:true,
+   seats:[[-12,14],[2,14],[16,14],[-17,0],[18,0]]},
+
+  // FRONTAL — front row: 4 tables × 4 seats = 16 lugares
+  {n:1,x:106,y:560, type:'gen',w:26,h:22,rect:false,s:4},
+  {n:2,x:198,y:560, type:'gen',w:26,h:22,rect:false,s:4},
+  {n:3,x:290,y:560, type:'gen',w:26,h:22,rect:false,s:4},
+  {n:4,x:382,y:560, type:'gen',w:26,h:22,rect:false,s:4},
+];
+
+const SVG_NS = 'http://www.w3.org/2000/svg';
+let selectedTable = null;   // single table object or null
+let currentFilter = null;
+
+// ── Price helpers ──────────────────────────────────────────────────────────
+function tableSeatCount(t){ return t.seats ? t.seats.length : (t.s || 0); }
+function tablePrice(t){ return tableSeatCount(t) * (t.type === 'vip' ? 350 : 200); }
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+function svgEl(tag){ return document.createElementNS(SVG_NS,tag); }
+function sa(e,a){ Object.entries(a).forEach(([k,v])=>e.setAttribute(k,v)); return e; }
+
+function seatPositions(cx,cy,n,w,h,rect){
+  if(rect && n===8){
+    const sp=w*0.26, oy=h/2+11;
+    return [[-sp*1.5,-oy],[-sp*.5,-oy],[sp*.5,-oy],[sp*1.5,-oy],
+            [-sp*1.5, oy],[-sp*.5, oy],[sp*.5, oy],[sp*1.5, oy]]
+           .map(([dx,dy])=>[cx+dx,cy+dy]);
+  }
+  if(rect && n===6){
+    const sp=w*0.3, oy=h/2+11;
+    return [[-sp,-oy],[0,-oy],[sp,-oy],[-sp,oy],[0,oy],[sp,oy]]
+           .map(([dx,dy])=>[cx+dx,cy+dy]);
+  }
+  if(rect && n===5){
+    const sp=w*0.25, oy=h/2+11;
+    return [[-sp*2,-oy],[-sp,-oy],[0,-oy],[sp,-oy],[sp*2,-oy]]
+           .map(([dx,dy])=>[cx+dx,cy+dy]);
+  }
+  // Default: evenly spaced around table
+  const r = Math.max(w,h)/2 + 13;
+  return Array.from({length:n},(_,i)=>{
+    const a=(2*Math.PI/n)*i - Math.PI/2;
+    return [cx+Math.cos(a)*r, cy+Math.sin(a)*r];
+  });
+}
+
+function deselectCircle(el){
+  const pt=el.getAttribute('data-type');
+  el.setAttribute('fill', pt==='vip'?'#2a1a00':'#222');
+  el.setAttribute('stroke', pt==='vip'?'#a07830':'#5a5a5a');
+  el.setAttribute('r', pt==='vip'?'8':'5.5');
+}
+function selectCircle(el){
+  el.setAttribute('fill','#C9A84C');
+  el.setAttribute('stroke','#FFD700');
+  el.setAttribute('r', el.getAttribute('data-type')==='vip'?'10':'7');
+}
+
+function updatePanel(){
+  const title = document.getElementById('seatInfoTitle');
+  const sub   = document.getElementById('seatInfoSub');
+  const btn   = document.getElementById('seatPayBtn');
+  const status= document.getElementById('qtyStatus');
+  if(!selectedTable){
+    status.textContent = 'Haz clic en una mesa del mapa para seleccionarla';
+    title.textContent  = '— Selecciona tu mesa —';
+    sub.textContent    = 'Elige una mesa en el mapa de arriba';
+    btn.href='#'; btn.classList.remove('ready'); btn.textContent='Ir a pagar →';
+  } else {
+    const seats  = tableSeatCount(selectedTable);
+    const price  = tablePrice(selectedTable);
+    const pprice = selectedTable.type === 'vip' ? 350 : 200;
+    const fmt    = n => n.toLocaleString('es-MX');
+    status.textContent = `Mesa #${selectedTable.n} seleccionada · ${seats} boletos incluidos`;
+    title.textContent  = `Mesa #${selectedTable.n} — ${seats} boletos · $${fmt(price)} MXN`;
+    sub.textContent    = `$${pprice} por boleto · ${seats} lugar${seats>1?'es':''} incluidos`;
+    btn.href = CLIP[selectedTable.type]; btn.classList.add('ready');
+    btn.textContent = `Pagar $${fmt(price)} MXN →`;
+  }
+}
+
+// ── Build map ──────────────────────────────────────────────────────────────
+function buildMap(){
+  const svg = document.getElementById('venueSvg');
+  svg.innerHTML='';
+
+  function zoneLabel(x,y,txt,cls){
+    const t=sa(svgEl('text'),{x,y,class:`zone-label ${cls||''}`});
+    t.textContent=txt; svg.appendChild(t);
+  }
+  function stepBox(x,y,w,h){
+    svg.appendChild(sa(svgEl('rect'),{x,y,width:w,height:h,rx:1,
+      fill:'#141414',stroke:'#232323','stroke-width':'0.5'}));
+  }
+
+  // Background
+  svg.appendChild(sa(svgEl('rect'),{x:0,y:0,width:860,height:710,fill:'#0a0a0a'}));
+
+  // Outer venue wall (main rectangle — stops above stage)
+  svg.appendChild(sa(svgEl('rect'),{x:12,y:12,width:800,height:620,rx:2,
+    fill:'none',stroke:'#404040','stroke-width':'2'}));
+
+  // PALCO inner box — centrado en x=412 (mismo centro que el ESCENARIO)
+  // width=370 → x=412-185=227 a x=412+185=597
+  svg.appendChild(sa(svgEl('rect'),{x:227,y:12,width:370,height:192,rx:2,
+    fill:'#0c0900',stroke:'#3a2c08','stroke-width':'1.5'}));
+  zoneLabel(235,28,'PALCO  —  30 LUGARES','vip-label');
+  // PALCO internal row divider
+  svg.appendChild(sa(svgEl('line'),{x1:231,y1:113,x2:593,y2:113,
+    stroke:'#3a2c08','stroke-width':'1','stroke-dasharray':'6,4'}));
+
+  // Staircase beside PALCO (right side of PALCO box)
+  svg.appendChild(sa(svgEl('rect'),{x:601,y:12,width:28,height:192,rx:1,
+    fill:'#111',stroke:'#333','stroke-width':'1'}));
+  for(let i=0;i<4;i++){
+    svg.appendChild(sa(svgEl('rect'),{x:603,y:18+i*46,width:24,height:38,rx:1,
+      fill:'#1a1a1a',stroke:'#3a3a3a','stroke-width':'0.5'}));
+  }
+
+  // Right column staircase (far right, outside venue zone)
+  svg.appendChild(sa(svgEl('rect'),{x:816,y:12,width:32,height:192,rx:1,
+    fill:'#111',stroke:'#333','stroke-width':'1'}));
+  for(let i=0;i<5;i++){
+    svg.appendChild(sa(svgEl('rect'),{x:818,y:18+i*36,width:28,height:30,rx:1,
+      fill:'#1a1a1a',stroke:'#3a3a3a','stroke-width':'0.5'}));
+  }
+
+  // Entry door symbol (lower-right)
+  svg.appendChild(sa(svgEl('rect'),{x:816,y:440,width:32,height:56,rx:1,
+    fill:'#111',stroke:'#333','stroke-width':'1'}));
+  const ent=sa(svgEl('text'),{x:832,y:472,'text-anchor':'middle','dominant-baseline':'middle',
+    'font-family':'DM Sans,sans-serif','font-size':'7','fill':'#2a2a2a',
+    transform:'rotate(-90,832,472)'});
+  ent.textContent='ENTRADA ←'; svg.appendChild(ent);
+
+  // Zone divider — top of RESTAURANTE (full width at bottom of PALCO)
+  svg.appendChild(sa(svgEl('line'),{x1:12,y1:204,x2:812,y2:204,class:'zone-line'}));
+  // Step boxes at top divider
+  stepBox(248,198,22,10); stepBox(548,198,22,10);
+
+  // Zone divider — RESTAURANTE / FRONTAL
+  svg.appendChild(sa(svgEl('line'),{x1:12,y1:440,x2:812,y2:440,class:'zone-line'}));
+  // Step boxes at mid divider
+  stepBox(152,433,22,10); stepBox(552,433,22,10);
+
+  // Diagonal wall — bottom-left of FRONTAL
+  svg.appendChild(sa(svgEl('line'),{x1:12,y1:610,x2:70,y2:440,
+    stroke:'#404040','stroke-width':'2'}));
+  // Step boxes at bottom of venue
+  stepBox(228,607,22,10); stepBox(528,607,22,10);
+
+  // Zone text labels
+  zoneLabel(18,218,'RESTAURANTE  —  146 LUGARES');
+  zoneLabel(18,455,'FRONTAL  —  16 LUGARES');
+
+  // Restaurante subtle tint
+  svg.appendChild(sa(svgEl('rect'),{x:13,y:205,width:798,height:234,
+    fill:'#111',opacity:'.25','pointer-events':'none'}));
+
+  // Audio cabin — centrada horizontalmente en zona restaurante
+  // x=300, w=122 → centro x=361. Sube un poco: y=230
+  const cab=svgEl('g');
+  cab.appendChild(sa(svgEl('rect'),{x:300,y:228,width:122,height:46,rx:3,class:'cabin-rect'}));
+  const ct=sa(svgEl('text'),{x:361,y:244,'text-anchor':'middle',class:'cabin-text'});
+  ct.textContent='CABINA DE AUDIO';
+  const ci=sa(svgEl('text'),{x:361,y:261,'text-anchor':'middle','font-size':'11',
+    fill:'#252525','pointer-events':'none'});
+  ci.textContent='🎧';
+  cab.appendChild(ct); cab.appendChild(ci);
+  svg.appendChild(cab);
+
+  // Stage — caja separada DEBAJO del venue, centrada bajo el venue (centro x=412)
+  const stg=svgEl('g');
+  // Connecting line hints (venue bottom → stage)
+  svg.appendChild(sa(svgEl('line'),{x1:222,y1:632,x2:222,y2:645,
+    stroke:'#333','stroke-width':'1'}));
+  svg.appendChild(sa(svgEl('line'),{x1:602,y1:632,x2:602,y2:645,
+    stroke:'#333','stroke-width':'1'}));
+  // Stage box: x=222, width=380 → center at x=412 (same as venue center)
+  stg.appendChild(sa(svgEl('rect'),{x:222,y:645,width:380,height:52,rx:3,class:'stage-rect'}));
+  const st=sa(svgEl('text'),{x:412,y:661,'text-anchor':'middle','dominant-baseline':'middle',
+    class:'stage-text'});
+  st.textContent='ESCENARIO';
+  const smic=sa(svgEl('text'),{x:412,y:682,'text-anchor':'middle','dominant-baseline':'middle',
+    'font-size':'14','fill':'#604e20','pointer-events':'none'});
+  smic.textContent='🎤';
+  stg.appendChild(st); stg.appendChild(smic); svg.appendChild(stg);
+
+  // ── Tables & seats ────────────────────────────────────────────────────
+  TABLES.forEach(({n,x,y,type,s,w,h,rect,seats})=>{
+    const isVip=type==='vip';
+    const g=svgEl('g');
+    if(rect){
+      g.appendChild(sa(svgEl('rect'),
+        {x:x-w/2,y:y-h/2,width:w,height:h,rx:3,
+         fill:isVip?'#1e1400':'#1c1c1c',stroke:isVip?'#7a5e22':'#4a4a4a',
+         'stroke-width':'1.2','pointer-events':'none'}));
+    } else {
+      g.appendChild(sa(svgEl('circle'),
+        {cx:x,cy:y,r:Math.min(w,h)/2,
+         fill:isVip?'#1e1400':'#1c1c1c',stroke:isVip?'#7a5e22':'#4a4a4a',
+         'stroke-width':'1.2','pointer-events':'none'}));
+    }
+    const lbl=sa(svgEl('text'),{x,y:y+.5,'text-anchor':'middle',
+      'dominant-baseline':'middle','font-family':'Bebas Neue,sans-serif',
+      'font-size':'8',fill:isVip?'#C9A84C':'#888','pointer-events':'none'});
+    lbl.textContent=n; g.appendChild(lbl);
+
+    // Use explicit seat positions if provided, else auto-calculate
+    const positions = seats
+      ? seats.map(([dx,dy])=>[x+dx,y+dy])
+      : seatPositions(x,y,s||0,w,h,rect);
+
+    positions.forEach(([sx,sy],i)=>{
+      const sc=sa(svgEl('circle'),{
+        cx:sx,cy:sy,r:isVip?8:5.5,
+        fill:isVip?'#2a1a00':'#222',stroke:isVip?'#a07830':'#5a5a5a',
+        'stroke-width':isVip?'1.5':'1.2','data-t':n,'data-s':i+1,'data-type':type,
+        style:'cursor:pointer;transition:fill .12s,stroke .12s,r .12s'
+      });
+      sc.addEventListener('click',()=>pickTable(n,type));
+      g.appendChild(sc);
+    });
+    svg.appendChild(g);
+  });
+}
+
+// ── Table interaction ──────────────────────────────────────────────────────
+function pickTable(tableN, type){
+  if(currentFilter && type !== currentFilter) return;
+  const tableDef = TABLES.find(t => t.n === tableN);
+  if(!tableDef) return;
+
+  // Deselect previously selected table
+  if(selectedTable){
+    document.querySelectorAll(`#venueSvg circle[data-t="${selectedTable.n}"]`)
+      .forEach(el => deselectCircle(el));
+  }
+
+  if(selectedTable && selectedTable.n === tableN){
+    // Toggle off
+    selectedTable = null;
+  } else {
+    selectedTable = tableDef;
+    document.querySelectorAll(`#venueSvg circle[data-t="${tableN}"]`)
+      .forEach(el => selectCircle(el));
+  }
+  updatePanel();
+}
+
+function openSeatModal(filter){
+  currentFilter = filter || null;
+  selectedTable = null;
+  const btn = document.getElementById('seatPayBtn');
+  btn.href='#'; btn.classList.remove('ready'); btn.textContent='Ir a pagar →';
+  buildMap();
+  if(currentFilter){
+    document.querySelectorAll('#venueSvg circle[data-type]').forEach(s=>{
+      const match = s.getAttribute('data-type') === currentFilter;
+      s.style.opacity        = match ? '1' : '0.12';
+      s.style.cursor         = match ? 'pointer' : 'default';
+      s.style.pointerEvents  = match ? 'all' : 'none';
+    });
+  }
+  updatePanel();
+  document.getElementById('seatModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeSeatModal(){
+  document.getElementById('seatModal').classList.remove('open');
+  document.body.style.overflow='';
+  selectedTable = null;
+}
+
+document.getElementById('seatModal').addEventListener('click',function(e){
+  if(e.target===this) closeSeatModal();
+});
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeSeatModal(); });
+
+// ── Hamburger menu ──────────────────────────────────────────────────────────
+const navHam    = document.getElementById('navHam');
+const mobileNav = document.getElementById('mobileNav');
+
+navHam.addEventListener('click', () => {
+  const open = navHam.classList.toggle('open');
+  mobileNav.classList.toggle('open', open);
+  navHam.setAttribute('aria-expanded', open);
+  mobileNav.setAttribute('aria-hidden', !open);
+  document.body.style.overflow = open ? 'hidden' : '';
+});
+
+function closeMobileNav(){
+  navHam.classList.remove('open');
+  mobileNav.classList.remove('open');
+  navHam.setAttribute('aria-expanded', 'false');
+  mobileNav.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+// ── Email form feedback ─────────────────────────────────────────────────────
+document.querySelector('.email-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  const input = this.querySelector('.email-input');
+  if(!input.value.trim()) return;
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  input.value = '';
+  setTimeout(() => toast.classList.remove('show'), 3500);
+});
+</script>
+
+<script>
+/* ══ STARFIELD CANVAS — 30s loop ══ */
+(function(){
+  const canvas = document.getElementById('starsCanvas');
+  const ctx = canvas.getContext('2d');
+  const LOOP_DURATION = 30000; // 30 segundos
+
+  let W, H;
+  const NUM_STARS = 280;
+  const NUM_SHOOTING = 4;
+  const stars = [];
+  const shooting = [];
+
+  function resize(){
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize, {passive:true});
+
+  // Semilla fija para que el loop sea idéntico cada ciclo
+  function seededRand(seed){
+    let s = seed;
+    return function(){
+      s = (s * 9301 + 49297) % 233280;
+      return s / 233280;
+    };
+  }
+
+  function initStars(){
+    const r = seededRand(42);
+    stars.length = 0;
+    for(let i = 0; i < NUM_STARS; i++){
+      stars.push({
+        xFrac: r(),           // fracción 0-1 del ancho
+        yFrac: r(),           // fracción 0-1 del alto
+        size:  r() * 1.4 + 0.3,
+        baseAlpha: r() * 0.6 + 0.2,
+        twinklePeriod: r() * 4000 + 1500,  // ms
+        twinkleOffset: r() * Math.PI * 2,
+        // parallax leve: capas 0=lento, 1=medio, 2=rápido
+        layer: Math.floor(r() * 3),
+      });
+    }
+    // Estrellas fugaces distribuidas a lo largo del loop
+    shooting.length = 0;
+    const sr = seededRand(99);
+    for(let i = 0; i < NUM_SHOOTING; i++){
+      const startTime = (i / NUM_SHOOTING) * LOOP_DURATION + sr() * (LOOP_DURATION / NUM_SHOOTING * 0.6);
+      shooting.push({
+        startTime: startTime % LOOP_DURATION,
+        duration:  sr() * 900 + 500,
+        x0Frac: sr() * 0.7 + 0.1,
+        y0Frac: sr() * 0.4,
+        angle:  sr() * 0.3 + 0.15,  // radianes
+        length: sr() * 180 + 80,
+      });
+    }
+  }
+
+  function draw(ts){
+    const t = ts % LOOP_DURATION; // tiempo dentro del ciclo
+
+    ctx.clearRect(0, 0, W, H);
+
+    // Parallax scroll suave basado en t (movimiento horizontal lento)
+    const parallaxBase = (t / LOOP_DURATION) * 40; // 40px en 30s
+
+    for(const s of stars){
+      const parallaxOffset = parallaxBase * (s.layer * 0.4 + 0.2);
+      const x = ((s.xFrac * W + parallaxOffset) % W + W) % W;
+      const y = s.yFrac * H;
+
+      // Twinkle
+      const twinkle = Math.sin(ts / s.twinklePeriod * Math.PI * 2 + s.twinkleOffset);
+      const alpha = s.baseAlpha + twinkle * 0.18;
+
+      // Color: mayoría blanco-azulado, algunas doradas
+      const isGold = (s.layer === 1 && s.xFrac > 0.8);
+      ctx.beginPath();
+      ctx.arc(x, y, s.size, 0, Math.PI * 2);
+      ctx.fillStyle = isGold
+        ? `rgba(201,168,76,${Math.max(0, alpha)})`
+        : `rgba(220,230,255,${Math.max(0, alpha)})`;
+      ctx.fill();
+
+      // Halo para estrellas grandes
+      if(s.size > 1.2){
+        ctx.beginPath();
+        ctx.arc(x, y, s.size * 2.5, 0, Math.PI * 2);
+        const glow = ctx.createRadialGradient(x,y,0,x,y,s.size*2.5);
+        const ga = alpha * 0.2;
+        glow.addColorStop(0, isGold?`rgba(201,168,76,${ga})`:`rgba(180,200,255,${ga})`);
+        glow.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = glow;
+        ctx.fill();
+      }
+    }
+
+    // Estrellas fugaces
+    for(const sh of shooting){
+      let elapsed = t - sh.startTime;
+      if(elapsed < 0) elapsed += LOOP_DURATION;
+      if(elapsed > sh.duration) continue;
+
+      const progress = elapsed / sh.duration;
+      const fade = progress < 0.2 ? progress/0.2 : 1 - (progress - 0.2)/0.8;
+
+      const x0 = sh.x0Frac * W + Math.cos(sh.angle) * sh.length * progress * 0.3;
+      const y0 = sh.y0Frac * H + Math.sin(sh.angle) * sh.length * progress * 0.3;
+      const x1 = x0 + Math.cos(sh.angle) * sh.length * progress;
+      const y1 = y0 + Math.sin(sh.angle) * sh.length * progress;
+
+      const grad = ctx.createLinearGradient(x0, y0, x1, y1);
+      grad.addColorStop(0, `rgba(255,255,255,0)`);
+      grad.addColorStop(0.7, `rgba(255,255,255,${fade * 0.7})`);
+      grad.addColorStop(1, `rgba(201,168,76,${fade * 0.9})`);
+
+      ctx.beginPath();
+      ctx.moveTo(x0, y0);
+      ctx.lineTo(x1, y1);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  initStars();
+  requestAnimationFrame(draw);
+})();
 </script>
 </body>
 </html>
