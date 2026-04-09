@@ -567,6 +567,66 @@ a:focus-visible, button:focus-visible{
   .cf-radio-group{grid-template-columns:1fr;}
 }
 
+/* ── VENUE MAP ── */
+.vmap-wrap{
+  max-width:900px;margin:64px auto 0;
+  border:1px solid #1e1e1e;background:rgba(8,8,8,.8);
+  padding:32px 36px 28px;
+}
+.vmap-header{margin-bottom:18px;}
+.vmap-title{
+  font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:5px;
+  color:var(--gold);margin-bottom:4px;
+}
+.vmap-hint{font-size:10px;color:rgba(255,255,255,.35);letter-spacing:2px;text-transform:uppercase;}
+.vmap-legend{
+  display:flex;gap:24px;margin-bottom:20px;flex-wrap:wrap;
+}
+.vmap-leg{display:flex;align-items:center;gap:8px;font-size:11px;color:rgba(255,255,255,.5);letter-spacing:1px;}
+.vmap-dot{width:12px;height:12px;border-radius:2px;flex-shrink:0;}
+.vmap-dot-vip{background:#2a1800;border:1px solid var(--gold);}
+.vmap-dot-gen{background:#161616;border:1px solid #3a3a3a;}
+.vmap-svg-wrap{overflow-x:auto;}
+.vmap-svg{width:100%;min-width:460px;display:block;cursor:default;}
+
+/* SVG zones */
+.vmap-zone rect{transition:fill .18s,stroke .18s;}
+.vmap-zone{cursor:pointer;}
+.vmap-zone:focus{outline:none;}
+
+.vmap-vip rect{fill:#140e00;stroke:rgba(201,168,76,.35);stroke-width:1.2;}
+.vmap-vip:hover rect,.vmap-vip:focus rect{fill:#1e1500;stroke:var(--gold);}
+.vmap-vip.vmap-active rect{fill:#221900;stroke:var(--gold);stroke-width:2;}
+
+.vmap-gen rect{fill:#111;stroke:#2a2a2a;stroke-width:1.2;}
+.vmap-gen:hover rect,.vmap-gen:focus rect{fill:#181818;stroke:#555;}
+.vmap-gen.vmap-active rect{fill:#181818;stroke:rgba(201,168,76,.6);stroke-width:2;}
+
+.vmap-frontal rect{fill:#0e0e0e;stroke:#2a2a2a;stroke-width:1.2;}
+.vmap-frontal:hover rect,.vmap-frontal:focus rect{fill:#161616;stroke:#555;}
+.vmap-frontal.vmap-active rect{fill:#161616;stroke:rgba(201,168,76,.6);stroke-width:2;}
+
+.vzone-label{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:5px;fill:var(--white);pointer-events:none;}
+.vzone-label-sm{font-size:15px;}
+.vzone-sub{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:2px;fill:rgba(255,255,255,.4);text-transform:uppercase;pointer-events:none;}
+.vzone-price{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;fill:var(--gold);pointer-events:none;}
+.vzone-price-sm{font-size:10px;letter-spacing:2px;}
+.vzone-dot{fill:rgba(255,255,255,.08);pointer-events:none;}
+.vmap-divider{stroke:#1c1c1c;stroke-width:1;stroke-dasharray:6 5;}
+.vmap-stage-rect{fill:#120d00;stroke:#4a3800;stroke-width:1;}
+.vmap-stage-txt{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:8px;fill:#604e20;pointer-events:none;}
+
+.vmap-selected-bar{
+  margin-top:18px;min-height:20px;
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);text-align:center;
+  transition:opacity .2s;
+}
+
+@media(max-width:640px){
+  .vmap-wrap{padding:24px 18px 20px;}
+}
+
 /* ═══════════════════════════════
    VENUE
 ═══════════════════════════════ */
@@ -1582,6 +1642,68 @@ footer{
       </div>
     </div>
 
+    <!-- ── VENUE MAP ── -->
+    <div class="vmap-wrap">
+      <div class="vmap-header">
+        <div class="vmap-title">Mapa del Venue</div>
+        <div class="vmap-hint">Selecciona una zona para elegir tu tipo de boleto</div>
+      </div>
+      <div class="vmap-legend">
+        <div class="vmap-leg"><div class="vmap-dot vmap-dot-vip"></div>Palco VIP · $350 USD</div>
+        <div class="vmap-leg"><div class="vmap-dot vmap-dot-gen"></div>General · $200 USD</div>
+      </div>
+      <div class="vmap-svg-wrap">
+        <svg id="vmapSvg" class="vmap-svg" viewBox="0 0 800 460" xmlns="http://www.w3.org/2000/svg" aria-label="Mapa del venue Alboa">
+
+          <!-- PALCO VIP -->
+          <g class="vmap-zone vmap-vip" id="vmapPalco" data-type="vip" role="button" tabindex="0" aria-label="Palco VIP — 30 lugares" onclick="vmapSelect('vip')">
+            <rect x="40" y="16" width="720" height="104" rx="3"/>
+            <text x="400" y="52" text-anchor="middle" class="vzone-label">Palco VIP</text>
+            <text x="400" y="74" text-anchor="middle" class="vzone-sub">30 lugares · Mesas 34–39 · Planta alta</text>
+            <text x="400" y="100" text-anchor="middle" class="vzone-price">$350 USD / boleto</text>
+          </g>
+
+          <!-- RESTAURANTE (General) -->
+          <g class="vmap-zone vmap-gen" id="vmapRest" data-type="general" role="button" tabindex="0" aria-label="Restaurante General — 146 lugares" onclick="vmapSelect('general')">
+            <rect x="40" y="136" width="720" height="186" rx="3"/>
+            <text x="400" y="208" text-anchor="middle" class="vzone-label">Restaurante</text>
+            <text x="400" y="232" text-anchor="middle" class="vzone-sub">146 lugares · Mesas 5–33</text>
+            <text x="400" y="258" text-anchor="middle" class="vzone-price">$200 USD / boleto</text>
+            <!-- interior table dots to suggest seating -->
+            <circle cx="180" cy="280" r="4" class="vzone-dot"/>
+            <circle cx="220" cy="280" r="4" class="vzone-dot"/>
+            <circle cx="260" cy="280" r="4" class="vzone-dot"/>
+            <circle cx="300" cy="280" r="4" class="vzone-dot"/>
+            <circle cx="340" cy="280" r="4" class="vzone-dot"/>
+            <circle cx="380" cy="280" r="4" class="vzone-dot"/>
+            <circle cx="420" cy="280" r="4" class="vzone-dot"/>
+            <circle cx="460" cy="280" r="4" class="vzone-dot"/>
+            <circle cx="500" cy="280" r="4" class="vzone-dot"/>
+            <circle cx="540" cy="280" r="4" class="vzone-dot"/>
+            <circle cx="580" cy="280" r="4" class="vzone-dot"/>
+            <circle cx="620" cy="280" r="4" class="vzone-dot"/>
+          </g>
+
+          <!-- FRONTAL (General) -->
+          <g class="vmap-zone vmap-frontal" id="vmapFrontal" data-type="general" role="button" tabindex="0" aria-label="Frontal General — 16 lugares" onclick="vmapSelect('general')">
+            <rect x="160" y="338" width="480" height="72" rx="3"/>
+            <text x="400" y="366" text-anchor="middle" class="vzone-label vzone-label-sm">Frontal</text>
+            <text x="400" y="386" text-anchor="middle" class="vzone-sub">16 lugares · Filas 1–4</text>
+            <text x="400" y="401" text-anchor="middle" class="vzone-price vzone-price-sm">General · $200 USD</text>
+          </g>
+
+          <!-- ESCENARIO -->
+          <rect x="200" y="426" width="400" height="30" rx="3" class="vmap-stage-rect"/>
+          <text x="400" y="446" text-anchor="middle" class="vmap-stage-txt">ESCENARIO</text>
+
+          <!-- zone divider lines -->
+          <line x1="40" y1="130" x2="760" y2="130" class="vmap-divider"/>
+          <line x1="40" y1="332" x2="760" y2="332" class="vmap-divider"/>
+        </svg>
+      </div>
+      <div class="vmap-selected-bar" id="vmapSelectedBar" aria-live="polite"></div>
+    </div>
+
     <!-- ── CHECKOUT FORM ── -->
     <form id="checkoutForm" class="checkout-form" onsubmit="handleCheckout(event)" novalidate>
       <div class="cf-title">Completa tu compra</div>
@@ -2207,6 +2329,33 @@ document.querySelectorAll('input[name="tipo_boleto"]').forEach(r =>
   r.addEventListener('change', updateTotal)
 );
 document.getElementById('cf-cantidad').addEventListener('input', updateTotal);
+
+function vmapSelect(tipo){
+  // Highlight active zone(s)
+  document.querySelectorAll('.vmap-zone').forEach(g => {
+    g.classList.toggle('vmap-active', g.dataset.type === tipo);
+  });
+
+  // Check the matching radio in the form
+  const radio = document.querySelector(`input[name="tipo_boleto"][value="${tipo}"]`);
+  if(radio){ radio.checked = true; radio.dispatchEvent(new Event('change')); }
+
+  // Update the status bar
+  const labels = { general: 'General — $200 USD por boleto', vip: 'Palco VIP — $350 USD por boleto' };
+  const bar = document.getElementById('vmapSelectedBar');
+  if(bar) bar.textContent = '✓ ' + (labels[tipo] || '');
+
+  // Scroll to form smoothly
+  const form = document.getElementById('checkoutForm');
+  if(form) form.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// Keyboard support for zone selection
+document.querySelectorAll('.vmap-zone').forEach(g => {
+  g.addEventListener('keydown', e => {
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); vmapSelect(g.dataset.type); }
+  });
+});
 
 async function handleCheckout(e){
   e.preventDefault();
