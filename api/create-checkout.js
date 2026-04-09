@@ -2,8 +2,8 @@ import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 
 const PRICES = {
-  general: 200,
-  vip: 350,
+  general: 20900, // centavos MXN = $209 MXN
+  vip: 36500,     // centavos MXN = $365 MXN
 };
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -34,8 +34,8 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Cantidad inválida" });
   }
 
-  const unit_price = PRICES[tipo_boleto];
-  const total = unit_price * qty;
+  const unit_price = PRICES[tipo_boleto];          // centavos MXN
+  const total = (unit_price / 100) * qty;          // pesos MXN para Supabase
 
   try {
     // Create Stripe checkout session
@@ -46,8 +46,8 @@ export default async function handler(req, res) {
       line_items: [
         {
           price_data: {
-            currency: "usd",
-            unit_amount: unit_price * 100, // Stripe uses cents
+            currency: "mxn",
+            unit_amount: unit_price, // already in centavos MXN
             product_data: {
               name: `Boleto ${tipo_boleto.charAt(0).toUpperCase() + tipo_boleto.slice(1)} — Saltus`,
               description: `Entrada ${tipo_boleto} para el evento Saltus`,
