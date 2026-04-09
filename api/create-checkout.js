@@ -2,8 +2,8 @@ import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 
 const PRICES = {
-  general: 209,
-  vip: 365,
+  general: 200,
+  vip: 350,
 };
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);

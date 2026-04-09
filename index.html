@@ -498,6 +498,75 @@ a:focus-visible, button:focus-visible{
 .t-btn-gold{background:var(--gold);color:var(--black);}
 .t-btn-gold:hover{background:var(--gold-l);}
 
+/* ── CHECKOUT FORM ── */
+.checkout-form{
+  max-width:560px;margin:56px auto 0;
+  background:rgba(14,12,0,.75);
+  border:1px solid rgba(201,168,76,.25);
+  padding:44px 48px;
+}
+.cf-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:28px;letter-spacing:5px;
+  color:var(--gold);margin-bottom:32px;text-align:center;
+}
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.cf-field{display:flex;flex-direction:column;margin-bottom:20px;}
+.cf-label{
+  font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,.45);margin-bottom:8px;
+}
+.cf-input{
+  background:#0e0e0e;border:1px solid #2a2a2a;
+  color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;
+  padding:12px 14px;outline:none;transition:border-color .2s;
+  -moz-appearance:textfield;
+}
+.cf-input::-webkit-inner-spin-button,.cf-input::-webkit-outer-spin-button{-webkit-appearance:none;}
+.cf-input:focus{border-color:var(--gold);}
+.cf-input::placeholder{color:#3a3a3a;}
+.cf-radio-group{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.cf-radio-card{
+  border:1px solid #2a2a2a;padding:16px 20px;cursor:pointer;
+  display:flex;align-items:center;gap:14px;transition:border-color .2s,background .2s;
+  background:#0e0e0e;
+}
+.cf-radio-card input[type="radio"]{
+  accent-color:var(--gold);width:15px;height:15px;flex-shrink:0;cursor:pointer;
+}
+.cf-radio-card:has(input:checked){
+  border-color:var(--gold);background:rgba(201,168,76,.07);
+}
+.cf-radio-inner{display:flex;flex-direction:column;gap:3px;}
+.cf-radio-name{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;}
+.cf-radio-price{font-size:11px;color:var(--gold);letter-spacing:1px;}
+.cf-qty-wrap{display:flex;align-items:center;gap:0;}
+.cf-qty-btn{
+  width:44px;height:44px;background:#1a1a1a;border:1px solid #2a2a2a;
+  color:var(--white);font-size:20px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s,border-color .2s;flex-shrink:0;
+}
+.cf-qty-btn:hover{background:#2a2a2a;border-color:var(--gold);}
+.cf-qty-input{
+  flex:1;text-align:center;border-left:none;border-right:none;height:44px;
+  padding:0;font-size:16px;font-weight:600;
+}
+.cf-total-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  border-top:1px solid #1e1e1e;padding-top:20px;margin-bottom:24px;
+}
+.cf-total-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.4);}
+.cf-total-value{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:3px;color:var(--gold);}
+.cf-submit{width:100%;padding:16px;font-size:12px;letter-spacing:4px;margin-bottom:14px;}
+.cf-secure{text-align:center;font-size:11px;color:rgba(255,255,255,.3);letter-spacing:1px;margin:0;}
+.cf-error{text-align:center;font-size:12px;color:#e05252;letter-spacing:1px;margin-top:12px;min-height:16px;}
+@media(max-width:600px){
+  .checkout-form{padding:32px 24px;}
+  .cf-row{grid-template-columns:1fr;}
+  .cf-radio-group{grid-template-columns:1fr;}
+}
+
 /* ═══════════════════════════════
    VENUE
 ═══════════════════════════════ */
@@ -1486,44 +1555,94 @@ footer{
 
     <div class="ticket-grid">
       <div class="tcard">
-        <div class="t-type">Mesa General</div>
-        <div class="t-price"><sup>$</sup>800</div>
-        <div class="t-note">desde · MXN por mesa · precio según lugares</div>
+        <div class="t-type">General</div>
+        <div class="t-price"><sup>$</sup>200</div>
+        <div class="t-note">USD · por boleto</div>
         <div class="t-divider"></div>
         <ul class="t-feats">
           <li><span class="t-dot"></span>Acceso general al evento</li>
           <li><span class="t-dot"></span>5 artistas en vivo</li>
-
           <li><span class="t-dot"></span>Barra disponible toda la noche</li>
         </ul>
-        <div class="t-divider"></div>
-        <ul class="t-feats" style="margin-bottom:0;">
-          <li><span class="t-dot" style="background:var(--gold);"></span>Mesa de 4 boletos — <strong>$800</strong></li>
-          <li><span class="t-dot" style="background:var(--gold);"></span>Mesa de 5 boletos — <strong>$1,000</strong></li>
-          <li><span class="t-dot" style="background:var(--gold);"></span>Mesa de 6 boletos — <strong>$1,200</strong></li>
-          <li><span class="t-dot" style="background:var(--gold);"></span>Mesa de 7 boletos — <strong>$1,400</strong></li>
-        </ul>
-        <button onclick="openSeatModal('gen')" class="t-btn t-btn-outline" style="margin-top:20px;">Seleccionar mi mesa</button>
       </div>
       <div class="tcard vip">
         <div class="tcard-badge">Recomendado</div>
-        <div class="vip-scarcity">⚡ Mesas VIP limitadas</div>
-        <div class="t-type">Mesa VIP</div>
-        <div class="t-price"><sup>$</sup>1,750</div>
-        <div class="t-note">MXN · mesa de 5 boletos ($350 c/u)</div>
+        <div class="vip-scarcity">⚡ Lugares VIP limitados</div>
+        <div class="t-type">VIP</div>
+        <div class="t-price"><sup>$</sup>350</div>
+        <div class="t-note">USD · por boleto</div>
         <div class="t-divider"></div>
         <ul class="t-feats">
           <li><span class="t-dot"></span>Zona VIP exclusiva — Palco</li>
-          <li><span class="t-dot"></span>5 boletos incluidos por mesa</li>
           <li><span class="t-dot"></span>5 artistas en vivo</li>
           <li><span class="t-dot"></span>Meet &amp; greet con artistas</li>
           <li><span class="t-dot"></span>Acceso prioritario sin fila</li>
-
           <li><span class="t-dot"></span>Barra disponible toda la noche</li>
         </ul>
-        <button onclick="openSeatModal('vip')" class="t-btn t-btn-gold">Seleccionar mi mesa VIP</button>
       </div>
     </div>
+
+    <!-- ── CHECKOUT FORM ── -->
+    <form id="checkoutForm" class="checkout-form" onsubmit="handleCheckout(event)" novalidate>
+      <div class="cf-title">Completa tu compra</div>
+
+      <div class="cf-row">
+        <div class="cf-field">
+          <label class="cf-label" for="cf-nombre">Nombre</label>
+          <input class="cf-input" id="cf-nombre" type="text" placeholder="Juan" autocomplete="given-name" required>
+        </div>
+        <div class="cf-field">
+          <label class="cf-label" for="cf-apellido">Apellido</label>
+          <input class="cf-input" id="cf-apellido" type="text" placeholder="Pérez" autocomplete="family-name" required>
+        </div>
+      </div>
+
+      <div class="cf-field">
+        <label class="cf-label" for="cf-email">Correo electrónico</label>
+        <input class="cf-input" id="cf-email" type="email" placeholder="tu@correo.com" autocomplete="email" required>
+      </div>
+
+      <div class="cf-field">
+        <label class="cf-label">Tipo de boleto</label>
+        <div class="cf-radio-group">
+          <label class="cf-radio-card" id="rcGeneral">
+            <input type="radio" name="tipo_boleto" value="general" required>
+            <div class="cf-radio-inner">
+              <span class="cf-radio-name">General</span>
+              <span class="cf-radio-price">$200 USD</span>
+            </div>
+          </label>
+          <label class="cf-radio-card" id="rcVip">
+            <input type="radio" name="tipo_boleto" value="vip">
+            <div class="cf-radio-inner">
+              <span class="cf-radio-name">VIP</span>
+              <span class="cf-radio-price">$350 USD</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="cf-field">
+        <label class="cf-label" for="cf-cantidad">Cantidad de boletos</label>
+        <div class="cf-qty-wrap">
+          <button type="button" class="cf-qty-btn" onclick="changeCantidad(-1)" aria-label="Reducir">−</button>
+          <input class="cf-input cf-qty-input" id="cf-cantidad" type="number" value="1" min="1" max="10" readonly>
+          <button type="button" class="cf-qty-btn" onclick="changeCantidad(1)" aria-label="Aumentar">+</button>
+        </div>
+      </div>
+
+      <div class="cf-total-row">
+        <span class="cf-total-label">Total estimado</span>
+        <span class="cf-total-value" id="cfTotal">—</span>
+      </div>
+
+      <button type="submit" class="t-btn t-btn-gold cf-submit" id="cfSubmitBtn">
+        Ir a pagar →
+      </button>
+      <p class="cf-secure">🔒 Pago seguro procesado por Stripe</p>
+      <p id="cfError" class="cf-error" aria-live="polite"></p>
+    </form>
+
   </div>
 </section>
 
@@ -1567,37 +1686,6 @@ footer{
   </div>
 </div>
 
-<!-- ══ SEAT SELECTION MODAL ══════════════════════ -->
-<div class="seat-modal" id="seatModal" role="dialog" aria-modal="true" aria-label="Selecciona tu lugar">
-  <div class="seat-modal-box">
-    <div class="seat-modal-header">
-      <div>
-        <div class="seat-modal-title">Selecciona tu Mesa</div>
-        <div class="seat-modal-sub">Haz clic en una mesa disponible para reservarla</div>
-      </div>
-      <button class="seat-close" onclick="closeSeatModal()" aria-label="Cerrar">×</button>
-    </div>
-    <div class="seat-legend">
-      <div class="leg-item"><div class="leg-dot leg-vip"></div>Mesa VIP · Palco — $1,750 (5 boletos)</div>
-      <div class="leg-item"><div class="leg-dot leg-gen"></div>Mesa General — desde $800 (4 boletos)</div>
-      <div class="leg-item"><div class="leg-dot leg-sel"></div>Mesa seleccionada</div>
-    </div>
-    <div class="seat-qty-bar">
-      <span class="qty-label">Mesa seleccionada</span>
-      <span class="qty-status" id="qtyStatus">Haz clic en una mesa del mapa para seleccionarla</span>
-    </div>
-    <div class="seat-map-wrap">
-      <svg class="venue-svg" id="venueSvg" viewBox="0 0 860 710" xmlns="http://www.w3.org/2000/svg"></svg>
-    </div>
-    <div class="seat-panel">
-      <div class="seat-info">
-        <strong id="seatInfoTitle">— Selecciona tu mesa —</strong>
-        <span id="seatInfoSub">Elige una mesa en el mapa de arriba</span>
-      </div>
-      <a class="seat-pay" id="seatPayBtn" href="#" target="_blank" rel="noopener">Ir a pagar →</a>
-    </div>
-  </div>
-</div>
 
 <!-- ══ PRIVACY MODAL ═══════════════════════════════ -->
 <div id="privacyModal" style="
@@ -2094,35 +2182,67 @@ function pickTable(tableN, type){
   updatePanel();
 }
 
-function openSeatModal(filter){
-  currentFilter = filter || null;
-  selectedTable = null;
-  const btn = document.getElementById('seatPayBtn');
-  btn.href='#'; btn.classList.remove('ready'); btn.textContent='Ir a pagar →';
-  buildMap();
-  if(currentFilter){
-    document.querySelectorAll('#venueSvg circle[data-type]').forEach(s=>{
-      const match = s.getAttribute('data-type') === currentFilter;
-      s.style.opacity        = match ? '1' : '0.12';
-      s.style.cursor         = match ? 'pointer' : 'default';
-      s.style.pointerEvents  = match ? 'all' : 'none';
-    });
+// ── Checkout form ───────────────────────────────────────────────────────────
+const TICKET_PRICES = { general: 200, vip: 350 };
+
+function changeCantidad(delta){
+  const input = document.getElementById('cf-cantidad');
+  const next = Math.min(10, Math.max(1, parseInt(input.value || 1) + delta));
+  input.value = next;
+  updateTotal();
+}
+
+function updateTotal(){
+  const tipo = document.querySelector('input[name="tipo_boleto"]:checked');
+  const qty  = parseInt(document.getElementById('cf-cantidad').value || 1);
+  const totalEl = document.getElementById('cfTotal');
+  if(tipo && TICKET_PRICES[tipo.value]){
+    totalEl.textContent = '$' + (TICKET_PRICES[tipo.value] * qty).toLocaleString('en-US') + ' USD';
+  } else {
+    totalEl.textContent = '—';
   }
-  updatePanel();
-  document.getElementById('seatModal').classList.add('open');
-  document.body.style.overflow='hidden';
 }
 
-function closeSeatModal(){
-  document.getElementById('seatModal').classList.remove('open');
-  document.body.style.overflow='';
-  selectedTable = null;
-}
+document.querySelectorAll('input[name="tipo_boleto"]').forEach(r =>
+  r.addEventListener('change', updateTotal)
+);
+document.getElementById('cf-cantidad').addEventListener('input', updateTotal);
 
-document.getElementById('seatModal').addEventListener('click',function(e){
-  if(e.target===this) closeSeatModal();
-});
-document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeSeatModal(); });
+async function handleCheckout(e){
+  e.preventDefault();
+  const btn   = document.getElementById('cfSubmitBtn');
+  const errEl = document.getElementById('cfError');
+  errEl.textContent = '';
+
+  const nombre   = document.getElementById('cf-nombre').value.trim();
+  const apellido = document.getElementById('cf-apellido').value.trim();
+  const email    = document.getElementById('cf-email').value.trim();
+  const tipo     = document.querySelector('input[name="tipo_boleto"]:checked');
+  const cantidad = parseInt(document.getElementById('cf-cantidad').value || 1);
+
+  if(!nombre || !apellido || !email || !tipo){
+    errEl.textContent = 'Por favor completa todos los campos.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Procesando…';
+
+  try {
+    const res = await fetch('/api/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre, apellido, email, tipo_boleto: tipo.value, cantidad }),
+    });
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error || 'Error al procesar el pago');
+    window.location.href = data.url;
+  } catch(err){
+    errEl.textContent = err.message || 'Ocurrió un error. Intenta de nuevo.';
+    btn.disabled = false;
+    btn.textContent = 'Ir a pagar →';
+  }
+}
 
 // ── Hamburger menu ──────────────────────────────────────────────────────────
 const navHam    = document.getElementById('navHam');
