@@ -69,9 +69,13 @@ export default async function handler(req, res) {
     });
 
     // Save pending order in Supabase
+    const confirmationCode = session.id.slice(-8).toUpperCase();
+    console.log("[create-checkout] session.id:", session.id);
+    console.log("[create-checkout] confirmation saved to Supabase:", confirmationCode);
+
     const { error: dbError } = await supabase.from("orders").insert({
       stripe_session_id: session.id,
-      confirmation: session.id.slice(-8).toUpperCase(),
+      confirmation: confirmationCode,
       nombre,
       apellido,
       email,

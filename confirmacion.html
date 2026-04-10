@@ -512,6 +512,9 @@ body{
         data.cantidad || "",
       ].join("|");
 
+      console.log("[confirmacion] confirmation code displayed:", conf);
+      console.log("[confirmacion] full QR text encoded:", qrText);
+
       buildQR(qrText, conf);
     })
     .catch(() => showError());

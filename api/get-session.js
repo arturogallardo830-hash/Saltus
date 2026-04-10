@@ -15,6 +15,10 @@ export default async function handler(req, res) {
   try {
     const session = await stripe.checkout.sessions.retrieve(session_id);
 
+    const confirmationCode = session.id.slice(-8).toUpperCase();
+    console.log("[get-session] session.id:", session.id);
+    console.log("[get-session] confirmation returned to client:", confirmationCode);
+
     // Only expose safe fields to the client
     return res.status(200).json({
       nombre: session.metadata?.nombre || "",
@@ -24,7 +28,7 @@ export default async function handler(req, res) {
       cantidad: session.metadata?.cantidad || "",
       mesa: session.metadata?.mesa || "",
       total: session.amount_total ? session.amount_total / 100 : 0, // pesos MXN
-      confirmation: session.id.slice(-8).toUpperCase(),
+      confirmation: confirmationCode,
       status: session.payment_status,
     });
   } catch (err) {
