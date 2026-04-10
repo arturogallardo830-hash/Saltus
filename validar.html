@@ -591,6 +591,11 @@ html, body {
       <div id="qr-reader"></div>
     </div>
     <div class="qr-status" id="qrStatus">Iniciando cámara…</div>
+    <div id="qrDebug" style="
+      font-size:10px;letter-spacing:1px;color:#555;
+      word-break:break-all;text-align:center;
+      min-height:14px;padding:0 8px;max-width:100%;
+    "></div>
     <button class="btn-stop-scan" onclick="stopQR()">Cancelar</button>
   </div>
 
@@ -725,7 +730,12 @@ function startQR() {
       aspectRatio: 1.0,
     },
     onQRSuccess,
-    () => {}                                 // ignore per-frame errors
+    (errorMsg) => {                          // per-frame: show what's being detected
+      const dbg = document.getElementById("qrDebug");
+      if (dbg && errorMsg && !errorMsg.includes("No MultiFormat")) {
+        dbg.textContent = "leyendo: " + errorMsg;
+      }
+    }
   ).then(() => {
     qrRunning = true;
     document.getElementById("qrStatus").textContent = "Listo · apunta al código QR";
@@ -744,6 +754,14 @@ function stopQR() {
 }
 
 function onQRSuccess(decodedText) {
+  // ── DEBUG ──────────────────────────────────────────────────────────
+  console.log("[SALTUS QR] Raw decoded text:", decodedText);
+  console.log("[SALTUS QR] Length:", decodedText.length);
+  console.log("[SALTUS QR] Parts (split |):", decodedText.split("|"));
+  const dbg = document.getElementById("qrDebug");
+  if (dbg) dbg.textContent = "QR leído: " + decodedText;
+  // ───────────────────────────────────────────────────────────────────
+
   // Stop camera immediately
   stopQR();
   hide("qrPanel");
@@ -753,6 +771,9 @@ function onQRSuccess(decodedText) {
   const parts = decodedText.split("|");
   if (parts.length >= 2 && parts[0].toUpperCase() === "SALTUS-VOL1") {
     code = parts[1].trim().toUpperCase();
+    console.log("[SALTUS QR] Parsed confirmation code:", code);
+  } else {
+    console.log("[SALTUS QR] No SALTUS-VOL1 prefix found — using full text as code:", code);
   }
 
   // Run validation with the extracted code
