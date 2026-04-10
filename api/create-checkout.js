@@ -71,11 +71,13 @@ export default async function handler(req, res) {
     // Save pending order in Supabase
     const { error: dbError } = await supabase.from("orders").insert({
       stripe_session_id: session.id,
+      confirmation: session.id.slice(-8).toUpperCase(),
       nombre,
       apellido,
       email,
       tipo_boleto,
       cantidad: qty,
+      mesa: mesa || null,
       total,
       status: "pending",
       created_at: new Date().toISOString(),

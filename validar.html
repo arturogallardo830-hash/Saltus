@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Validar Boleto — SALTUS</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black: #080808;
+  --surface: #111111;
+  --line: #222222;
+  --white: #ffffff;
+  --gray: #888888;
+  --gold: #C9A84C;
+  --green: #00FF00;
+  --red: #FF0000;
+}
+
+html, body {
+  height: 100%;
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* ════════════════════════════════
+   PASSWORD GATE
+════════════════════════════════ */
+#gate {
+  position: fixed;
+  inset: 0;
+  background: var(--black);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  z-index: 100;
+}
+
+.gate-logo {
+  font-size: 11px;
+  letter-spacing: 6px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.gate-title {
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: var(--gray);
+  text-transform: uppercase;
+}
+
+.gate-input {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 0;
+  color: var(--white);
+  font-family: inherit;
+  font-size: 18px;
+  letter-spacing: 4px;
+  text-align: center;
+  padding: 14px 24px;
+  width: 260px;
+  outline: none;
+  transition: border-color .2s;
+  -webkit-text-security: disc;
+}
+.gate-input:focus { border-color: var(--gold); }
+
+.gate-btn {
+  background: var(--gold);
+  color: var(--black);
+  border: none;
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 13px 40px;
+  cursor: pointer;
+  transition: opacity .2s;
+  width: 260px;
+}
+.gate-btn:hover { opacity: .85; }
+
+.gate-error {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--red);
+  min-height: 16px;
+}
+
+/* ════════════════════════════════
+   MAIN APP
+════════════════════════════════ */
+#app {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 40px 20px 60px;
+}
+
+/* Header */
+.app-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.app-logo {
+  font-size: 11px;
+  letter-spacing: 6px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.app-title {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--gray);
+  text-transform: uppercase;
+}
+
+/* Scanner box */
+.scanner-box {
+  width: 100%;
+  max-width: 440px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 36px 32px;
+  margin-bottom: 28px;
+}
+
+.scanner-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--gray);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.scanner-input-row {
+  display: flex;
+  gap: 10px;
+}
+
+.scanner-input {
+  flex: 1;
+  background: var(--black);
+  border: 1px solid var(--line);
+  color: var(--white);
+  font-family: inherit;
+  font-size: 20px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  padding: 12px 16px;
+  outline: none;
+  transition: border-color .2s;
+}
+.scanner-input:focus { border-color: var(--gold); }
+.scanner-input::placeholder { color: var(--line); letter-spacing: 2px; font-size: 14px; }
+
+.scanner-btn {
+  background: var(--gold);
+  color: var(--black);
+  border: none;
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 0 20px;
+  cursor: pointer;
+  transition: opacity .2s;
+  white-space: nowrap;
+}
+.scanner-btn:disabled { opacity: .4; cursor: not-allowed; }
+.scanner-btn:not(:disabled):hover { opacity: .85; }
+
+.scanner-hint {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--gray);
+  margin-top: 10px;
+}
+
+/* Result panel */
+#result {
+  width: 100%;
+  max-width: 440px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 32px;
+  border: 1px solid;
+  text-align: center;
+  gap: 14px;
+}
+#result.valid   { background: #001a00; border-color: var(--green); }
+#result.used    { background: #1a0000; border-color: var(--red); }
+#result.invalid { background: #1a0000; border-color: var(--red); }
+
+.result-icon {
+  font-size: 52px;
+  line-height: 1;
+}
+.valid   .result-icon { color: var(--green); }
+.used    .result-icon { color: var(--red); }
+.invalid .result-icon { color: var(--red); }
+
+.result-status {
+  font-size: 22px;
+  letter-spacing: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.valid   .result-status { color: var(--green); }
+.used    .result-status { color: var(--red); }
+.invalid .result-status { color: var(--red); }
+
+.result-detail {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,.6);
+  text-transform: uppercase;
+}
+
+.result-table {
+  width: 100%;
+  border-top: 1px solid rgba(255,255,255,.1);
+  margin-top: 8px;
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.result-key {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--gray);
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+.result-val {
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--white);
+  text-align: right;
+}
+
+.btn-reset {
+  background: transparent;
+  border: 1px solid var(--gray);
+  color: var(--gray);
+  font-family: inherit;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 10px 28px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: border-color .2s, color .2s;
+}
+.btn-reset:hover { border-color: var(--white); color: var(--white); }
+
+/* Loading spinner */
+.spinner {
+  width: 20px; height: 20px;
+  border: 2px solid rgba(255,255,255,.15);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  display: none;
+  margin: 0 auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Log */
+.log-section {
+  width: 100%;
+  max-width: 440px;
+  margin-top: 32px;
+}
+.log-title {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--gray);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+.log-entry {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  padding: 8px 12px;
+  background: var(--surface);
+  border-left: 2px solid transparent;
+}
+.log-entry.valid   { border-left-color: var(--green); }
+.log-entry.used    { border-left-color: var(--red); }
+.log-entry.invalid { border-left-color: var(--red); }
+.log-code { color: var(--gold); min-width: 80px; }
+.log-name { color: var(--white); flex: 1; }
+.log-badge {
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 2px 6px;
+}
+.valid   .log-badge { color: var(--green); }
+.used    .log-badge { color: var(--red); }
+.invalid .log-badge { color: var(--red); }
+.log-time { color: var(--gray); font-size: 10px; }
+
+/* Logout */
+.logout-btn {
+  position: fixed;
+  top: 16px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  color: var(--gray);
+  font-family: inherit;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color .2s;
+}
+.logout-btn:hover { color: var(--white); }
+</style>
+</head>
+<body>
+
+<!-- ── PASSWORD GATE ── -->
+<div id="gate">
+  <div class="gate-logo">SALTUS</div>
+  <div class="gate-title">Acceso para staff</div>
+  <input class="gate-input" id="gateInput" type="password"
+    placeholder="••••••••••" autocomplete="off"
+    onkeydown="if(event.key==='Enter') gateSubmit()">
+  <button class="gate-btn" onclick="gateSubmit()">Entrar</button>
+  <div class="gate-error" id="gateError"></div>
+</div>
+
+<!-- ── MAIN APP ── -->
+<div id="app">
+  <button class="logout-btn" onclick="logout()">Salir</button>
+
+  <div class="app-header">
+    <div class="app-logo">SALTUS Vol. I</div>
+    <div class="app-title">Validador de boletos</div>
+  </div>
+
+  <!-- Scanner input -->
+  <div class="scanner-box">
+    <label class="scanner-label" for="codeInput">Número de confirmación</label>
+    <div class="scanner-input-row">
+      <input class="scanner-input" id="codeInput" type="text"
+        maxlength="8" placeholder="XXXXXXXX" autocomplete="off" spellcheck="false"
+        onkeydown="if(event.key==='Enter') validate()"
+        oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+      <button class="scanner-btn" id="validateBtn" onclick="validate()">OK</button>
+    </div>
+    <div class="scanner-hint">8 caracteres · letras y números</div>
+    <div class="spinner" id="spinner"></div>
+  </div>
+
+  <!-- Result panel -->
+  <div id="result">
+    <div class="result-icon" id="resultIcon"></div>
+    <div class="result-status" id="resultStatus"></div>
+    <div class="result-detail" id="resultDetail"></div>
+    <div class="result-table" id="resultTable" style="display:none;"></div>
+    <button class="btn-reset" onclick="resetForm()">Validar otro boleto</button>
+  </div>
+
+  <!-- Scan log -->
+  <div class="log-section">
+    <div class="log-title">Registro de esta sesión</div>
+    <div class="log-list" id="logList"></div>
+  </div>
+</div>
+
+<script>
+// ── Auth ──────────────────────────────────────────────────────────────
+const PASS = "SALTUS2025";
+let sessionPassword = "";
+
+function gateSubmit() {
+  const input = document.getElementById("gateInput");
+  const errEl = document.getElementById("gateError");
+  if (input.value === PASS) {
+    sessionPassword = input.value;
+    document.getElementById("gate").style.display = "none";
+    document.getElementById("app").style.display = "flex";
+    document.getElementById("codeInput").focus();
+  } else {
+    errEl.textContent = "Contraseña incorrecta";
+    input.value = "";
+    input.focus();
+    setTimeout(() => { errEl.textContent = ""; }, 2500);
+  }
+}
+
+function logout() {
+  sessionPassword = "";
+  document.getElementById("gate").style.display = "flex";
+  document.getElementById("app").style.display = "none";
+  document.getElementById("gateInput").value = "";
+  document.getElementById("gateInput").focus();
+  resetForm();
+}
+
+// ── Validation ────────────────────────────────────────────────────────
+const log = [];
+
+async function validate() {
+  const input   = document.getElementById("codeInput");
+  const btn     = document.getElementById("validateBtn");
+  const spinner = document.getElementById("spinner");
+  const code    = input.value.trim().toUpperCase();
+
+  if (code.length < 3) {
+    input.focus();
+    return;
+  }
+
+  btn.disabled   = true;
+  spinner.style.display = "block";
+  hideResult();
+
+  try {
+    const res = await fetch("/api/validate-ticket", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code, password: sessionPassword }),
+    });
+
+    const data = await res.json();
+
+    if (res.status === 401) {
+      logout();
+      return;
+    }
+
+    showResult(code, data);
+  } catch (err) {
+    showResult(code, { result: "error" });
+  } finally {
+    btn.disabled = false;
+    spinner.style.display = "none";
+  }
+}
+
+function showResult(code, data) {
+  const panel     = document.getElementById("result");
+  const icon      = document.getElementById("resultIcon");
+  const status    = document.getElementById("resultStatus");
+  const detail    = document.getElementById("resultDetail");
+  const table     = document.getElementById("resultTable");
+
+  panel.className = "";
+  table.innerHTML = "";
+  table.style.display = "none";
+
+  const now = new Date().toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+
+  if (data.result === "valid") {
+    panel.classList.add("valid");
+    icon.textContent   = "✓";
+    status.textContent = "BOLETO VÁLIDO";
+    detail.textContent = "Acceso permitido";
+    renderTable(table, data);
+    addLog("valid", code, data.nombre || "", now);
+
+  } else if (data.result === "used") {
+    panel.classList.add("used");
+    icon.textContent   = "✗";
+    status.textContent = "BOLETO YA UTILIZADO";
+    detail.textContent = "Este boleto ya fue canjeado";
+    renderTable(table, data);
+    addLog("used", code, data.nombre || "", now);
+
+  } else if (data.result === "invalid") {
+    panel.classList.add("invalid");
+    icon.textContent   = "✗";
+    status.textContent = "BOLETO INVÁLIDO";
+    detail.textContent = "No se encontró este código";
+    addLog("invalid", code, "", now);
+
+  } else {
+    panel.classList.add("invalid");
+    icon.textContent   = "!";
+    status.textContent = "ERROR";
+    detail.textContent = data.error || "Error al consultar";
+    addLog("invalid", code, "", now);
+  }
+
+  panel.style.display = "flex";
+}
+
+function renderTable(container, data) {
+  const rows = [];
+  if (data.nombre)     rows.push(["Nombre", data.nombre]);
+  if (data.tipo_boleto) rows.push(["Tipo", capitalize(data.tipo_boleto)]);
+  if (data.mesa)       rows.push(["Mesa", "Mesa #" + data.mesa]);
+  if (data.cantidad)   rows.push(["Cantidad", data.cantidad]);
+
+  if (rows.length === 0) return;
+  container.innerHTML = rows.map(([k, v]) =>
+    `<div class="result-row"><span class="result-key">${k}</span><span class="result-val">${v}</span></div>`
+  ).join("");
+  container.style.display = "flex";
+}
+
+function addLog(type, code, name, time) {
+  log.unshift({ type, code, name, time });
+  renderLog();
+}
+
+function renderLog() {
+  const list = document.getElementById("logList");
+  if (log.length === 0) { list.innerHTML = ""; return; }
+
+  const labels = { valid: "VÁLIDO", used: "USADO", invalid: "INVÁLIDO" };
+  list.innerHTML = log.slice(0, 30).map(e => `
+    <div class="log-entry ${e.type}">
+      <span class="log-code">${e.code}</span>
+      <span class="log-name">${e.name || "—"}</span>
+      <span class="log-badge">${labels[e.type] || e.type}</span>
+      <span class="log-time">${e.time}</span>
+    </div>
+  `).join("");
+}
+
+function hideResult() {
+  const panel = document.getElementById("result");
+  panel.style.display = "none";
+  panel.className = "";
+}
+
+function resetForm() {
+  hideResult();
+  const input = document.getElementById("codeInput");
+  input.value = "";
+  input.focus();
+}
+
+function capitalize(s) {
+  return s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
+}
+
+// Auto-focus input on Enter from result
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") resetForm();
+});
+</script>
+</body>
+</html>
