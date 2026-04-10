@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,700;1,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 :root{
   --gold:#C9A84C;
@@ -145,6 +146,84 @@ body{
   color:var(--gold);
 }
 
+/* ── QR Section ── */
+.qr-section{
+  display:flex;flex-direction:column;align-items:center;
+  margin-top:36px;gap:16px;
+}
+.qr-label{
+  font-size:10px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gray);
+}
+.qr-frame{
+  background:#080808;
+  border:1px solid var(--line);
+  padding:16px;
+  position:relative;
+  display:inline-flex;
+  align-items:center;justify-content:center;
+}
+/* Corner accents */
+.qr-frame::before,.qr-frame::after,
+.qr-frame .corner-bl,.qr-frame .corner-br{
+  content:'';
+  position:absolute;
+  width:14px;height:14px;
+}
+.qr-frame::before{top:-1px;left:-1px;border-top:1px solid var(--gold);border-left:1px solid var(--gold);}
+.qr-frame::after{top:-1px;right:-1px;border-top:1px solid var(--gold);border-right:1px solid var(--gold);}
+.qr-frame .corner-bl{bottom:-1px;left:-1px;border-bottom:1px solid var(--gold);border-left:1px solid var(--gold);}
+.qr-frame .corner-br{bottom:-1px;right:-1px;border-bottom:1px solid var(--gold);border-right:1px solid var(--gold);}
+
+/* QRCode.js renders a table or canvas; we override colors via filter */
+#qrcode{
+  display:block;
+  /* Invert the default black-on-white QR to transparent, then tint gold */
+  filter:invert(1) sepia(1) saturate(2) hue-rotate(5deg) brightness(.9);
+}
+#qrcode canvas,#qrcode img{display:block;}
+
+/* QR placeholder while loading */
+.qr-placeholder{
+  width:180px;height:180px;
+  background:linear-gradient(90deg,var(--surface2) 25%,#222 50%,var(--surface2) 75%);
+  background-size:200% 100%;
+  animation:shimmer 1.4s infinite;
+}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ── Buttons row ── */
+.btn-row{
+  display:flex;gap:12px;flex-wrap:wrap;justify-content:center;
+  margin-top:32px;
+}
+.btn-outline{
+  padding:13px 28px;
+  border:1px solid var(--gold);
+  background:transparent;
+  color:var(--gold);
+  font-family:'DM Sans',sans-serif;
+  font-size:11px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;
+  text-decoration:none;
+  transition:background .2s,color .2s;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.btn-outline:hover{background:var(--gold);color:var(--black);}
+.btn-solid{
+  padding:13px 28px;
+  border:1px solid var(--gold);
+  background:var(--gold);
+  color:var(--black);
+  font-family:'DM Sans',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  text-decoration:none;
+  transition:background .2s,color .2s,border-color .2s;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.btn-solid:hover{background:var(--gold-l);border-color:var(--gold-l);}
+
 /* ── Email note ── */
 .email-note{
   text-align:center;
@@ -165,24 +244,7 @@ body{
   flex-shrink:0;
 }
 
-/* ── Button ── */
-.btn-back{
-  display:block;
-  margin:40px auto 0;
-  width:fit-content;
-  padding:14px 36px;
-  border:1px solid var(--gold);
-  background:transparent;
-  color:var(--gold);
-  font-family:'DM Sans',sans-serif;
-  font-size:11px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;
-  text-decoration:none;
-  transition:background .2s,color .2s;
-  cursor:pointer;
-}
-.btn-back:hover{background:var(--gold);color:var(--black);}
-
-/* ── Skeleton / loading ── */
+/* ── Skeleton ── */
 .skeleton{
   background:linear-gradient(90deg,var(--surface2) 25%,#222 50%,var(--surface2) 75%);
   background-size:200% 100%;
@@ -190,7 +252,6 @@ body{
   border-radius:2px;
   display:inline-block;
 }
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
 /* ── Error state ── */
 .error-msg{
@@ -201,8 +262,10 @@ body{
 }
 
 @media(max-width:540px){
-  .card{padding:40px 28px;}
+  .card{padding:40px 24px;}
   .success-title{font-size:23px;}
+  .btn-row{flex-direction:column;align-items:stretch;}
+  .btn-outline,.btn-solid{text-align:center;}
 }
 </style>
 </head>
@@ -244,6 +307,10 @@ body{
       <span class="order-value skeleton" id="val-tipo" style="min-width:80px;height:20px;">&nbsp;</span>
     </div>
     <div class="order-row">
+      <span class="order-label">Mesa</span>
+      <span class="order-value skeleton" id="val-mesa" style="min-width:60px;height:20px;">&nbsp;</span>
+    </div>
+    <div class="order-row">
       <span class="order-label">Cantidad</span>
       <span class="order-value skeleton" id="val-cantidad" style="min-width:30px;height:20px;">&nbsp;</span>
     </div>
@@ -263,6 +330,22 @@ body{
 
   <div class="divider"></div>
 
+  <!-- QR Code -->
+  <div class="qr-section">
+    <p class="qr-label">Código de acceso</p>
+    <div class="qr-frame" id="qrFrame">
+      <span class="corner-bl"></span>
+      <span class="corner-br"></span>
+      <div class="qr-placeholder" id="qrPlaceholder"></div>
+      <div id="qrcode" style="display:none;"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-solid" id="btnDownload" onclick="downloadQR()" disabled>Descargar boleto</button>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
   <!-- Email note -->
   <p class="email-note">
     Recibirás tu boleto en tu correo electrónico.<br>
@@ -278,8 +361,10 @@ body{
     <span>San Pedro</span>
   </div>
 
-  <!-- CTA -->
-  <a href="https://mysaltus.com" class="btn-back">Volver al sitio</a>
+  <!-- Back button -->
+  <div class="btn-row" style="margin-top:32px;">
+    <a href="https://mysaltus.com" class="btn-outline">Volver al sitio</a>
+  </div>
 
 </div>
 
@@ -288,7 +373,11 @@ body{
   const params = new URLSearchParams(window.location.search);
   const sessionId = params.get("session_id");
 
-  function setSkeleton(id, text, extraClass) {
+  // Holds canvas reference for download
+  window._qrCanvas = null;
+  window._qrConfirmation = '';
+
+  function setSkeleton(id, text) {
     const el = document.getElementById(id);
     if (!el) return;
     el.classList.remove("skeleton");
@@ -296,16 +385,88 @@ body{
     el.style.height = "";
     el.style.display = "";
     el.textContent = text;
-    if (extraClass) el.classList.add(extraClass);
   }
 
   function showError() {
     document.getElementById("errorMsg").style.display = "block";
-    ["val-nombre","val-tipo","val-cantidad","val-total","val-conf","val-email"].forEach(id => {
+    ["val-nombre","val-tipo","val-mesa","val-cantidad","val-total","val-conf","val-email"].forEach(id => {
       const el = document.getElementById(id);
       if (el) { el.classList.remove("skeleton"); el.textContent = "—"; }
     });
   }
+
+  function buildQR(qrText, conf) {
+    window._qrConfirmation = conf;
+    const placeholder = document.getElementById("qrPlaceholder");
+    const qrEl = document.getElementById("qrcode");
+
+    new QRCode(qrEl, {
+      text: qrText,
+      width: 180,
+      height: 180,
+      colorDark: "#000000",   // will be gold via CSS filter
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+
+    // Wait for QRCode.js to render the canvas
+    setTimeout(function () {
+      const canvas = qrEl.querySelector("canvas");
+      if (canvas) {
+        window._qrCanvas = canvas;
+        document.getElementById("btnDownload").disabled = false;
+      }
+      placeholder.style.display = "none";
+      qrEl.style.display = "block";
+    }, 300);
+  }
+
+  window.downloadQR = function () {
+    const canvas = window._qrCanvas;
+    if (!canvas) return;
+
+    // Draw onto an offscreen canvas with black bg + gold modules
+    const size = canvas.width;
+    const off = document.createElement("canvas");
+    off.width = size + 40;
+    off.height = size + 40;
+    const ctx = off.getContext("2d");
+
+    // Black background
+    ctx.fillStyle = "#080808";
+    ctx.fillRect(0, 0, off.width, off.height);
+
+    // Read original pixels and recolor: dark → gold, light → black bg
+    const tmp = document.createElement("canvas");
+    tmp.width = size; tmp.height = size;
+    const tc = tmp.getContext("2d");
+    tc.drawImage(canvas, 0, 0);
+    const imgData = tc.getImageData(0, 0, size, size);
+    const data = imgData.data;
+    for (let i = 0; i < data.length; i += 4) {
+      const brightness = (data[i] + data[i+1] + data[i+2]) / 3;
+      if (brightness < 128) {
+        // dark module → gold #C9A84C
+        data[i]   = 0xC9;
+        data[i+1] = 0xA8;
+        data[i+2] = 0x4C;
+      } else {
+        // light module → background
+        data[i]   = 0x08;
+        data[i+1] = 0x08;
+        data[i+2] = 0x08;
+      }
+      data[i+3] = 255;
+    }
+    tc.putImageData(imgData, 0, 0);
+    ctx.drawImage(tmp, 20, 20);
+
+    const conf = window._qrConfirmation || "SALTUS";
+    const link = document.createElement("a");
+    link.download = "SALTUS-VOL1-" + conf + ".png";
+    link.href = off.toDataURL("image/png");
+    link.click();
+  };
 
   if (!sessionId) {
     showError();
@@ -320,23 +481,38 @@ body{
     .then(data => {
       if (data.error) { showError(); return; }
 
-      const nombre = (data.nombre + " " + data.apellido).trim() || "—";
-      const tipo = data.tipo_boleto
+      const nombre   = (data.nombre + " " + data.apellido).trim() || "—";
+      const tipo     = data.tipo_boleto
         ? data.tipo_boleto.charAt(0).toUpperCase() + data.tipo_boleto.slice(1)
         : "—";
+      const mesa     = data.mesa ? "Mesa #" + data.mesa : "—";
+      const mesaRaw  = data.mesa || "";
       const cantidad = data.cantidad || "—";
-      const total = data.total != null
+      const total    = data.total != null
         ? "$" + Number(data.total).toLocaleString("es-MX", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " MXN"
         : "—";
-      const conf = data.confirmation || "—";
+      const conf  = data.confirmation || "—";
       const email = data.email || "—";
 
-      setSkeleton("val-nombre", nombre);
-      setSkeleton("val-tipo", tipo);
+      setSkeleton("val-nombre",   nombre);
+      setSkeleton("val-tipo",     tipo);
+      setSkeleton("val-mesa",     mesa);
       setSkeleton("val-cantidad", cantidad);
-      setSkeleton("val-total", total);
-      setSkeleton("val-conf", conf);
-      setSkeleton("val-email", email);
+      setSkeleton("val-total",    total);
+      setSkeleton("val-conf",     conf);
+      setSkeleton("val-email",    email);
+
+      // Build QR string
+      const qrText = [
+        "SALTUS-VOL1",
+        conf,
+        (data.nombre + " " + data.apellido).trim(),
+        data.tipo_boleto || "",
+        mesaRaw,
+        data.cantidad || "",
+      ].join("|");
+
+      buildQR(qrText, conf);
     })
     .catch(() => showError());
 })();

@@ -1662,6 +1662,7 @@ footer{
 
     <!-- ── CHECKOUT FORM ── -->
     <form id="checkoutForm" class="checkout-form" onsubmit="handleCheckout(event)" novalidate>
+      <input type="hidden" id="cf-mesa" value="">
       <div class="cf-title">Completa tu compra</div>
 
       <div class="cf-row">
@@ -2230,6 +2231,7 @@ function pickTable(tableN, type){
     // Toggle off
     selectedTable = null;
     document.getElementById('vmapSelectedBar').textContent = 'Haz clic en una mesa para seleccionarla';
+    document.getElementById('cf-mesa').value = '';
   } else {
     selectedTable = tableDef;
     document.querySelectorAll(`#vmapSvg circle[data-t="${tableN}"]`)
@@ -2249,6 +2251,9 @@ function pickTable(tableN, type){
     const total  = precio * seats;
     document.getElementById('vmapSelectedBar').textContent =
       `Mesa #${tableN} seleccionada · ${seats} lugares · $${total.toLocaleString('es-MX')} MXN total`;
+
+    // Store selected mesa in hidden field
+    document.getElementById('cf-mesa').value = tableN;
 
     // Scroll to form
     document.getElementById('checkoutForm').scrollIntoView({ behavior:'smooth', block:'start' });
@@ -2308,7 +2313,7 @@ async function handleCheckout(e){
     const res = await fetch('/api/create-checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nombre, apellido, email, tipo_boleto: tipo.value, cantidad }),
+      body: JSON.stringify({ nombre, apellido, email, tipo_boleto: tipo.value, cantidad, mesa: document.getElementById('cf-mesa').value || '' }),
     });
     const data = await res.json();
     if(!res.ok) throw new Error(data.error || 'Error al procesar el pago');

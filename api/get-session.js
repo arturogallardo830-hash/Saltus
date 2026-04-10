@@ -22,6 +22,7 @@ export default async function handler(req, res) {
       email: session.customer_email || session.metadata?.email || "",
       tipo_boleto: session.metadata?.tipo_boleto || "",
       cantidad: session.metadata?.cantidad || "",
+      mesa: session.metadata?.mesa || "",
       total: session.amount_total ? session.amount_total / 100 : 0, // pesos MXN
       confirmation: session.id.slice(-8).toUpperCase(),
       status: session.payment_status,

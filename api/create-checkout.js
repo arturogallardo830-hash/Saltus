@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { nombre, apellido, email, tipo_boleto, cantidad } = req.body;
+  const { nombre, apellido, email, tipo_boleto, cantidad, mesa } = req.body;
 
   // Validate required fields
   if (!nombre || !apellido || !email || !tipo_boleto || !cantidad) {
@@ -62,6 +62,7 @@ export default async function handler(req, res) {
         email,
         tipo_boleto,
         cantidad: qty,
+        mesa: mesa || '',
       },
       success_url: `${req.headers.origin || "https://saltus.vercel.app"}/confirmacion.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.origin || "https://saltus.vercel.app"}/`,
