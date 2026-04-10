@@ -6,923 +6,272 @@
 <title>Validar Boleto — SALTUS</title>
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 <style>
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-:root {
-  --black: #080808;
-  --surface: #111111;
-  --line: #222222;
-  --white: #ffffff;
-  --gray: #888888;
-  --gold: #C9A84C;
-  --green: #00FF00;
-  --red: #FF0000;
-}
-
-html, body {
-  height: 100%;
-  background: var(--black);
-  color: var(--white);
-  font-family: 'Courier New', Courier, monospace;
-}
-
-/* ════════════════════════════════
-   PASSWORD GATE
-════════════════════════════════ */
-#gate {
-  position: fixed;
-  inset: 0;
-  background: var(--black);
+body {
+  background: #000;
+  color: #fff;
+  font-family: 'Courier New', monospace;
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 24px;
-  z-index: 100;
 }
 
-.gate-logo {
-  font-size: 11px;
-  letter-spacing: 6px;
-  color: var(--gold);
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
+.screen { display: none; width: 100%; max-width: 400px; padding: 32px 24px; }
+.screen.active { display: flex; flex-direction: column; align-items: center; gap: 20px; }
 
-.gate-title {
-  font-size: 13px;
-  letter-spacing: 3px;
-  color: var(--gray);
-  text-transform: uppercase;
+/* Full-screen result */
+.screen.result-screen {
+  position: fixed;
+  inset: 0;
+  max-width: none;
+  padding: 40px 24px;
+  justify-content: center;
 }
+.screen.result-screen.active { display: flex; }
 
-.gate-input {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 0;
-  color: var(--white);
+h1 { font-size: 11px; letter-spacing: 6px; color: #C9A84C; text-transform: uppercase; text-align: center; }
+p.sub { font-size: 10px; letter-spacing: 2px; color: #666; text-transform: uppercase; text-align: center; }
+
+input[type="password"], input[type="text"] {
+  width: 100%;
+  background: #111;
+  border: 1px solid #333;
+  color: #fff;
   font-family: inherit;
   font-size: 18px;
   letter-spacing: 4px;
   text-align: center;
-  padding: 14px 24px;
-  width: 260px;
+  padding: 14px;
   outline: none;
-  transition: border-color .2s;
-  -webkit-text-security: disc;
 }
-.gate-input:focus { border-color: var(--gold); }
+input:focus { border-color: #C9A84C; }
 
-.gate-btn {
-  background: var(--gold);
-  color: var(--black);
+.btn {
+  width: 100%;
+  padding: 18px;
   border: none;
   font-family: inherit;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 3px;
   text-transform: uppercase;
   font-weight: 700;
-  padding: 13px 40px;
   cursor: pointer;
-  transition: opacity .2s;
-  width: 260px;
 }
-.gate-btn:hover { opacity: .85; }
+.btn-gold { background: #C9A84C; color: #000; }
+.btn-outline { background: transparent; border: 1px solid #C9A84C; color: #C9A84C; }
+.btn-gray { background: transparent; border: 1px solid #444; color: #888; margin-top: 4px; }
+.btn:active { opacity: 0.8; }
 
-.gate-error {
-  font-size: 11px;
-  letter-spacing: 2px;
-  color: var(--red);
-  min-height: 16px;
-}
+.err { font-size: 11px; letter-spacing: 1px; color: #ff4444; min-height: 16px; }
 
-/* ════════════════════════════════
-   MAIN APP
-════════════════════════════════ */
-#app {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-  padding: 40px 20px 60px;
-}
-
-/* Header */
-.app-header {
-  text-align: center;
-  margin-bottom: 36px;
-}
-.app-logo {
-  font-size: 11px;
-  letter-spacing: 6px;
-  color: var(--gold);
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-.app-title {
-  font-size: 11px;
-  letter-spacing: 3px;
-  color: var(--gray);
-  text-transform: uppercase;
-}
-
-/* ════════════════════════════════
-   MODE SELECTOR
-════════════════════════════════ */
-#modeSelector {
-  width: 100%;
-  max-width: 440px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 28px;
-}
-
-.mode-btn {
-  width: 100%;
-  padding: 22px 20px;
-  border: 1px solid var(--line);
-  background: var(--surface);
-  color: var(--white);
-  font-family: inherit;
-  font-size: 12px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: border-color .2s, background .2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-}
-.mode-btn:hover { border-color: var(--gold); background: #181818; }
-.mode-btn.primary {
-  border-color: var(--gold);
-  background: rgba(201,168,76,.08);
-}
-.mode-btn.primary:hover { background: rgba(201,168,76,.15); }
-
-.mode-icon {
-  font-size: 20px;
-  line-height: 1;
-}
-
-.mode-label {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 3px;
-}
-.mode-label-main {
-  font-size: 12px;
-  letter-spacing: 3px;
-  color: var(--white);
-}
-.mode-label-sub {
-  font-size: 9px;
-  letter-spacing: 2px;
-  color: var(--gray);
-}
-.mode-btn.primary .mode-label-main { color: var(--gold); }
-
-/* ════════════════════════════════
-   QR CAMERA PANEL
-════════════════════════════════ */
-#qrPanel {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 440px;
-  margin-bottom: 28px;
-  gap: 16px;
-}
-
-.qr-panel-label {
-  font-size: 10px;
-  letter-spacing: 3px;
-  color: var(--gray);
-  text-transform: uppercase;
-  align-self: flex-start;
-}
-
-.qr-viewport {
-  width: 100%;
-  background: #000;
-  border: 1px solid var(--line);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Corner frame overlaid on the camera */
-.qr-corners {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 10;
-}
-.qr-corners::before, .qr-corners::after,
-.qr-corner-bl, .qr-corner-br {
-  content: '';
-  position: absolute;
-  width: 20px; height: 20px;
-}
-.qr-corners::before  { top: 20px;    left: 20px;  border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); }
-.qr-corners::after   { top: 20px;    right: 20px; border-top: 2px solid var(--gold); border-right: 2px solid var(--gold); }
-.qr-corner-bl { bottom: 20px; left: 20px;  border-bottom: 2px solid var(--gold); border-left: 2px solid var(--gold); }
-.qr-corner-br { bottom: 20px; right: 20px; border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); }
-
-/* Scanning line animation */
-.qr-scan-line {
-  position: absolute;
-  left: 20px; right: 20px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  animation: scanLine 2s ease-in-out infinite;
-  z-index: 11;
-}
-@keyframes scanLine {
-  0%   { top: 24px;  opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 1; }
-  100% { top: calc(100% - 24px); opacity: 0; }
-}
-
-/* html5-qrcode renders its own elements inside #qr-reader — override them */
-#qr-reader {
-  width: 100% !important;
-  border: none !important;
-}
-#qr-reader video {
-  width: 100% !important;
-  height: auto !important;
-  display: block !important;
-  object-fit: cover;
-}
-/* Hide the default html5-qrcode UI chrome */
+/* QR */
+#qr-reader { width: 100%; border: none !important; }
+#qr-reader video { width: 100% !important; height: auto !important; display: block !important; }
 #qr-reader__dashboard { display: none !important; }
 #qr-reader__status_span { display: none !important; }
-#qr-reader img[alt="Info icon"] { display: none !important; }
+.qr-wrap { width: 100%; border: 1px solid #333; overflow: hidden; }
+.qr-hint { font-size: 10px; letter-spacing: 2px; color: #666; text-align: center; }
 
-.qr-status {
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: var(--gray);
-  text-transform: uppercase;
-  text-align: center;
-}
+/* Result */
+.result-icon { font-size: 80px; line-height: 1; }
+.result-title { font-size: 24px; letter-spacing: 4px; font-weight: 700; text-transform: uppercase; text-align: center; }
+.result-details { width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+.detail-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
+.detail-key { font-size: 10px; letter-spacing: 2px; color: rgba(255,255,255,0.5); text-transform: uppercase; }
+.detail-val { font-size: 14px; letter-spacing: 1px; }
 
-.btn-stop-scan {
-  background: transparent;
-  border: 1px solid var(--gray);
-  color: var(--gray);
-  font-family: inherit;
-  font-size: 10px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  padding: 10px 28px;
-  cursor: pointer;
-  transition: border-color .2s, color .2s;
-  align-self: center;
-}
-.btn-stop-scan:hover { border-color: var(--white); color: var(--white); }
+#screenValid  { background: #003300; }
+#screenInvalid { background: #330000; }
 
-/* ════════════════════════════════
-   MANUAL INPUT PANEL
-════════════════════════════════ */
-#manualPanel {
-  display: none;
-  flex-direction: column;
-  width: 100%;
-  max-width: 440px;
-  margin-bottom: 28px;
-}
-
-.scanner-box {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  padding: 36px 32px;
-}
-
-.scanner-label {
-  font-size: 10px;
-  letter-spacing: 3px;
-  color: var(--gray);
-  text-transform: uppercase;
-  margin-bottom: 10px;
-  display: block;
-}
-
-.scanner-input-row {
-  display: flex;
-  gap: 10px;
-}
-
-.scanner-input {
-  flex: 1;
-  background: var(--black);
-  border: 1px solid var(--line);
-  color: var(--white);
-  font-family: inherit;
-  font-size: 20px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  padding: 12px 16px;
-  outline: none;
-  transition: border-color .2s;
-}
-.scanner-input:focus { border-color: var(--gold); }
-.scanner-input::placeholder { color: var(--line); letter-spacing: 2px; font-size: 14px; }
-
-.scanner-btn {
-  background: var(--gold);
-  color: var(--black);
-  border: none;
-  font-family: inherit;
-  font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-weight: 700;
-  padding: 0 20px;
-  cursor: pointer;
-  transition: opacity .2s;
-  white-space: nowrap;
-}
-.scanner-btn:disabled { opacity: .4; cursor: not-allowed; }
-.scanner-btn:not(:disabled):hover { opacity: .85; }
-
-.scanner-hint {
-  font-size: 10px;
-  letter-spacing: 1px;
-  color: var(--gray);
-  margin-top: 10px;
-}
-
-.spinner {
-  width: 20px; height: 20px;
-  border: 2px solid rgba(255,255,255,.15);
-  border-top-color: var(--gold);
-  border-radius: 50%;
-  animation: spin .7s linear infinite;
-  display: none;
-  margin: 10px auto 0;
-}
+.spinner { width: 24px; height: 24px; border: 2px solid #333; border-top-color: #C9A84C; border-radius: 50%; animation: spin 0.7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-
-.btn-back-mode {
-  background: transparent;
-  border: none;
-  color: var(--gray);
-  font-family: inherit;
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  padding: 12px 0 0;
-  cursor: pointer;
-  transition: color .2s;
-  align-self: flex-start;
-}
-.btn-back-mode:hover { color: var(--white); }
-
-/* ════════════════════════════════
-   RESULT PANEL
-════════════════════════════════ */
-#result {
-  width: 100%;
-  max-width: 440px;
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 32px;
-  border: 1px solid;
-  text-align: center;
-  gap: 14px;
-  margin-bottom: 28px;
-}
-#result.valid   { background: #001a00; border-color: var(--green); }
-#result.used    { background: #1a0000; border-color: var(--red); }
-#result.invalid { background: #1a0000; border-color: var(--red); }
-
-.result-icon {
-  font-size: 52px;
-  line-height: 1;
-}
-.valid   .result-icon { color: var(--green); }
-.used    .result-icon { color: var(--red); }
-.invalid .result-icon { color: var(--red); }
-
-.result-status {
-  font-size: 22px;
-  letter-spacing: 4px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-.valid   .result-status { color: var(--green); }
-.used    .result-status { color: var(--red); }
-.invalid .result-status { color: var(--red); }
-
-.result-detail {
-  font-size: 11px;
-  letter-spacing: 2px;
-  color: rgba(255,255,255,.6);
-  text-transform: uppercase;
-}
-
-.result-table {
-  width: 100%;
-  border-top: 1px solid rgba(255,255,255,.1);
-  margin-top: 8px;
-  padding-top: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  text-align: left;
-}
-.result-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-}
-.result-key {
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: var(--gray);
-  text-transform: uppercase;
-  flex-shrink: 0;
-}
-.result-val {
-  font-size: 13px;
-  letter-spacing: 1px;
-  color: var(--white);
-  text-align: right;
-}
-
-.btn-reset {
-  background: transparent;
-  border: 1px solid var(--gray);
-  color: var(--gray);
-  font-family: inherit;
-  font-size: 10px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  padding: 10px 28px;
-  cursor: pointer;
-  margin-top: 8px;
-  transition: border-color .2s, color .2s;
-}
-.btn-reset:hover { border-color: var(--white); color: var(--white); }
-
-/* ════════════════════════════════
-   SESSION LOG
-════════════════════════════════ */
-.log-section {
-  width: 100%;
-  max-width: 440px;
-  margin-top: 4px;
-}
-.log-title {
-  font-size: 10px;
-  letter-spacing: 3px;
-  color: var(--gray);
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
-.log-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  max-height: 220px;
-  overflow-y: auto;
-}
-.log-entry {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 11px;
-  letter-spacing: 1px;
-  padding: 8px 12px;
-  background: var(--surface);
-  border-left: 2px solid transparent;
-}
-.log-entry.valid   { border-left-color: var(--green); }
-.log-entry.used    { border-left-color: var(--red); }
-.log-entry.invalid { border-left-color: var(--red); }
-.log-code { color: var(--gold); min-width: 80px; }
-.log-name { color: var(--white); flex: 1; }
-.log-badge {
-  font-size: 9px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: 2px 6px;
-}
-.valid   .log-badge { color: var(--green); }
-.used    .log-badge { color: var(--red); }
-.invalid .log-badge { color: var(--red); }
-.log-time { color: var(--gray); font-size: 10px; }
-
-/* Logout */
-.logout-btn {
-  position: fixed;
-  top: 16px;
-  right: 20px;
-  background: transparent;
-  border: none;
-  color: var(--gray);
-  font-family: inherit;
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: color .2s;
-  z-index: 50;
-}
-.logout-btn:hover { color: var(--white); }
 </style>
 </head>
 <body>
 
-<!-- ── PASSWORD GATE ── -->
-<div id="gate">
-  <div class="gate-logo">SALTUS</div>
-  <div class="gate-title">Acceso para staff</div>
-  <input class="gate-input" id="gateInput" type="password"
-    placeholder="••••••••••" autocomplete="off"
-    onkeydown="if(event.key==='Enter') gateSubmit()">
-  <button class="gate-btn" onclick="gateSubmit()">Entrar</button>
-  <div class="gate-error" id="gateError"></div>
+<!-- 1. PANTALLA CONTRASEÑA -->
+<div id="screenPass" class="screen active">
+  <h1>SALTUS Vol. I</h1>
+  <p class="sub">Acceso staff</p>
+  <input type="password" id="passInput" placeholder="Contraseña"
+    onkeydown="if(event.key==='Enter') checkPass()">
+  <button class="btn btn-gold" onclick="checkPass()">Entrar</button>
+  <div class="err" id="passErr"></div>
 </div>
 
-<!-- ── MAIN APP ── -->
-<div id="app">
-  <button class="logout-btn" onclick="logout()">Salir</button>
+<!-- 2. PANTALLA PRINCIPAL -->
+<div id="screenMain" class="screen">
+  <h1>SALTUS Vol. I</h1>
+  <p class="sub">Validador de boletos</p>
+  <button class="btn btn-gold" onclick="goQR()">&#9635; &nbsp;Escanear QR</button>
+  <button class="btn btn-outline" onclick="goManual()">&#9000; &nbsp;Ingresar código manual</button>
+</div>
 
-  <div class="app-header">
-    <div class="app-logo">SALTUS Vol. I</div>
-    <div class="app-title">Validador de boletos</div>
-  </div>
+<!-- 3A. PANTALLA QR -->
+<div id="screenQR" class="screen">
+  <h1>ESCANEAR QR</h1>
+  <div class="qr-wrap"><div id="qr-reader"></div></div>
+  <div class="qr-hint" id="qrHint">Apunta la cámara al código QR</div>
+  <button class="btn btn-gray" onclick="stopQR(); goMain()">Cancelar</button>
+</div>
 
-  <!-- Mode selector -->
-  <div id="modeSelector">
-    <button class="mode-btn primary" onclick="startQR()">
-      <span class="mode-icon">&#9635;</span>
-      <span class="mode-label">
-        <span class="mode-label-main">Escanear QR</span>
-        <span class="mode-label-sub">Usa la cámara del dispositivo</span>
-      </span>
-    </button>
-    <button class="mode-btn" onclick="showManual()">
-      <span class="mode-icon">&#9000;</span>
-      <span class="mode-label">
-        <span class="mode-label-main">Ingresar código</span>
-        <span class="mode-label-sub">Escribe el número de confirmación</span>
-      </span>
-    </button>
-  </div>
+<!-- 3B. PANTALLA MANUAL -->
+<div id="screenManual" class="screen">
+  <h1>CÓDIGO MANUAL</h1>
+  <input type="text" id="codeInput" placeholder="XXXXXXXX" maxlength="10"
+    autocomplete="off" spellcheck="false"
+    oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"
+    onkeydown="if(event.key==='Enter') submitManual()">
+  <button class="btn btn-gold" id="submitBtn" onclick="submitManual()">Validar</button>
+  <div id="manualSpinner" style="display:none"><div class="spinner"></div></div>
+  <button class="btn btn-gray" onclick="goMain()">Volver</button>
+</div>
 
-  <!-- QR camera panel -->
-  <div id="qrPanel">
-    <div class="qr-panel-label">Apunta la cámara al código QR del boleto</div>
-    <div class="qr-viewport">
-      <div class="qr-corners">
-        <span class="qr-corner-bl"></span>
-        <span class="qr-corner-br"></span>
-      </div>
-      <div class="qr-scan-line"></div>
-      <div id="qr-reader"></div>
-    </div>
-    <div class="qr-status" id="qrStatus">Iniciando cámara…</div>
-    <div id="qrDebug" style="
-      font-size:10px;letter-spacing:1px;color:#555;
-      word-break:break-all;text-align:center;
-      min-height:14px;padding:0 8px;max-width:100%;
-    "></div>
-    <button class="btn-stop-scan" onclick="stopQR()">Cancelar</button>
-  </div>
+<!-- 4A. RESULTADO VÁLIDO -->
+<div id="screenValid" class="screen result-screen">
+  <div class="result-icon">✓</div>
+  <div class="result-title" style="color:#00ff66">BOLETO VÁLIDO</div>
+  <div class="result-details" id="validDetails"></div>
+  <button class="btn btn-gold" style="max-width:320px;margin-top:16px" onclick="goMain()">Validar otro</button>
+</div>
 
-  <!-- Manual input panel -->
-  <div id="manualPanel">
-    <div class="scanner-box">
-      <label class="scanner-label" for="codeInput">Número de confirmación</label>
-      <div class="scanner-input-row">
-        <input class="scanner-input" id="codeInput" type="text"
-          maxlength="8" placeholder="XXXXXXXX" autocomplete="off" spellcheck="false"
-          onkeydown="if(event.key==='Enter') validate()"
-          oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
-        <button class="scanner-btn" id="validateBtn" onclick="validate()">OK</button>
-      </div>
-      <div class="scanner-hint">8 caracteres · letras y números</div>
-      <div class="spinner" id="spinner"></div>
-    </div>
-    <button class="btn-back-mode" onclick="showModeSelector()">← Volver</button>
-  </div>
-
-  <!-- Result panel -->
-  <div id="result">
-    <div class="result-icon" id="resultIcon"></div>
-    <div class="result-status" id="resultStatus"></div>
-    <div class="result-detail" id="resultDetail"></div>
-    <div class="result-table" id="resultTable" style="display:none;"></div>
-    <button class="btn-reset" onclick="resetToMode()">Validar otro boleto</button>
-  </div>
-
-  <!-- Session log -->
-  <div class="log-section">
-    <div class="log-title">Registro de esta sesión</div>
-    <div class="log-list" id="logList"></div>
-  </div>
+<!-- 4B. RESULTADO INVÁLIDO -->
+<div id="screenInvalid" class="screen result-screen">
+  <div class="result-icon">✗</div>
+  <div class="result-title" id="invalidTitle" style="color:#ff3333">BOLETO INVÁLIDO</div>
+  <p id="invalidReason" class="sub" style="margin-top:8px"></p>
+  <button class="btn btn-gray" style="max-width:320px;margin-top:24px" onclick="goMain()">Intentar de nuevo</button>
 </div>
 
 <script>
-// ── Auth ──────────────────────────────────────────────────────────────────────
-const PASS = "SALTUS2025";
-let sessionPassword = "";
+const PASSWORD = "SALTUS2025";
 
-function gateSubmit() {
-  const input = document.getElementById("gateInput");
-  const errEl = document.getElementById("gateError");
-  if (input.value === PASS) {
-    sessionPassword = input.value;
-    document.getElementById("gate").style.display = "none";
-    document.getElementById("app").style.display = "flex";
-    showModeSelector();
+// ── Navigation ────────────────────────────────────────────────────────────────
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function goMain() { show('screenMain'); }
+
+function checkPass() {
+  const val = document.getElementById('passInput').value;
+  if (val === PASSWORD) {
+    show('screenMain');
   } else {
-    errEl.textContent = "Contraseña incorrecta";
-    input.value = "";
-    input.focus();
-    setTimeout(() => { errEl.textContent = ""; }, 2500);
+    const err = document.getElementById('passErr');
+    err.textContent = 'Contraseña incorrecta';
+    document.getElementById('passInput').value = '';
+    setTimeout(() => err.textContent = '', 2500);
   }
 }
-
-function logout() {
-  stopQR();
-  sessionPassword = "";
-  document.getElementById("gate").style.display = "flex";
-  document.getElementById("app").style.display = "none";
-  document.getElementById("gateInput").value = "";
-  document.getElementById("gateInput").focus();
-  hideResult();
-  showModeSelector();
-}
-
-// ── Panel navigation ───────────────────────────────────────────────────────────
-// lastMode: "qr" | "manual" — remembered to know where "Validar otro" returns
-let lastMode = "selector";
-
-function showModeSelector() {
-  hide("qrPanel");
-  hide("manualPanel");
-  show("modeSelector");
-  hideResult();
-  lastMode = "selector";
-}
-
-function showManual() {
-  stopQR();
-  hide("modeSelector");
-  hide("qrPanel");
-  show("manualPanel");
-  hideResult();
-  lastMode = "manual";
-  setTimeout(() => document.getElementById("codeInput").focus(), 50);
-}
-
-function resetToMode() {
-  hideResult();
-  if (lastMode === "manual") {
-    document.getElementById("codeInput").value = "";
-    document.getElementById("codeInput").focus();
-  } else if (lastMode === "qr") {
-    startQR();
-  } else {
-    showModeSelector();
-  }
-}
-
-function show(id) { document.getElementById(id).style.display = "flex"; }
-function hide(id) { document.getElementById(id).style.display = "none"; }
 
 // ── QR Scanner ────────────────────────────────────────────────────────────────
-let html5QrCode = null;
-let qrRunning = false;
+let qrScanner = null;
+let qrActive = false;
 
-function startQR() {
-  hide("modeSelector");
-  hide("manualPanel");
-  show("qrPanel");
-  hideResult();
-  lastMode = "qr";
+function goQR() {
+  show('screenQR');
+  document.getElementById('qrHint').textContent = 'Iniciando cámara…';
 
-  document.getElementById("qrStatus").textContent = "Iniciando cámara…";
+  if (qrScanner) { qrScanner.clear(); qrScanner = null; }
 
-  // Destroy previous instance if any
-  if (html5QrCode) {
-    html5QrCode.clear();
-    html5QrCode = null;
-  }
-
-  html5QrCode = new Html5Qrcode("qr-reader");
-
-  html5QrCode.start(
-    { facingMode: "environment" },          // back camera on mobile; falls back to any on desktop
-    {
-      fps: 10,
-      qrbox: { width: 240, height: 240 },
-      aspectRatio: 1.0,
-    },
+  qrScanner = new Html5Qrcode('qr-reader');
+  qrScanner.start(
+    { facingMode: 'environment' },
+    { fps: 10, qrbox: { width: 250, height: 250 } },
     onQRSuccess,
-    (errorMsg) => {                          // per-frame: show what's being detected
-      const dbg = document.getElementById("qrDebug");
-      if (dbg && errorMsg && !errorMsg.includes("No MultiFormat")) {
-        dbg.textContent = "leyendo: " + errorMsg;
-      }
-    }
+    () => {}
   ).then(() => {
-    qrRunning = true;
-    document.getElementById("qrStatus").textContent = "Listo · apunta al código QR";
-  }).catch((err) => {
-    document.getElementById("qrStatus").textContent = "No se pudo acceder a la cámara";
-    console.error("QR start error:", err);
+    qrActive = true;
+    document.getElementById('qrHint').textContent = 'Apunta la cámara al código QR';
+  }).catch(() => {
+    document.getElementById('qrHint').textContent = 'No se pudo acceder a la cámara';
   });
 }
 
 function stopQR() {
-  if (html5QrCode && qrRunning) {
-    html5QrCode.stop().catch(() => {}).finally(() => {
-      qrRunning = false;
-    });
+  if (qrScanner && qrActive) {
+    qrScanner.stop().catch(() => {});
+    qrActive = false;
   }
 }
 
-function onQRSuccess(decodedText) {
-  // ── DEBUG ──────────────────────────────────────────────────────────
-  console.log("[SALTUS QR] Raw decoded text:", decodedText);
-  console.log("[SALTUS QR] Length:", decodedText.length);
-  console.log("[SALTUS QR] Parts (split |):", decodedText.split("|"));
-  const dbg = document.getElementById("qrDebug");
-  if (dbg) dbg.textContent = "QR leído: " + decodedText;
-  // ───────────────────────────────────────────────────────────────────
-
-  // Stop camera immediately
+function onQRSuccess(text) {
   stopQR();
-  hide("qrPanel");
-
-  // Parse QR: SALTUS-VOL1|{conf}|{nombre}|{tipo_boleto}|{mesa}|{cantidad}
-  let code = decodedText.trim().toUpperCase();
-  const parts = decodedText.split("|");
-  if (parts.length >= 2 && parts[0].toUpperCase() === "SALTUS-VOL1") {
-    code = parts[1].trim().toUpperCase();
-    console.log("[SALTUS QR] Parsed confirmation code:", code);
-  } else {
-    console.log("[SALTUS QR] No SALTUS-VOL1 prefix found — using full text as code:", code);
-  }
-
-  // Run validation with the extracted code
+  // Format: SALTUS-VOL1|CODIGO|nombre|tipo|mesa|cantidad
+  const parts = text.split('|');
+  const code = (parts.length >= 2 && parts[0].toUpperCase() === 'SALTUS-VOL1')
+    ? parts[1].trim().toUpperCase()
+    : text.trim().toUpperCase();
   runValidation(code);
 }
 
-// ── Validation ────────────────────────────────────────────────────────────────
-const sessionLog = [];
+// ── Manual ────────────────────────────────────────────────────────────────────
+function goManual() {
+  show('screenManual');
+  document.getElementById('codeInput').value = '';
+  setTimeout(() => document.getElementById('codeInput').focus(), 50);
+}
 
-async function validate() {
-  const input   = document.getElementById("codeInput");
-  const btn     = document.getElementById("validateBtn");
-  const spinner = document.getElementById("spinner");
-  const code    = input.value.trim().toUpperCase();
+async function submitManual() {
+  const code = document.getElementById('codeInput').value.trim().toUpperCase();
+  if (code.length < 3) return;
 
-  if (code.length < 3) { input.focus(); return; }
-
+  const btn = document.getElementById('submitBtn');
+  const spinner = document.getElementById('manualSpinner');
   btn.disabled = true;
-  spinner.style.display = "block";
-  hideResult();
+  spinner.style.display = 'block';
 
   await runValidation(code);
 
   btn.disabled = false;
-  spinner.style.display = "none";
+  spinner.style.display = 'none';
 }
 
+// ── Validation ────────────────────────────────────────────────────────────────
 async function runValidation(code) {
   try {
-    const res  = await fetch("/api/validate-ticket", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code, password: sessionPassword }),
+    const res = await fetch('/api/validate-ticket', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, password: PASSWORD }),
     });
     const data = await res.json();
 
-    if (res.status === 401) { logout(); return; }
+    if (data.valid) {
+      const details = document.getElementById('validDetails');
+      const rows = [
+        ['Nombre', data.nombre],
+        ['Mesa', data.mesa ? 'Mesa #' + data.mesa : null],
+        ['Tipo', data.tipo_boleto],
+        ['Cantidad', data.cantidad],
+      ].filter(([, v]) => v);
 
-    showResult(code, data);
+      details.innerHTML = rows.map(([k, v]) => `
+        <div class="detail-row">
+          <span class="detail-key">${k}</span>
+          <span class="detail-val">${v}</span>
+        </div>`).join('');
+      show('screenValid');
+    } else {
+      const reason = data.reason || '';
+      document.getElementById('invalidTitle').textContent =
+        reason.includes('usado') ? 'BOLETO YA UTILIZADO' : 'BOLETO INVÁLIDO';
+      document.getElementById('invalidReason').textContent = reason;
+      show('screenInvalid');
+    }
   } catch {
-    showResult(code, { result: "error" });
+    document.getElementById('invalidTitle').textContent = 'ERROR DE CONEXIÓN';
+    document.getElementById('invalidReason').textContent = 'No se pudo conectar al servidor';
+    show('screenInvalid');
   }
 }
 
-function showResult(code, data) {
-  const panel  = document.getElementById("result");
-  const icon   = document.getElementById("resultIcon");
-  const status = document.getElementById("resultStatus");
-  const detail = document.getElementById("resultDetail");
-  const table  = document.getElementById("resultTable");
-
-  panel.className = "";
-  table.innerHTML = "";
-  table.style.display = "none";
-
-  const now = new Date().toLocaleTimeString("es-MX", {
-    hour: "2-digit", minute: "2-digit", second: "2-digit"
-  });
-
-  if (data.result === "valid") {
-    panel.classList.add("valid");
-    icon.textContent   = "✓";
-    status.textContent = "BOLETO VÁLIDO";
-    detail.textContent = "Acceso permitido";
-    renderTable(table, data);
-    addLog("valid", code, data.nombre || "", now);
-
-  } else if (data.result === "used") {
-    panel.classList.add("used");
-    icon.textContent   = "✗";
-    status.textContent = "BOLETO YA UTILIZADO";
-    detail.textContent = "Este boleto ya fue canjeado";
-    renderTable(table, data);
-    addLog("used", code, data.nombre || "", now);
-
-  } else if (data.result === "invalid") {
-    panel.classList.add("invalid");
-    icon.textContent   = "✗";
-    status.textContent = "BOLETO INVÁLIDO";
-    detail.textContent = "No se encontró este código";
-    addLog("invalid", code, "", now);
-
-  } else {
-    panel.classList.add("invalid");
-    icon.textContent   = "!";
-    status.textContent = "ERROR";
-    detail.textContent = data.error || "Error al consultar";
-    addLog("invalid", code, "", now);
-  }
-
-  // Hide mode panels, show result
-  hide("modeSelector");
-  hide("manualPanel");
-  hide("qrPanel");
-  show("result");
-}
-
-function renderTable(container, data) {
-  const rows = [];
-  if (data.nombre)      rows.push(["Nombre",   data.nombre]);
-  if (data.tipo_boleto) rows.push(["Tipo",     capitalize(data.tipo_boleto)]);
-  if (data.mesa)        rows.push(["Mesa",     "Mesa #" + data.mesa]);
-  if (data.cantidad)    rows.push(["Cantidad", data.cantidad]);
-
-  if (!rows.length) return;
-  container.innerHTML = rows.map(([k, v]) =>
-    `<div class="result-row">
-       <span class="result-key">${k}</span>
-       <span class="result-val">${v}</span>
-     </div>`
-  ).join("");
-  container.style.display = "flex";
-}
-
-// ── Session log ───────────────────────────────────────────────────────────────
-function addLog(type, code, name, time) {
-  sessionLog.unshift({ type, code, name, time });
-  renderLog();
-}
-
-function renderLog() {
-  const list   = document.getElementById("logList");
-  const labels = { valid: "VÁLIDO", used: "USADO", invalid: "INVÁLIDO" };
-  list.innerHTML = sessionLog.slice(0, 30).map(e => `
-    <div class="log-entry ${e.type}">
-      <span class="log-code">${e.code}</span>
-      <span class="log-name">${e.name || "—"}</span>
-      <span class="log-badge">${labels[e.type] || e.type}</span>
-      <span class="log-time">${e.time}</span>
-    </div>
-  `).join("");
-}
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-function hideResult() {
-  const panel = document.getElementById("result");
-  panel.style.display = "none";
-  panel.className = "";
-}
-
-function capitalize(s) {
-  return s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
-}
-
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    stopQR();
-    showModeSelector();
-  }
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { stopQR(); goMain(); }
 });
 </script>
 </body>
