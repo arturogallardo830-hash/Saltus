@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confirmación — SALTUS Vol. I</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C9A84C;
+  --gold-l:#E8C96A;
+  --black:#080808;
+  --surface:#111111;
+  --surface2:#1a1a1a;
+  --white:#FFFFFF;
+  --gray:#aaaaaa;
+  --line:#2a2a2a;
+  color-scheme:dark;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:#080808;
+  color:var(--white);
+  font-family:'DM Sans',sans-serif;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:40px 20px;
+}
+
+/* ── Logo ── */
+.logo{
+  display:flex;flex-direction:column;align-items:center;gap:0;
+  text-decoration:none;margin-bottom:48px;
+}
+.logo .logo-rules{width:72px;display:flex;flex-direction:column;gap:4px;}
+.logo .r1{height:.8px;background:var(--gold);}
+.logo .r2{height:.3px;background:var(--gold);opacity:.5;}
+.logo .logo-word{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:700;letter-spacing:10px;
+  color:var(--white);line-height:1;padding:4px 0;
+  text-transform:uppercase;
+}
+.logo .logo-dia{
+  width:5px;height:5px;
+  border:.7px solid var(--gold);
+  transform:rotate(45deg);
+  margin:3px auto 0;
+}
+
+/* ── Card ── */
+.card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:2px;
+  width:100%;
+  max-width:520px;
+  padding:52px 48px;
+  position:relative;
+  overflow:hidden;
+}
+.card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+
+/* ── Check icon ── */
+.check-wrap{
+  display:flex;justify-content:center;margin-bottom:28px;
+}
+.check-circle{
+  width:56px;height:56px;
+  border:1px solid var(--gold);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+.check-circle svg{
+  width:24px;height:24px;stroke:var(--gold);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+}
+
+/* ── Headings ── */
+.success-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:28px;font-weight:700;
+  color:var(--white);
+  text-align:center;
+  letter-spacing:1px;
+  margin-bottom:6px;
+}
+.success-sub{
+  font-size:12px;font-weight:400;letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--gold);text-align:center;margin-bottom:40px;
+}
+
+/* ── Divider ── */
+.divider{
+  width:100%;height:1px;
+  background:var(--line);
+  margin:32px 0;
+  position:relative;
+}
+.divider::after{
+  content:'';
+  position:absolute;left:50%;top:0;transform:translateX(-50%);
+  width:40%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold)40,transparent);
+}
+
+/* ── Order rows ── */
+.order-table{display:flex;flex-direction:column;gap:16px;}
+.order-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  gap:12px;
+}
+.order-label{
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gray);flex-shrink:0;
+}
+.order-value{
+  font-family:'Cormorant Garamond',serif;
+  font-size:17px;font-weight:700;
+  color:var(--white);text-align:right;
+}
+.order-row.total .order-label{color:var(--gold);}
+.order-row.total .order-value{color:var(--gold);font-size:20px;}
+
+/* ── Confirmation number ── */
+.conf-block{
+  text-align:center;margin-top:36px;
+}
+.conf-label{
+  font-size:10px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gray);margin-bottom:6px;
+}
+.conf-number{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:300;letter-spacing:6px;
+  color:var(--gold);
+}
+
+/* ── Email note ── */
+.email-note{
+  text-align:center;
+  font-size:13px;color:var(--gray);
+  margin-top:32px;line-height:1.6;
+}
+.email-note strong{color:var(--white);}
+
+/* ── Event info ── */
+.event-info{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gray);margin-top:12px;
+}
+.event-info .dot{
+  width:3px;height:3px;
+  background:var(--gold);border-radius:50%;
+  flex-shrink:0;
+}
+
+/* ── Button ── */
+.btn-back{
+  display:block;
+  margin:40px auto 0;
+  width:fit-content;
+  padding:14px 36px;
+  border:1px solid var(--gold);
+  background:transparent;
+  color:var(--gold);
+  font-family:'DM Sans',sans-serif;
+  font-size:11px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;
+  text-decoration:none;
+  transition:background .2s,color .2s;
+  cursor:pointer;
+}
+.btn-back:hover{background:var(--gold);color:var(--black);}
+
+/* ── Skeleton / loading ── */
+.skeleton{
+  background:linear-gradient(90deg,var(--surface2) 25%,#222 50%,var(--surface2) 75%);
+  background-size:200% 100%;
+  animation:shimmer 1.4s infinite;
+  border-radius:2px;
+  display:inline-block;
+}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ── Error state ── */
+.error-msg{
+  text-align:center;
+  font-size:13px;color:#e07070;
+  margin-top:8px;
+  display:none;
+}
+
+@media(max-width:540px){
+  .card{padding:40px 28px;}
+  .success-title{font-size:23px;}
+}
+</style>
+</head>
+<body>
+
+<!-- Logo -->
+<a href="https://mysaltus.com" class="logo">
+  <div class="logo-rules">
+    <div class="r1"></div>
+    <div class="r2"></div>
+  </div>
+  <span class="logo-word">SALTUS</span>
+  <div class="logo-dia"></div>
+</a>
+
+<!-- Card -->
+<div class="card">
+
+  <!-- Check -->
+  <div class="check-wrap">
+    <div class="check-circle">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+  </div>
+
+  <h1 class="success-title">¡Tu lugar está asegurado!</h1>
+  <p class="success-sub">Pago completado con éxito</p>
+
+  <div class="divider"></div>
+
+  <!-- Order summary -->
+  <div class="order-table" id="orderTable">
+    <div class="order-row">
+      <span class="order-label">Comprador</span>
+      <span class="order-value skeleton" id="val-nombre" style="min-width:120px;height:20px;">&nbsp;</span>
+    </div>
+    <div class="order-row">
+      <span class="order-label">Tipo de boleto</span>
+      <span class="order-value skeleton" id="val-tipo" style="min-width:80px;height:20px;">&nbsp;</span>
+    </div>
+    <div class="order-row">
+      <span class="order-label">Cantidad</span>
+      <span class="order-value skeleton" id="val-cantidad" style="min-width:30px;height:20px;">&nbsp;</span>
+    </div>
+    <div class="order-row total">
+      <span class="order-label">Total pagado</span>
+      <span class="order-value skeleton" id="val-total" style="min-width:90px;height:24px;">&nbsp;</span>
+    </div>
+  </div>
+
+  <p class="error-msg" id="errorMsg">No se pudo cargar el resumen del pedido.</p>
+
+  <!-- Confirmation number -->
+  <div class="conf-block">
+    <p class="conf-label">Número de confirmación</p>
+    <p class="conf-number skeleton" id="val-conf" style="min-width:160px;height:26px;display:inline-block;">&nbsp;</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Email note -->
+  <p class="email-note">
+    Recibirás tu boleto en tu correo electrónico.<br>
+    <strong id="val-email" class="skeleton" style="min-width:180px;height:16px;display:inline-block;">&nbsp;</strong>
+  </p>
+
+  <!-- Event info -->
+  <div class="event-info" style="margin-top:20px;">
+    <span>20 de junio 2026</span>
+    <span class="dot"></span>
+    <span>Alboa Fashion Drive</span>
+    <span class="dot"></span>
+    <span>San Pedro</span>
+  </div>
+
+  <!-- CTA -->
+  <a href="https://mysaltus.com" class="btn-back">Volver al sitio</a>
+
+</div>
+
+<script>
+(function () {
+  const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get("session_id");
+
+  function setSkeleton(id, text, extraClass) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove("skeleton");
+    el.style.minWidth = "";
+    el.style.height = "";
+    el.style.display = "";
+    el.textContent = text;
+    if (extraClass) el.classList.add(extraClass);
+  }
+
+  function showError() {
+    document.getElementById("errorMsg").style.display = "block";
+    ["val-nombre","val-tipo","val-cantidad","val-total","val-conf","val-email"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.classList.remove("skeleton"); el.textContent = "—"; }
+    });
+  }
+
+  if (!sessionId) {
+    showError();
+    return;
+  }
+
+  fetch("/api/get-session?session_id=" + encodeURIComponent(sessionId))
+    .then(res => {
+      if (!res.ok) throw new Error("bad response");
+      return res.json();
+    })
+    .then(data => {
+      if (data.error) { showError(); return; }
+
+      const nombre = (data.nombre + " " + data.apellido).trim() || "—";
+      const tipo = data.tipo_boleto
+        ? data.tipo_boleto.charAt(0).toUpperCase() + data.tipo_boleto.slice(1)
+        : "—";
+      const cantidad = data.cantidad || "—";
+      const total = data.total != null
+        ? "$" + Number(data.total).toLocaleString("es-MX", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " MXN"
+        : "—";
+      const conf = data.confirmation || "—";
+      const email = data.email || "—";
+
+      setSkeleton("val-nombre", nombre);
+      setSkeleton("val-tipo", tipo);
+      setSkeleton("val-cantidad", cantidad);
+      setSkeleton("val-total", total);
+      setSkeleton("val-conf", conf);
+      setSkeleton("val-email", email);
+    })
+    .catch(() => showError());
+})();
+</script>
+</body>
+</html>

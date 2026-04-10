@@ -63,7 +63,7 @@ export default async function handler(req, res) {
         tipo_boleto,
         cantidad: qty,
       },
-      success_url: `${req.headers.origin || "https://saltus.vercel.app"}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${req.headers.origin || "https://saltus.vercel.app"}/confirmacion.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.origin || "https://saltus.vercel.app"}/`,
     });
 
