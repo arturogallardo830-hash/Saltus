@@ -1718,7 +1718,7 @@ footer{
       <li>Nombre completo</li>
       <li>Correo electrónico</li>
       <li>Número de teléfono (cuando aplique)</li>
-      <li>Información de pago procesada por Clip (no almacenamos datos de tarjeta)</li>
+      <li>Información de pago procesada por Stripe (no almacenamos datos de tarjeta)</li>
       <li>Mesa o asiento seleccionado</li>
     </ul>
 
@@ -1731,8 +1731,9 @@ footer{
       <li>Enviarte información sobre futuras ediciones de SALTUS si nos lo autorizas</li>
     </ul>
 
-    <h2>4. Procesamiento de pagos</h2>
-    <p>Los pagos son procesados de forma segura a través de <strong style="color:rgba(255,255,255,.75);">Clip</strong>. SALTUS no almacena ni tiene acceso a tu información bancaria o de tarjeta de crédito/débito. El procesamiento está sujeto a los términos y privacidad de Clip.</p>
+    <h2>4. Procesamiento de pagos y política de reembolsos</h2>
+    <p>Los pagos se procesan de forma segura a través de <strong style="color:rgba(255,255,255,.75);">Stripe</strong>. SALTUS no almacena ni tiene acceso a tu información bancaria o de tarjeta de crédito/débito. El procesamiento está sujeto a los términos y privacidad de Stripe.</p>
+    <p style="margin-top:12px;"><strong style="color:rgba(255,255,255,.75);">No se realizan cambios ni devoluciones de boletos.</strong> Todas las ventas son finales. En caso de cancelación del evento por causas imputables a los organizadores, se notificará a los compradores por correo electrónico.</p>
 
     <h2>5. Compartir información</h2>
     <p>No vendemos, cedemos ni compartimos tus datos personales con terceros, salvo en los siguientes casos:</p>
@@ -1773,7 +1774,21 @@ footer{
 
 <!-- ══ FOOTER ══════════════════════════════════ -->
 <footer style="flex-direction:column;align-items:center;text-align:center;gap:28px;">
-  <div class="f-logo">SALTUS</div>
+  <!-- Logo — mismo estilo que el header -->
+  <a class="nav-logo" href="#" style="text-decoration:none;">
+    <div class="logo-rules"><div class="r1"></div><div class="r2"></div></div>
+    <div class="logo-word">SALTUS</div>
+    <div class="logo-rules" style="transform:scaleY(-1)"><div class="r2"></div><div class="r1"></div></div>
+    <div class="logo-dia"></div>
+  </a>
+
+  <!-- Contacto -->
+  <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+    <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;">Representantes del evento</div>
+    <a href="tel:8181782508" style="font-size:13px;color:rgba(255,255,255,.55);text-decoration:none;letter-spacing:1px;transition:color .2s;" onmouseover="this.style.color='rgba(255,255,255,.9)'" onmouseout="this.style.color='rgba(255,255,255,.55)'">81 8178 2508</a>
+    <a href="tel:5543708757" style="font-size:13px;color:rgba(255,255,255,.55);text-decoration:none;letter-spacing:1px;transition:color .2s;" onmouseover="this.style.color='rgba(255,255,255,.9)'" onmouseout="this.style.color='rgba(255,255,255,.55)'">55 4370 8757</a>
+  </div>
+
   <div class="f-links" style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px 32px;">
     <a href="#boletos">Boletos</a>
     <a href="#lineup">Lineup</a>
