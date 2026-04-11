@@ -691,6 +691,56 @@ a:focus-visible, button:focus-visible{
 .sponsor-name:hover{color:rgba(255,255,255,.75);}
 
 /* ═══════════════════════════════
+   FAQ
+═══════════════════════════════ */
+.faq-section{
+  padding:120px 60px;
+  background:transparent;
+  position:relative;z-index:1;
+  border-top:1px solid var(--line);
+}
+.faq-inner{max-width:760px;margin:0 auto;}
+.faq-header{margin-bottom:56px;}
+.faq-list{display:flex;flex-direction:column;gap:0;}
+.faq-item{border-bottom:1px solid var(--line);}
+.faq-item:first-child{border-top:1px solid var(--line);}
+.faq-q{
+  width:100%;background:transparent;border:none;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  padding:22px 0;cursor:pointer;text-align:left;
+  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;
+  color:var(--white);letter-spacing:.2px;
+  transition:color .2s;
+}
+.faq-q:hover{color:var(--gold);}
+.faq-q.open{color:var(--gold);}
+.faq-icon{
+  flex-shrink:0;width:20px;height:20px;
+  border:1px solid rgba(201,168,76,.4);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;line-height:1;color:var(--gold);
+  transition:transform .3s, background .2s;
+}
+.faq-q.open .faq-icon{transform:rotate(45deg);background:rgba(201,168,76,.1);}
+.faq-a{
+  max-height:0;overflow:hidden;
+  transition:max-height .35s ease, padding .35s ease;
+  padding:0;
+}
+.faq-a.open{max-height:200px;padding-bottom:20px;}
+.faq-a p{
+  font-size:14px;line-height:1.7;
+  color:rgba(255,255,255,.6);
+  padding-right:44px;
+}
+
+@media(max-width:768px){
+  .faq-section{padding:80px 24px;}
+  .faq-q{font-size:14px;}
+  .faq-a p{padding-right:0;}
+}
+
+/* ═══════════════════════════════
    FOOTER
 ═══════════════════════════════ */
 footer{
@@ -1763,6 +1813,83 @@ footer{
 <!-- ══ TOAST ════════════════════════════════════ -->
 <div class="toast" id="toast" role="status" aria-live="polite">Registrado — Te avisaremos pronto</div>
 
+<!-- ══ FAQ ══════════════════════════════════════ -->
+<section class="faq-section reveal" id="faq">
+  <div class="faq-inner">
+    <div class="faq-header">
+      <div class="s-eyebrow">Dudas</div>
+      <h2 class="s-title">Preguntas<br>frecuentes</h2>
+    </div>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          ¿Puedo entrar con comida o bebidas?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>No, no se permite el ingreso con alimentos ni bebidas. Dentro del venue hay barra disponible toda la noche.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          ¿Hay estacionamiento?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>Sí, Alboa Fashion Drive cuenta con estacionamiento disponible.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          ¿A qué hora abre la puerta?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>Las puertas abren a las 8:00 PM.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          ¿Puedo hacer cambios o devoluciones de mi boleto?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>No, todas las ventas son finales. No se realizan cambios ni devoluciones.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          ¿Cómo recibo mi boleto?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>Recibirás tu boleto con código QR en tu correo electrónico y en la página de confirmación al momento de la compra.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          ¿Qué necesito para entrar?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>Presenta tu código QR (impreso o en tu celular) e identificación oficial.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          ¿Hay límite de edad?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>El evento es para mayores de 18 años. Se requiere identificación oficial.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+          ¿Puedo salir y volver a entrar?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>No, una vez que sales del venue no se permite el reingreso.</p></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- ══ STICKY MOBILE CTA ══════════════════════════ -->
 <div class="sticky-cta" id="stickyCta">
   <div class="sticky-cta-text">
@@ -2320,6 +2447,26 @@ document.querySelector('.email-form').addEventListener('submit', function(e){
   input.value = '';
   setTimeout(() => toast.classList.remove('show'), 3500);
 });
+
+// ── FAQ accordion ────────────────────────────────────────────────────────────
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const isOpen = btn.classList.contains('open');
+
+  // Close all
+  document.querySelectorAll('.faq-q.open').forEach(b => {
+    b.classList.remove('open');
+    b.setAttribute('aria-expanded', 'false');
+    b.nextElementSibling.classList.remove('open');
+  });
+
+  // Open clicked (unless it was already open)
+  if (!isOpen) {
+    btn.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+    answer.classList.add('open');
+  }
+}
 </script>
 
 <script>
