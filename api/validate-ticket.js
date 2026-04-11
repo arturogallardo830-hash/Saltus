@@ -24,6 +24,10 @@ export default async function handler(req, res) {
 
   const normalized = code.trim().toUpperCase();
 
+  console.log("[validate-ticket] code recibido:", code);
+  console.log("[validate-ticket] code normalizado:", normalized);
+  console.log("[validate-ticket] query: SELECT * FROM orders WHERE confirmation =", normalized);
+
   try {
     const { data: rows, error } = await supabase
       .from("orders")
@@ -31,12 +35,30 @@ export default async function handler(req, res) {
       .eq("confirmation", normalized)
       .limit(1);
 
+    console.log("[validate-ticket] Supabase rows encontrados:", rows?.length ?? 0);
+    console.log("[validate-ticket] Supabase error:", error ?? "ninguno");
+    if (rows && rows.length > 0) {
+      console.log("[validate-ticket] Orden encontrada:", JSON.stringify({
+        id: rows[0].id,
+        confirmation: rows[0].confirmation,
+        status: rows[0].status,
+        nombre: rows[0].nombre,
+        mesa: rows[0].mesa,
+      }));
+    }
+
     if (error) {
-      console.error("[validate-ticket] Supabase error:", error);
-      return res.status(500).json({ valid: false, reason: "Error al consultar la base de datos" });
+      console.error("[validate-ticket] Error completo:", JSON.stringify(error));
+      return res.status(500).json({
+        valid: false,
+        reason: "Error al consultar la base de datos",
+        detail: error.message,
+        code: error.code,
+      });
     }
 
     if (!rows || rows.length === 0) {
+      console.log("[validate-ticket] No se encontró ninguna orden con confirmation =", normalized);
       return res.status(200).json({ valid: false, reason: "Código no encontrado" });
     }
 

@@ -537,6 +537,9 @@ a:focus-visible, button:focus-visible{
 .cf-radio-card:has(input:checked){
   border-color:var(--gold);background:rgba(201,168,76,.07);
 }
+.cf-radio-card.locked{
+  opacity:.25;pointer-events:none;
+}
 .cf-radio-inner{display:flex;flex-direction:column;gap:3px;}
 .cf-radio-name{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;}
 .cf-radio-price{font-size:11px;color:var(--gold);letter-spacing:1px;}
@@ -2232,6 +2235,7 @@ function pickTable(tableN, type){
     selectedTable = null;
     document.getElementById('vmapSelectedBar').textContent = 'Haz clic en una mesa para seleccionarla';
     document.getElementById('cf-mesa').value = '';
+    unlockRadios();
   } else {
     selectedTable = tableDef;
     document.querySelectorAll(`#vmapSvg circle[data-t="${tableN}"]`)
@@ -2240,6 +2244,7 @@ function pickTable(tableN, type){
     // Update form: ticket type
     const radio = document.querySelector(`input[name="tipo_boleto"][value="${type}"]`);
     if(radio){ radio.checked = true; radio.dispatchEvent(new Event('change')); }
+    lockRadioToType(type);
 
     // Update form: quantity = seats in this table
     const seats = tableSeatCount(tableDef);
@@ -2286,8 +2291,42 @@ document.querySelectorAll('input[name="tipo_boleto"]').forEach(r =>
 );
 document.getElementById('cf-cantidad').addEventListener('input', updateTotal);
 
+// ── Radio lock helpers ─────────────────────────────────────────────────────
+function lockRadioToType(type) {
+  document.getElementById('rcGeneral').classList.toggle('locked', type === 'vip');
+  document.getElementById('rcVip').classList.toggle('locked', type === 'gen');
+}
+function unlockRadios() {
+  document.getElementById('rcGeneral').classList.remove('locked');
+  document.getElementById('rcVip').classList.remove('locked');
+}
+
+// ── Occupied seats ─────────────────────────────────────────────────────────
+async function loadOccupiedSeats() {
+  try {
+    const res = await fetch('/api/get-occupied-seats');
+    if (!res.ok) return;
+    const { occupied } = await res.json();
+    if (Array.isArray(occupied)) occupied.forEach(markTableOccupied);
+  } catch (e) {
+    console.warn('[SALTUS] No se pudieron cargar mesas ocupadas:', e);
+  }
+}
+
+function markTableOccupied(tableN) {
+  document.querySelectorAll(`#vmapSvg circle[data-t="${tableN}"]`).forEach(el => {
+    el.setAttribute('fill', '#3a0000');
+    el.setAttribute('stroke', '#770000');
+    el.style.cursor = 'not-allowed';
+    el.style.opacity = '0.6';
+    const clone = el.cloneNode(true);   // removes all event listeners
+    el.parentNode.replaceChild(clone, el);
+  });
+}
+
 // Render the venue map on page load
 buildMap();
+loadOccupiedSeats();
 
 async function handleCheckout(e){
   e.preventDefault();
