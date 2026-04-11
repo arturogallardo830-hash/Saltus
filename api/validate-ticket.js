@@ -80,7 +80,7 @@ export default async function handler(req, res) {
       return res.status(200).json({
         valid: false,
         reason: "Este boleto ya fue usado",
-        nombre: `${order.nombre} ${order.apellido}`.trim(),
+        nombre: `${order.Nombre || ''} ${order.Apellido || ''}`.trim(),
         tipo_boleto: order.tipo_boleto,
         mesa: order.mesa || null,
       });
@@ -99,7 +99,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       valid: true,
-      nombre: `${order.nombre} ${order.apellido}`.trim(),
+      nombre: `${order.Nombre || ''} ${order.Apellido || ''}`.trim(),
       tipo_boleto: order.tipo_boleto,
       mesa: order.mesa || null,
       cantidad: order.cantidad,
