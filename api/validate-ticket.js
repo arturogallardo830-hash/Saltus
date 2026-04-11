@@ -23,32 +23,44 @@ export default async function handler(req, res) {
   }
 
   const normalized = code.trim().toUpperCase();
+  const normalizedLower = normalized.toLowerCase();
 
-  console.log("[validate-ticket] code recibido:", code);
-  console.log("[validate-ticket] code normalizado:", normalized);
-  console.log("[validate-ticket] query: SELECT * FROM orders WHERE confirmation =", normalized);
+  console.log("CODE RECEIVED:", code);
+  console.log("SUPABASE URL:", process.env.NEXT_PUBLIC_SUPABASE_URL);
+  console.log("QUERY:", { confirmation: normalized });
 
   try {
-    const { data: rows, error } = await supabase
+    // Try uppercase first, then lowercase (case sensitivity check)
+    let rows, error;
+
+    ({ data: rows, error } = await supabase
       .from("orders")
       .select("*")
       .eq("confirmation", normalized)
-      .limit(1);
+      .limit(1));
 
-    console.log("[validate-ticket] Supabase rows encontrados:", rows?.length ?? 0);
-    console.log("[validate-ticket] Supabase error:", error ?? "ninguno");
-    if (rows && rows.length > 0) {
-      console.log("[validate-ticket] Orden encontrada:", JSON.stringify({
-        id: rows[0].id,
-        confirmation: rows[0].confirmation,
-        status: rows[0].status,
-        nombre: rows[0].nombre,
-        mesa: rows[0].mesa,
-      }));
+    console.log("RESULT (uppercase):", JSON.stringify(rows));
+    console.log("ERROR (uppercase):", JSON.stringify(error));
+
+    if ((!rows || rows.length === 0) && !error) {
+      // Retry with lowercase
+      const { data: rowsLower, error: errorLower } = await supabase
+        .from("orders")
+        .select("*")
+        .eq("confirmation", normalizedLower)
+        .limit(1);
+
+      console.log("RESULT (lowercase):", JSON.stringify(rowsLower));
+      console.log("ERROR (lowercase):", JSON.stringify(errorLower));
+
+      if (rowsLower && rowsLower.length > 0) {
+        rows = rowsLower;
+        error = errorLower;
+      }
     }
 
     if (error) {
-      console.error("[validate-ticket] Error completo:", JSON.stringify(error));
+      console.error("ERROR COMPLETO:", JSON.stringify(error));
       return res.status(500).json({
         valid: false,
         reason: "Error al consultar la base de datos",
@@ -58,7 +70,7 @@ export default async function handler(req, res) {
     }
 
     if (!rows || rows.length === 0) {
-      console.log("[validate-ticket] No se encontró ninguna orden con confirmation =", normalized);
+      console.log("NO ENCONTRADO — confirmation =", normalized);
       return res.status(200).json({ valid: false, reason: "Código no encontrado" });
     }
 

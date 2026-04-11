@@ -126,6 +126,12 @@ input:focus { border-color: #C9A84C; }
     onkeydown="if(event.key==='Enter') submitManual()">
   <button class="btn btn-gold" id="submitBtn" onclick="submitManual()">Validar</button>
   <div id="manualSpinner" style="display:none"><div class="spinner"></div></div>
+  <!-- DEBUG BOX — muestra respuesta cruda del servidor -->
+  <div id="debugBox" style="
+    display:none; width:100%; background:#0a0a0a; border:1px solid #444;
+    padding:12px; font-size:11px; letter-spacing:0; color:#aaa;
+    word-break:break-all; white-space:pre-wrap; text-align:left; margin-top:4px;
+  "></div>
   <button class="btn btn-gray" onclick="goMain()">Volver</button>
 </div>
 
@@ -233,13 +239,35 @@ async function submitManual() {
 
 // ── Validation ────────────────────────────────────────────────────────────────
 async function runValidation(code) {
+  const debugBox = document.getElementById('debugBox');
+
   try {
+    const body = JSON.stringify({ code, password: PASSWORD });
+
+    // Show what we're sending
+    if (debugBox) {
+      debugBox.style.display = 'block';
+      debugBox.textContent = '→ POST /api/validate-ticket\n' + body + '\n\nEsperando respuesta…';
+    }
+
     const res = await fetch('/api/validate-ticket', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code, password: PASSWORD }),
+      body,
     });
-    const data = await res.json();
+
+    const rawText = await res.text();
+
+    // Show raw server response on screen
+    if (debugBox) {
+      debugBox.textContent =
+        '→ POST /api/validate-ticket\n' + body +
+        '\n\n← HTTP ' + res.status + '\n' + rawText;
+    }
+
+    let data;
+    try { data = JSON.parse(rawText); }
+    catch { data = { valid: false, reason: 'Respuesta no es JSON: ' + rawText }; }
 
     if (data.valid) {
       const details = document.getElementById('validDetails');
@@ -260,12 +288,17 @@ async function runValidation(code) {
       const reason = data.reason || '';
       document.getElementById('invalidTitle').textContent =
         reason.includes('usado') ? 'BOLETO YA UTILIZADO' : 'BOLETO INVÁLIDO';
-      document.getElementById('invalidReason').textContent = reason;
+      document.getElementById('invalidReason').textContent =
+        reason + (data.detail ? '\n[' + data.detail + ']' : '');
       show('screenInvalid');
     }
-  } catch {
+  } catch (err) {
+    if (debugBox) {
+      debugBox.style.display = 'block';
+      debugBox.textContent = 'FETCH ERROR: ' + err.message;
+    }
     document.getElementById('invalidTitle').textContent = 'ERROR DE CONEXIÓN';
-    document.getElementById('invalidReason').textContent = 'No se pudo conectar al servidor';
+    document.getElementById('invalidReason').textContent = err.message;
     show('screenInvalid');
   }
 }
