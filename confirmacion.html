@@ -156,7 +156,7 @@ body{
   color:var(--gray);
 }
 .qr-frame{
-  background:#080808;
+  background:#ffffff;
   border:1px solid var(--line);
   padding:16px;
   position:relative;
@@ -178,7 +178,10 @@ body{
 #qrcode{
   display:block;
 }
-#qrcode canvas,#qrcode img{display:block;}
+#qrcode canvas,#qrcode img{
+  display:block;
+  background:#ffffff;
+}
 
 /* QR placeholder while loading */
 .qr-placeholder{
@@ -401,7 +404,7 @@ body{
       text: qrText,
       width: 180,
       height: 180,
-      colorDark: "#000000",   // will be gold via CSS filter
+      colorDark: "#000000",
       colorLight: "#ffffff",
       correctLevel: QRCode.CorrectLevel.M,
     });
