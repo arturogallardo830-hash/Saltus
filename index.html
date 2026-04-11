@@ -2229,7 +2229,15 @@ function markTableOccupied(tableN) {
 
 // Render the venue map on page load
 buildMap();
-loadOccupiedSeats();
+(async () => {
+  // Expire stale pending orders first, then load occupied seats
+  try {
+    await fetch('/api/cleanup-pending', { method: 'POST' });
+  } catch (e) {
+    console.warn('[SALTUS] cleanup-pending failed:', e);
+  }
+  loadOccupiedSeats();
+})();
 
 async function handleCheckout(e){
   e.preventDefault();

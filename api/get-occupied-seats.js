@@ -11,11 +11,14 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Block mesas that are paid/usado, OR pending within the last 15 minutes
+    const cutoff = new Date(Date.now() - 15 * 60 * 1000).toISOString();
+
     const { data: rows, error } = await supabase
       .from("orders")
       .select("mesa")
-      .in("status", ["usado", "paid", "pending"])
-      .not("mesa", "is", null);
+      .not("mesa", "is", null)
+      .or(`status.in.(paid,usado),and(status.eq.pending,created_at.gt.${cutoff})`);
 
     if (error) {
       console.error("[get-occupied-seats] Supabase error:", error);
