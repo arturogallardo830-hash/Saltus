@@ -175,11 +175,8 @@ body{
 .qr-frame .corner-bl{bottom:-1px;left:-1px;border-bottom:1px solid var(--gold);border-left:1px solid var(--gold);}
 .qr-frame .corner-br{bottom:-1px;right:-1px;border-bottom:1px solid var(--gold);border-right:1px solid var(--gold);}
 
-/* QRCode.js renders a table or canvas; we override colors via filter */
 #qrcode{
   display:block;
-  /* Invert the default black-on-white QR to transparent, then tint gold */
-  filter:invert(1) sepia(1) saturate(2) hue-rotate(5deg) brightness(.9);
 }
 #qrcode canvas,#qrcode img{display:block;}
 
