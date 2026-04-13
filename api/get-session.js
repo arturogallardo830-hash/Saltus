@@ -1,4 +1,6 @@
 const Stripe = require("stripe");
+const { createClient } = require("@supabase/supabase-js");
+const { Resend } = require("resend");
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -221,25 +223,21 @@ function buildTicketHtml({ nombre, apellido, email, tipo_boleto, cantidad, mesa,
 </head>
 <body>
   <div class="wrapper">
-    <!-- Header -->
     <div class="header">
       <p class="header-eyebrow">Boleto Electrónico</p>
       <h1 class="header-title">SALTUS</h1>
       <p class="header-subtitle">Vol. I</p>
     </div>
 
-    <!-- Body -->
     <div class="section">
       <p class="greeting">Hola, <strong>${nombreCompleto}</strong></p>
       <p class="intro">Tu compra fue exitosa. A continuación encontrarás tu boleto oficial. Preséntalo en la entrada del evento.</p>
 
-      <!-- Confirmation -->
       <div class="confirmation-block">
         <p class="confirmation-label">Número de confirmación</p>
         <p class="confirmation-code">${confirmation}</p>
       </div>
 
-      <!-- Details -->
       <table class="details-table">
         <tr>
           <td class="label">Nombre</td>
@@ -260,19 +258,16 @@ function buildTicketHtml({ nombre, apellido, email, tipo_boleto, cantidad, mesa,
         </tr>
       </table>
 
-      <!-- QR -->
       <div class="qr-block">
         <img src="${qrUrl}" width="220" height="220" alt="Código QR de acceso" />
         <p class="qr-label">Presenta este código QR en la entrada</p>
       </div>
 
-      <!-- Event info -->
       <div class="event-info">
         <p><strong>Fecha:</strong> 20 de junio de 2026</p>
         <p><strong>Lugar:</strong> Alboa Fashion Drive, San Pedro Garza García</p>
       </div>
 
-      <!-- Notices -->
       <div class="notices">
         <p class="notice">Presenta este código QR en la entrada del evento.</p>
         <p class="notice">No se permiten cambios ni devoluciones.</p>
@@ -280,7 +275,6 @@ function buildTicketHtml({ nombre, apellido, email, tipo_boleto, cantidad, mesa,
       </div>
     </div>
 
-    <!-- Footer -->
     <div class="footer">
       <p>SALTUS Vol. I &mdash; mysaltus.com</p>
       <p style="margin-top:6px;">Este correo fue enviado a ${email}</p>
@@ -304,17 +298,65 @@ module.exports = async function handler(req, res) {
     const session = await stripe.checkout.sessions.retrieve(session_id);
 
     const confirmationCode = session.id.slice(-8).toUpperCase();
+    const nombre    = session.metadata?.nombre    || "";
+    const apellido  = session.metadata?.apellido  || "";
+    const email     = session.customer_email || session.metadata?.email || "";
+    const tipo_boleto = session.metadata?.tipo_boleto || "";
+    const cantidad  = session.metadata?.cantidad  || "";
+    const mesa      = session.metadata?.mesa      || "";
+    const total     = session.amount_total ? session.amount_total / 100 : 0;
+
     console.log("[get-session] session.id:", session.id);
     console.log("[get-session] payment_status:", session.payment_status);
     console.log("[get-session] confirmation:", confirmationCode);
 
-    const nombre = session.metadata?.nombre || "";
-    const apellido = session.metadata?.apellido || "";
-    const email = session.customer_email || session.metadata?.email || "";
-    const tipo_boleto = session.metadata?.tipo_boleto || "";
-    const cantidad = session.metadata?.cantidad || "";
-    const mesa = session.metadata?.mesa || "";
-    const total = session.amount_total ? session.amount_total / 100 : 0;
+    if (session.payment_status === "paid") {
+      // Intenta actualizar solo si el status sigue en "pending".
+      // Si devuelve filas → primera vez que se confirma → enviar correo.
+      // Si devuelve 0 filas → ya estaba "paid" → no reenviar.
+      console.log("[get-session] Pago confirmado. Intentando marcar como paid en Supabase...");
+
+      const { data: updated, error: updateError } = await supabase
+        .from("orders")
+        .update({ status: "paid" })
+        .eq("stripe_session_id", session.id)
+        .eq("status", "pending")
+        .select();
+
+      if (updateError) {
+        console.error("[get-session] Supabase update ERROR:", JSON.stringify(updateError));
+      } else {
+        console.log("[get-session] Supabase update resultado, filas actualizadas:", updated?.length ?? 0);
+      }
+
+      const esNuevaConfirmacion = !updateError && updated && updated.length > 0;
+
+      if (esNuevaConfirmacion) {
+        console.log("[get-session] Primera confirmación. Enviando correo a:", email);
+        try {
+          const html = buildTicketHtml({ nombre, apellido, email, tipo_boleto, cantidad, mesa, total, confirmation: confirmationCode });
+
+          const { data: emailData, error: emailError } = await resend.emails.send({
+            from: "boletos@mysaltus.com",
+            to: [email],
+            subject: "Tu boleto para SALTUS Vol. I",
+            html,
+          });
+
+          if (emailError) {
+            console.error("[get-session] Resend ERROR:", JSON.stringify(emailError));
+          } else {
+            console.log("[get-session] Correo enviado OK, id:", emailData?.id);
+          }
+        } catch (emailErr) {
+          console.error("[get-session] Resend excepción:", emailErr.message);
+        }
+      } else {
+        console.log("[get-session] Orden ya confirmada anteriormente, correo NO reenviado.");
+      }
+    } else {
+      console.log("[get-session] Pago aún no confirmado, payment_status:", session.payment_status);
+    }
 
     return res.status(200).json({
       nombre,
