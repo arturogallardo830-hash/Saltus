@@ -519,6 +519,7 @@ a:focus-visible, button:focus-visible{
 .cf-total-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.4);}
 .cf-total-value{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:3px;color:var(--gold);}
 .cf-submit{width:100%;padding:16px;font-size:12px;letter-spacing:4px;margin-bottom:14px;}
+.cf-submit:disabled{background:#3a3a3a;color:rgba(255,255,255,.3);cursor:not-allowed;transform:none;}
 .cf-secure{text-align:center;font-size:11px;color:rgba(255,255,255,.3);letter-spacing:1px;margin:0;}
 .cf-error{text-align:center;font-size:12px;color:#e05252;letter-spacing:1px;margin-top:12px;min-height:16px;}
 @media(max-width:600px){
@@ -1671,8 +1672,8 @@ footer{
         <span class="cf-total-value" id="cfTotal">—</span>
       </div>
 
-      <button type="submit" class="t-btn t-btn-gold cf-submit" id="cfSubmitBtn">
-        Ir a pagar →
+      <button type="submit" class="t-btn t-btn-gold cf-submit" id="cfSubmitBtn" disabled>
+        Selecciona tu lugar en el mapa
       </button>
       <p class="cf-secure">🔒 Pago seguro procesado por Stripe</p>
       <p id="cfError" class="cf-error" aria-live="polite"></p>
@@ -2274,12 +2275,16 @@ function pickTable(tableN, type){
       .forEach(el => deselectCircle(el));
   }
 
+  const submitBtn = document.getElementById('cfSubmitBtn');
+
   if(selectedTable && selectedTable.n === tableN){
     // Toggle off
     selectedTable = null;
     document.getElementById('vmapSelectedBar').textContent = 'Haz clic en una mesa para seleccionarla';
     document.getElementById('cf-mesa').value = '';
     unlockRadios();
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Selecciona tu lugar en el mapa';
   } else {
     selectedTable = tableDef;
     document.querySelectorAll(`#vmapSvg circle[data-t="${tableN}"]`)
@@ -2303,6 +2308,10 @@ function pickTable(tableN, type){
 
     // Store selected mesa in hidden field
     document.getElementById('cf-mesa').value = tableN;
+
+    // Enable submit button
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Ir a pagar →';
 
     // Scroll to form
     document.getElementById('checkoutForm').scrollIntoView({ behavior:'smooth', block:'start' });
