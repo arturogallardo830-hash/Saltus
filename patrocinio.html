@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SALTUS · Propuesta de Patrocinio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #D4B878;
+  --gold-light: #EBD9A8;
+  --gold-dark: #B89B56;
+  --bg-deep: #0C0C0B;
+  --bg-card: #141413;
+  --bg-card-hover: #1A1A18;
+  --text-primary: #F5F1E8;
+  --text-secondary: #BFB8A8;
+  --text-muted: #8A8272;
+  --border: #2A2824;
+  --border-gold: rgba(212,184,120,0.3);
+  --accent-green: #6B8F71;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== PASSWORD SCREEN ===== */
+#password-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--bg-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+#password-screen.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.02);
+}
+
+.pw-container {
+  text-align: center;
+  max-width: 420px;
+  padding: 0 24px;
+}
+
+.pw-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.2rem;
+  letter-spacing: 1.2rem;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.pw-divider {
+  width: 180px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 16px auto 32px;
+}
+
+.pw-subtitle {
+  font-size: 0.7rem;
+  letter-spacing: 0.35rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  margin-bottom: 48px;
+}
+
+.pw-input-group {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.pw-input {
+  width: 100%;
+  padding: 16px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.3rem;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.pw-input::placeholder {
+  color: var(--text-muted);
+  letter-spacing: 0.15rem;
+  font-size: 0.75rem;
+}
+
+.pw-input:focus {
+  border-color: var(--gold-dark);
+}
+
+.pw-btn {
+  width: 100%;
+  padding: 16px;
+  background: transparent;
+  border: 1px solid var(--gold-dark);
+  color: var(--gold);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.3rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.4s;
+}
+
+.pw-btn:hover {
+  background: var(--gold);
+  color: var(--bg-deep);
+}
+
+.pw-error {
+  color: #A0524E;
+  font-size: 0.72rem;
+  margin-top: 16px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.pw-error.show { opacity: 1; }
+
+/* ===== MAIN CONTENT ===== */
+#main-content {
+  display: none;
+  opacity: 0;
+  transition: opacity 1s ease 0.4s;
+}
+
+#main-content.visible {
+  display: block;
+  opacity: 1;
+}
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 60px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 50% 50%, rgba(212,184,120,0.05) 0%, transparent 60%);
+  animation: heroGlow 12s ease-in-out infinite alternate;
+}
+
+@keyframes heroGlow {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(2%, -2%) scale(1.1); }
+}
+
+.hero-line {
+  width: 280px;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  letter-spacing: 1.8rem;
+  color: var(--gold);
+  margin: 24px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-diamond {
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--gold);
+  transform: rotate(45deg);
+  margin: 20px auto;
+}
+
+.hero-sub {
+  font-size: 0.65rem;
+  letter-spacing: 0.45rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-date {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--text-secondary);
+  letter-spacing: 0.08rem;
+  margin-top: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 0.6rem;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+.hero-scroll span {
+  width: 1px;
+  height: 32px;
+  background: linear-gradient(to bottom, var(--gold-dark), transparent);
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* ===== SECTIONS ===== */
+section {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 100px 24px;
+}
+
+.section-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.4rem;
+  color: var(--gold-dark);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.section-label::before {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--gold-dark);
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 400;
+  line-height: 1.3;
+  margin-bottom: 24px;
+  color: var(--text-primary);
+}
+
+.section-title em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.section-text {
+  font-size: 0.88rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  max-width: 680px;
+  font-weight: 300;
+}
+
+/* ===== STATS ===== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  margin: 60px 0;
+  border: 1px solid var(--border);
+}
+
+.stat-item {
+  background: var(--bg-deep);
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.stat-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.6rem;
+  color: var(--gold);
+  font-weight: 300;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.2rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+
+/* ===== PLAN CARDS ===== */
+.plans-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  margin: 60px 0;
+}
+
+.plan-card {
+  background: var(--bg-card);
+  padding: 56px 40px;
+  position: relative;
+  transition: background 0.4s;
+}
+
+.plan-card:hover {
+  background: var(--bg-card-hover);
+}
+
+.plan-card.premium {
+  border-top: 2px solid var(--gold);
+}
+
+.plan-card.standard {
+  border-top: 2px solid var(--text-muted);
+}
+
+.plan-badge {
+  font-size: 0.55rem;
+  letter-spacing: 0.35rem;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.plan-card.standard .plan-badge {
+  color: var(--text-secondary);
+}
+
+.plan-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  margin-bottom: 4px;
+}
+
+.plan-slots {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.plan-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem;
+  color: var(--gold);
+  font-weight: 300;
+  line-height: 1;
+}
+
+.plan-card.standard .plan-price {
+  color: var(--text-primary);
+}
+
+.plan-currency {
+  font-size: 0.85rem;
+  font-family: 'Montserrat', sans-serif;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.plan-founder {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-top: 4px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+}
+
+.plan-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+  margin: 32px 0;
+}
+
+.plan-benefits {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.plan-benefits li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+.plan-benefits li .num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  color: var(--gold-dark);
+  min-width: 22px;
+  font-weight: 500;
+}
+
+.plan-card.standard .plan-benefits li .num {
+  color: var(--text-muted);
+}
+
+.plan-exclusive {
+  display: inline-block;
+  font-size: 0.5rem;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid var(--border-gold);
+  padding: 3px 8px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+/* ===== BENEFIT DETAILS ===== */
+.benefit-details {
+  margin: 80px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.benefit-block {
+  padding: 56px 0;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.benefit-block:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.benefit-label {
+  font-size: 0.55rem;
+  letter-spacing: 0.3rem;
+  color: var(--gold-dark);
+  text-transform: uppercase;
+  padding-top: 6px;
+}
+
+.benefit-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.55rem;
+  font-style: italic;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+  font-weight: 400;
+}
+
+.benefit-desc {
+  font-size: 0.82rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+/* ===== COMPARISON TABLE ===== */
+.comparison {
+  margin: 60px 0;
+  border: 1px solid var(--border);
+}
+
+.comp-header {
+  display: grid;
+  grid-template-columns: 1fr 160px 160px;
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-card);
+}
+
+.comp-header span {
+  font-size: 0.6rem;
+  letter-spacing: 0.25rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.comp-header span:nth-child(2) { color: var(--gold); text-align: center; }
+.comp-header span:nth-child(3) { text-align: center; }
+
+.comp-row {
+  display: grid;
+  grid-template-columns: 1fr 160px 160px;
+  padding: 16px 32px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+  transition: background 0.2s;
+}
+
+.comp-row:last-child { border-bottom: none; }
+
+.comp-row:hover { background: var(--bg-card); }
+
+.comp-row span:nth-child(2),
+.comp-row span:nth-child(3) {
+  text-align: center;
+}
+
+.check-gold { color: var(--gold); font-size: 1rem; }
+.check-silver { color: var(--text-secondary); font-size: 1rem; }
+.dash { color: var(--text-muted); opacity: 0.7; }
+
+/* ===== WHY SECTION ===== */
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  background: var(--border);
+  margin: 48px 0;
+  border: 1px solid var(--border);
+}
+
+.why-card {
+  background: var(--bg-deep);
+  padding: 48px 36px;
+}
+
+.why-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  color: var(--gold-dark);
+  font-weight: 300;
+  opacity: 0.7;
+  margin-bottom: 16px;
+}
+
+.why-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 400;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.why-card p {
+  font-size: 0.78rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+/* ===== CONTACT ===== */
+.contact-section {
+  text-align: center;
+  padding: 120px 24px;
+  position: relative;
+}
+
+.contact-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, var(--gold-dark));
+}
+
+.contact-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-top: 32px;
+}
+
+.contact-email {
+  font-size: 0.8rem;
+  color: var(--gold);
+  margin-top: 8px;
+  letter-spacing: 0.05rem;
+}
+
+.contact-ig {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+  letter-spacing: 0.05rem;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  text-align: center;
+  padding: 40px 24px;
+  border-top: 1px solid var(--border);
+}
+
+footer p {
+  font-size: 0.6rem;
+  letter-spacing: 0.15rem;
+  color: var(--text-muted);
+}
+
+/* ===== ANIMATIONS ===== */
+.fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .plans-container { grid-template-columns: 1fr; }
+  .benefit-block {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .comp-header, .comp-row {
+    grid-template-columns: 1fr 80px 80px;
+    padding: 14px 16px;
+    font-size: 0.72rem;
+  }
+  .why-grid { grid-template-columns: 1fr; }
+  .hero-title { letter-spacing: 0.8rem; }
+  .plan-card { padding: 40px 28px; }
+}
+
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .comp-header span, .comp-row span { font-size: 0.62rem; }
+  .hero-title { letter-spacing: 0.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- PASSWORD SCREEN -->
+<div id="password-screen">
+  <div class="pw-container">
+    <div class="pw-logo">SALTUS</div>
+    <div class="pw-divider"></div>
+    <div class="pw-subtitle">Propuesta de Patrocinio</div>
+    <div class="pw-input-group">
+      <input type="password" class="pw-input" id="pw-input" placeholder="Contraseña" autocomplete="off">
+    </div>
+    <button class="pw-btn" id="pw-btn">Acceder</button>
+    <div class="pw-error" id="pw-error">Contraseña incorrecta</div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main-content">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-line"></div>
+    <h1 class="hero-title">SALTUS</h1>
+    <div class="hero-line"></div>
+    <div class="hero-diamond"></div>
+    <p class="hero-sub">Propuesta de Patrocinio</p>
+    <p class="hero-date">Vol. I · 20 de junio de 2025 · Alboa Fashion Drive, San Pedro Garza García</p>
+    <div class="hero-scroll">
+      scroll
+      <span></span>
+    </div>
+  </header>
+
+  <!-- EL FESTIVAL -->
+  <section class="fade-in">
+    <div class="section-label">El Festival</div>
+    <h2 class="section-title">Un evento donde las marcas correctas<br>están en el <em>lugar correcto</em></h2>
+    <p class="section-text">
+      SALTUS es un festival de música en vivo íntimo y de producción premium en Alboa Fashion Drive, San Pedro Garza García — uno de los centros de entretenimiento más exclusivos de Monterrey. Cinco artistas emergentes, cinco sets de 30 minutos, una noche de 5 horas diseñada para un público selecto con alto poder adquisitivo.
+    </p>
+    <br>
+    <p class="section-text">
+      No es un evento masivo. Es exactamente el tipo de espacio donde una marca construye presencia real — no impresiones, sino conexiones directas con personas que van a recordar tu marca porque la vivieron.
+    </p>
+
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">192</div>
+        <div class="stat-label">Asistentes</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">5h</div>
+        <div class="stat-label">De evento</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">5</div>
+        <div class="stat-label">Artistas en vivo</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">Vol. I</div>
+        <div class="stat-label">Primera edición</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLANES -->
+  <section class="fade-in">
+    <div class="section-label">Patrocinio</div>
+    <h2 class="section-title">Dos niveles,<br>una sola <em>experiencia</em></h2>
+
+    <div class="plans-container">
+      <!-- PREMIUM -->
+      <div class="plan-card premium">
+        <div class="plan-badge">Plan Premium</div>
+        <div class="plan-name">Marca Premium</div>
+        <div class="plan-slots">3 lugares disponibles</div>
+        <div class="plan-price"><span class="plan-currency">MXN</span> 15,000</div>
+        <div class="plan-founder">Precio fundador</div>
+        <div class="plan-divider"></div>
+        <div style="font-size:0.6rem;letter-spacing:0.2rem;color:var(--text-muted);text-transform:uppercase;margin-bottom:20px;">Incluye todo lo del plan estándar, más:</div>
+        <ul class="plan-benefits">
+          <li><span class="num">01</span> Activación de marca en vivo — 15 min con escenario completo, pantalla LED 7×5m y MC a tu disposición <span class="plan-exclusive">Exclusivo</span></li>
+          <li><span class="num">02</span> Video profesional de tu activación — grabado y editado por nuestro equipo de contenido <span class="plan-exclusive">Exclusivo</span></li>
+          <li><span class="num">03</span> Exclusividad de categoría — ninguna marca competidora directa estará presente en el evento <span class="plan-exclusive">Exclusivo</span></li>
+          <li><span class="num">04</span> Stand, sampling o punto de contacto con los asistentes durante toda la noche <span class="plan-exclusive">Exclusivo</span></li>
+          <li><span class="num">05</span> Muestras o flyers entregados a cada uno de los 192 asistentes en la entrada <span class="plan-exclusive">Exclusivo</span></li>
+          <li><span class="num">06</span> Mención de tu marca desde el escenario por el MC durante tu activación <span class="plan-exclusive">Exclusivo</span></li>
+          <li><span class="num">07</span> Presencia en el aftermovie oficial de SALTUS Vol. I — distribuido en todas nuestras plataformas <span class="plan-exclusive">Exclusivo</span></li>
+          <li><span class="num">08</span> Cobertura en stories de @saltus.mty el día del evento con tag directo a tu marca <span class="plan-exclusive">Exclusivo</span></li>
+          <li><span class="num">09</span> Logo en la confirmación de boleto que reciben los 192 asistentes al comprar <span class="plan-exclusive">Exclusivo</span></li>
+          <li><span class="num">10</span> Presencia de marca en mysaltus.com con logo destacado y enlace directo a tu sitio o redes</li>
+        </ul>
+      </div>
+
+      <!-- ESTÁNDAR -->
+      <div class="plan-card standard">
+        <div class="plan-badge">Plan Estándar</div>
+        <div class="plan-name">Marca Estándar</div>
+        <div class="plan-slots">5 lugares disponibles</div>
+        <div class="plan-price"><span class="plan-currency">MXN</span> 8,000</div>
+        <div class="plan-founder">Precio fundador</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-benefits">
+          <li><span class="num">01</span> Foto y video profesional de tu marca en el venue — listos para tus redes y materiales de comunicación</li>
+          <li><span class="num">02</span> Post dedicado sobre tu marca en @saltus.mty — contenido propio, no solo un tag</li>
+          <li><span class="num">03</span> Distribución a nuestra comunidad en Monterrey — alcance directo a nuestra red de contactos antes del evento</li>
+          <li><span class="num">04</span> Logo en el cartel oficial — presencia en todos los materiales digitales e impresos de SALTUS</li>
+          <li><span class="num">05</span> Logo en la pantalla LED 7×5m de Alboa durante la primera hora del evento (7:00 – 8:00 PM)</li>
+          <li><span class="num">06</span> Presencia de marca en la página web oficial mysaltus.com</li>
+          <li><span class="num">07</span> Marca visible en historias destacadas del perfil de @saltus.mty en Instagram</li>
+          <li><span class="num">08</span> Tag en todas las publicaciones del evento en redes de SALTUS</li>
+          <li><span class="num">09</span> Mención en comunicados oficiales y press releases de SALTUS Vol. I</li>
+          <li><span class="num">10</span> Acreditación oficial como patrocinador fundador de SALTUS Vol. I</li>
+          <li><span class="num">11</span> Prioridad y precio preferencial garantizado para SALTUS Vol. II</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFICIOS EN DETALLE -->
+  <section class="fade-in">
+    <div class="section-label">Beneficios en detalle</div>
+    <h2 class="section-title">Lo que tu marca <em>recibe</em></h2>
+
+    <div class="benefit-details">
+
+      <div class="benefit-block">
+        <div class="benefit-label">Exclusivo Premium</div>
+        <div>
+          <div class="benefit-title">Activación de marca en vivo — 15 minutos</div>
+          <div class="benefit-desc">
+            Durante cada uno de los 3 cambios entre artistas tu marca tiene el escenario, la pantalla LED 7×5m de Alboa y el espacio completo del venue frente a los 192 asistentes. Sampling de producto, una dinámica, una instalación — el momento es completamente tuyo. El técnico de iluminación y el MC del evento están a tu disposición durante esos 15 minutos.
+          </div>
+        </div>
+      </div>
+
+      <div class="benefit-block">
+        <div class="benefit-label">Exclusivo Premium</div>
+        <div>
+          <div class="benefit-title">Video profesional de tu activación</div>
+          <div class="benefit-desc">
+            Tu activación es grabada y editada por nuestro equipo de contenido profesional. Entregamos un video listo para tus redes sociales después del evento — sin que tengas que contratar a nadie ni organizar nada. Ese contenido es tuyo para usar en todos tus canales sin restricción.
+          </div>
+        </div>
+      </div>
+
+      <div class="benefit-block">
+        <div class="benefit-label">Exclusivo Premium</div>
+        <div>
+          <div class="benefit-title">Exclusividad de categoría</div>
+          <div class="benefit-desc">
+            Si tu marca es de bebidas, no habrá otra marca de bebidas en el evento. Si eres de moda, no habrá otra marca de moda. Tu inversión te da exclusividad total en tu categoría — cero competencia directa frente a los 192 asistentes. Solo 3 marcas Premium, solo 3 categorías protegidas.
+          </div>
+        </div>
+      </div>
+
+      <div class="benefit-block">
+        <div class="benefit-label">Exclusivo Premium</div>
+        <div>
+          <div class="benefit-title">Presencia en el aftermovie oficial</div>
+          <div class="benefit-desc">
+            El aftermovie de SALTUS Vol. I se distribuye en todas nuestras plataformas y redes después del evento. Tu marca aparece de forma orgánica dentro del video — no como un anuncio, sino como parte de la experiencia. Contenido con vida útil larga que sigue generando visibilidad meses después.
+          </div>
+        </div>
+      </div>
+
+      <div class="benefit-block">
+        <div class="benefit-label">Exclusivo Premium</div>
+        <div>
+          <div class="benefit-title">Cobertura en stories el día del evento</div>
+          <div class="benefit-desc">
+            El día del evento tu marca recibe cobertura en tiempo real desde las stories de @saltus.mty con tag directo a tu perfil. Cada story llega a toda nuestra audiencia en el momento de mayor atención — cuando el evento está sucediendo.
+          </div>
+        </div>
+      </div>
+
+      <div class="benefit-block">
+        <div class="benefit-label">Exclusivo Premium</div>
+        <div>
+          <div class="benefit-title">Logo en la confirmación de boleto</div>
+          <div class="benefit-desc">
+            Cada uno de los 192 asistentes recibe tu logo como parte de la confirmación de compra de su boleto. Tu marca llega al asistente antes del evento — desde el primer momento en que decide asistir a SALTUS.
+          </div>
+        </div>
+      </div>
+
+      <div class="benefit-block">
+        <div class="benefit-label">Ambos planes</div>
+        <div>
+          <div class="benefit-title">Foto y video profesional de tu marca en el venue</div>
+          <div class="benefit-desc">
+            Fotografía y video profesional de tu logo, producto o equipo en el venue de Alboa durante el evento — listo para usar en tus redes sociales y materiales de comunicación. Nuestro equipo se encarga de toda la producción. Ese contenido es tuyo, sin restricciones de uso.
+          </div>
+        </div>
+      </div>
+
+      <div class="benefit-block">
+        <div class="benefit-label">Ambos planes</div>
+        <div>
+          <div class="benefit-title">Distribución a nuestra comunidad en Monterrey</div>
+          <div class="benefit-desc">
+            Antes del evento tu marca es presentada a nuestra comunidad en Monterrey a través de un post dedicado en @saltus.mty y una comunicación directa a nuestra red de contactos. No es un tag — es contenido propio sobre tu marca, quién eres y por qué estás en SALTUS.
+          </div>
+        </div>
+      </div>
+
+      <div class="benefit-block">
+        <div class="benefit-label">Ambos planes</div>
+        <div>
+          <div class="benefit-title">Presencia en mysaltus.com</div>
+          <div class="benefit-desc">
+            Tu marca aparece en la página web oficial del festival. Para el plan Premium, con logo destacado y enlace directo a tu sitio o redes. Visibilidad digital permanente asociada a SALTUS antes, durante y después del evento.
+          </div>
+        </div>
+      </div>
+
+      <div class="benefit-block">
+        <div class="benefit-label">Ambos planes</div>
+        <div>
+          <div class="benefit-title">Historias destacadas en @saltus.mty</div>
+          <div class="benefit-desc">
+            Tu marca tiene presencia permanente en las historias destacadas del perfil oficial de SALTUS en Instagram — visible para cualquier persona que visite el perfil, más allá de las 24 horas de una historia normal.
+          </div>
+        </div>
+      </div>
+
+      <div class="benefit-block">
+        <div class="benefit-label">Ambos planes</div>
+        <div>
+          <div class="benefit-title">Prioridad para Vol. II</div>
+          <div class="benefit-desc">
+            Las marcas que participan en SALTUS Vol. I tienen precio preferencial y prioridad de lugar para la segunda edición. Cuando SALTUS crezca, tu asociación con la primera edición va a valer más — y tú estás primero en la fila.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- COMPARATIVA -->
+  <section class="fade-in">
+    <div class="section-label">Comparativa</div>
+    <h2 class="section-title">Todo lo que incluye <em>cada plan</em></h2>
+
+    <div class="comparison">
+      <div class="comp-header">
+        <span>Beneficio</span>
+        <span>Premium · $15,000</span>
+        <span>Estándar · $8,000</span>
+      </div>
+      <div class="comp-row">
+        <span>Activación en vivo — 15 min</span>
+        <span class="check-gold">✦</span>
+        <span class="dash">—</span>
+      </div>
+      <div class="comp-row">
+        <span>Video profesional de la activación</span>
+        <span class="check-gold">✦</span>
+        <span class="dash">—</span>
+      </div>
+      <div class="comp-row">
+        <span>Exclusividad de categoría</span>
+        <span class="check-gold">✦</span>
+        <span class="dash">—</span>
+      </div>
+      <div class="comp-row">
+        <span>Stand / sampling / presencia física</span>
+        <span class="check-gold">✦</span>
+        <span class="dash">—</span>
+      </div>
+      <div class="comp-row">
+        <span>Muestras o flyers en la entrada</span>
+        <span class="check-gold">✦</span>
+        <span class="dash">—</span>
+      </div>
+      <div class="comp-row">
+        <span>Mención desde el escenario (en tu activación)</span>
+        <span class="check-gold">✦</span>
+        <span class="dash">—</span>
+      </div>
+      <div class="comp-row">
+        <span>Presencia en aftermovie oficial</span>
+        <span class="check-gold">✦</span>
+        <span class="dash">—</span>
+      </div>
+      <div class="comp-row">
+        <span>Cobertura en stories el día del evento</span>
+        <span class="check-gold">✦</span>
+        <span class="dash">—</span>
+      </div>
+      <div class="comp-row">
+        <span>Logo en confirmación de boleto</span>
+        <span class="check-gold">✦</span>
+        <span class="dash">—</span>
+      </div>
+      <div class="comp-row">
+        <span>Foto y video profesional en el venue</span>
+        <span class="check-gold">✦</span>
+        <span class="check-silver">✦</span>
+      </div>
+      <div class="comp-row">
+        <span>Post dedicado en @saltus.mty</span>
+        <span class="check-gold">✦</span>
+        <span class="check-silver">✦</span>
+      </div>
+      <div class="comp-row">
+        <span>Distribución a comunidad MTY</span>
+        <span class="check-gold">✦</span>
+        <span class="check-silver">✦</span>
+      </div>
+      <div class="comp-row">
+        <span>Historias destacadas en Instagram</span>
+        <span class="check-gold">✦</span>
+        <span class="check-silver">✦</span>
+      </div>
+      <div class="comp-row">
+        <span>Presencia en mysaltus.com</span>
+        <span class="check-gold">✦ + enlace</span>
+        <span class="check-silver">✦</span>
+      </div>
+      <div class="comp-row">
+        <span>Tag en publicaciones del evento</span>
+        <span class="check-gold">✦</span>
+        <span class="check-silver">✦</span>
+      </div>
+      <div class="comp-row">
+        <span>Logo en cartel oficial</span>
+        <span class="check-gold">✦</span>
+        <span class="check-silver">✦</span>
+      </div>
+      <div class="comp-row">
+        <span>Logo en pantalla LED</span>
+        <span class="check-gold">✦ toda la noche</span>
+        <span class="check-silver">✦ 7–8 PM</span>
+      </div>
+      <div class="comp-row">
+        <span>Mención en comunicados oficiales</span>
+        <span class="check-gold">✦</span>
+        <span class="check-silver">✦</span>
+      </div>
+      <div class="comp-row">
+        <span>Acreditación oficial Vol. I</span>
+        <span class="check-gold">✦</span>
+        <span class="check-silver">✦</span>
+      </div>
+      <div class="comp-row">
+        <span>Prioridad y precio preferencial Vol. II</span>
+        <span class="check-gold">✦</span>
+        <span class="check-silver">✦</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- POR QUÉ SALTUS -->
+  <section class="fade-in">
+    <div class="section-label">Por qué SALTUS</div>
+    <h2 class="section-title">No estás comprando seguidores.<br>Estás comprando <em>presencia real.</em></h2>
+    <p class="section-text">
+      El asistente de SALTUS en Alboa Fashion Drive, San Pedro Garza García, es un consumidor activo de cultura con capacidad de gasto alta. No llega porque vio un anuncio — llega porque quiso estar ahí. Esa es la diferencia entre una impresión digital y una conexión real.
+    </p>
+
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-number">01</div>
+        <h3>San Pedro Garza García</h3>
+        <p>Alboa Fashion Drive está en una de las plazas más exclusivas de Monterrey. El perfil del asistente es profesional, joven y con alto poder adquisitivo.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-number">02</div>
+        <h3>192 personas, no 10,000</h3>
+        <p>Un evento íntimo garantiza que tu marca no se pierde en el ruido. Cada asistente va a notar tu presencia — no es un banner más en un festival masivo.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-number">03</div>
+        <h3>Contenido que puedes usar</h3>
+        <p>Recibes foto y video profesional de tu participación. No tienes que mandar a tu equipo — nosotros lo producimos y te lo entregamos listo para publicar.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-number">04</div>
+        <h3>Precio fundador</h3>
+        <p>Las marcas del Vol. I tienen precio preferencial y prioridad para el Vol. II. Cuando SALTUS crezca, tu asociación con la primera edición va a valer más.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section class="contact-section fade-in">
+    <div class="section-label" style="justify-content:center;">Únete a SALTUS</div>
+    <h2 class="section-title" style="text-align:center;">Hablemos</h2>
+    <div class="contact-name">Vita Studio</div>
+    <div class="contact-email">vitaclo.mx@gmail.com</div>
+    <div class="contact-ig">@saltus.mty</div>
+  </section>
+
+  <footer>
+    <p>SALTUS Vol. I · 2025 · San Pedro Garza García, Monterrey</p>
+  </footer>
+
+</div>
+
+<script>
+// PASSWORD LOGIC
+const PASSWORD = 'saltus2025';
+
+const pwInput = document.getElementById('pw-input');
+const pwBtn = document.getElementById('pw-btn');
+const pwError = document.getElementById('pw-error');
+const pwScreen = document.getElementById('password-screen');
+const mainContent = document.getElementById('main-content');
+
+function unlock() {
+  if (pwInput.value === PASSWORD) {
+    pwScreen.classList.add('hidden');
+    mainContent.classList.add('visible');
+    setTimeout(() => { pwScreen.style.display = 'none'; }, 800);
+  } else {
+    pwError.classList.add('show');
+    pwInput.style.borderColor = '#A0524E';
+    setTimeout(() => {
+      pwError.classList.remove('show');
+      pwInput.style.borderColor = '';
+    }, 2500);
+  }
+}
+
+pwBtn.addEventListener('click', unlock);
+pwInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') unlock(); });
+
+// SCROLL FADE-IN
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
