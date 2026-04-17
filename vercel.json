@@ -4,5 +4,15 @@
       "memory": 128,
       "maxDuration": 10
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/send-reminder?type=7days",
+      "schedule": "0 15 13 6 *"
+    },
+    {
+      "path": "/api/send-reminder?type=24hrs",
+      "schedule": "0 15 19 6 *"
+    }
+  ]
 }
