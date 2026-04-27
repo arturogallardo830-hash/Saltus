@@ -682,48 +682,40 @@ a:focus-visible, button:focus-visible{
 .venue-photo-placeholder svg{ opacity:.25; }
 
 /* ═══════════════════════════════
-   SPONSORS CTA
+   SPONSORS BANNER
 ═══════════════════════════════ */
-.sponsors-cta{
-  padding:120px 60px;
+.sponsors-banner{
+  padding:22px 60px;
   border-top:1px solid rgba(201,168,76,.15);
   border-bottom:1px solid var(--line);
-  background:
-    radial-gradient(circle at 50% 0%, rgba(201,168,76,.08), transparent 60%),
-    rgba(10,8,14,.7);
-  text-align:center;position:relative;z-index:1;
+  background:rgba(14,12,8,.6);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:32px;flex-wrap:wrap;
+  position:relative;z-index:1;
 }
-.sponsors-cta-inner{max-width:680px;margin:0 auto;}
-.sponsors-cta h2{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(48px,7vw,88px);
-  letter-spacing:6px;line-height:.95;
-  color:var(--white);margin-bottom:18px;
-}
-.sponsors-cta-sub{
+.sponsors-banner-text{
   font-family:'Cormorant Garamond',serif;
   font-style:italic;font-weight:300;
-  font-size:clamp(18px,2.4vw,24px);
-  color:var(--gold);letter-spacing:.5px;
-  margin-bottom:22px;
+  font-size:clamp(15px,1.7vw,18px);
+  color:rgba(255,255,255,.85);letter-spacing:.3px;
+  margin:0;
 }
-.sponsors-cta-text{
-  font-size:14px;line-height:1.7;
-  color:rgba(255,255,255,.65);letter-spacing:.3px;
-  max-width:520px;margin:0 auto 38px;
+.sponsors-banner-text strong{
+  color:var(--gold);font-weight:400;font-style:normal;
+  letter-spacing:1px;
 }
-.sponsors-cta-btn{
+.sponsors-banner-btn{
   display:inline-block;
-  padding:16px 42px;
+  padding:11px 28px;
   border:1px solid var(--gold);background:transparent;
   color:var(--gold);
-  font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;
-  text-decoration:none;
-  transition:background .2s,color .2s,border-color .2s,transform .2s;
+  font-family:'DM Sans',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  text-decoration:none;white-space:nowrap;
+  transition:background .2s,color .2s;
 }
-.sponsors-cta-btn:hover{
+.sponsors-banner-btn:hover{
   background:var(--gold);color:var(--black);
-  border-color:var(--gold);transform:translateY(-2px);
 }
 
 /* ═══════════════════════════════
@@ -1139,7 +1131,7 @@ footer{
   .tickets-section{padding:80px 24px;}
   .ticket-grid{grid-template-columns:1fr;}
 
-  .sponsors-cta{padding:80px 24px;}
+  .sponsors-banner{padding:24px;flex-direction:column;text-align:center;gap:16px;}
   footer{padding:20px 24px;flex-direction:column;align-items:center;text-align:center;}
   .sticky-cta{display:flex;}
   .email-section{padding:60px 24px;}
@@ -1822,16 +1814,11 @@ footer{
   </form>
 </section>
 
-<!-- ══ SPONSORS CTA ══════════════════════════════ -->
-<section class="sponsors-cta reveal">
-  <div class="sponsors-cta-inner">
-    <div class="s-eyebrow">Marcas aliadas</div>
-    <h2>Patrocinadores</h2>
-    <p class="sponsors-cta-sub">¿Quieres que tu marca sea parte de SALTUS Vol. I?</p>
-    <p class="sponsors-cta-text">Tenemos espacios de patrocinio disponibles para marcas que quieran conectar con 192 personas en una noche única.</p>
-    <a href="/patrocinio.html" class="sponsors-cta-btn">Conocer propuesta</a>
-  </div>
-</section>
+<!-- ══ SPONSORS BANNER ═══════════════════════════ -->
+<aside class="sponsors-banner">
+  <p class="sponsors-banner-text">¿Quieres que tu marca sea parte de <strong>SALTUS Vol. I</strong>?</p>
+  <a href="/patrocinio.html" class="sponsors-banner-btn">Conocer propuesta</a>
+</aside>
 
 
 <!-- ══ PRIVACY MODAL ═══════════════════════════════ -->
