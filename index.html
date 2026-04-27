@@ -510,9 +510,6 @@ a:focus-visible, button:focus-visible{
 .cf-radio-card:has(input:checked){
   border-color:var(--gold);background:rgba(201,168,76,.07);
 }
-.cf-radio-card.locked{
-  opacity:.25;pointer-events:none;
-}
 .cf-radio-inner{display:flex;flex-direction:column;gap:3px;}
 .cf-radio-name{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;}
 .cf-radio-price{font-size:11px;color:var(--gold);letter-spacing:1px;}
@@ -2319,31 +2316,24 @@ function pickTable(tableN, type){
   const submitBtn = document.getElementById('cfSubmitBtn');
 
   if(selectedTable && selectedTable.n === tableN){
-    // Toggle off
+    // Toggle off — pickTable only runs in VIP mode, so submit goes back to "select table"
     selectedTable = null;
     document.getElementById('vmapSelectedBar').textContent = 'Haz clic en una mesa para seleccionarla';
     document.getElementById('cf-mesa').value = '';
-    unlockRadios();
-    const vipChecked = document.querySelector('input[name="tipo_boleto"]:checked')?.value === 'vip';
-    submitBtn.disabled = vipChecked;
-    submitBtn.textContent = vipChecked ? 'Selecciona tu mesa en el mapa' : 'Ir a pagar →';
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Selecciona tu mesa en el mapa';
   } else {
     selectedTable = tableDef;
     document.querySelectorAll(`#vmapSvg circle[data-t="${tableN}"]`)
       .forEach(el => selectCircle(el));
-
-    // Update form: ticket type
-    const radio = document.querySelector(`input[name="tipo_boleto"][value="${type}"]`);
-    if(radio){ radio.checked = true; radio.dispatchEvent(new Event('change')); }
-    lockRadioToType(type);
 
     // Update form: quantity = seats in this table
     const seats = tableSeatCount(tableDef);
     const qtyInput = document.getElementById('cf-cantidad');
     if(qtyInput){ qtyInput.value = seats; qtyInput.dispatchEvent(new Event('input')); }
 
-    // Status bar
-    const precio = type === 'vip' ? 350 : 200;
+    // Status bar — pickTable only runs in VIP mode, so always VIP price
+    const precio = 350;
     const total  = precio * seats;
     document.getElementById('vmapSelectedBar').textContent =
       `Mesa #${tableN} seleccionada · ${seats} lugares · $${total.toLocaleString('es-MX')} MXN total`;
@@ -2388,37 +2378,31 @@ document.getElementById('cf-cantidad').addEventListener('input', updateTotal);
 
 // ── Show/hide map based on ticket type ─────────────────────────────────────
 function applyTicketTypeUI(){
-  const tipo  = document.querySelector('input[name="tipo_boleto"]:checked')?.value;
-  const map   = document.getElementById('vmapWrap');
-  const btn   = document.getElementById('cfSubmitBtn');
-  const errEl = document.getElementById('cfError');
-
-  // Block switch to General while a VIP table is selected — user must deselect first
-  if(tipo === 'general' && selectedTable){
-    const vipRadio = document.querySelector('input[name="tipo_boleto"][value="vip"]');
-    if(vipRadio){ vipRadio.checked = true; }
-    if(errEl){
-      errEl.textContent = 'Para cambiar a General, primero deselecciona tu mesa en el mapa.';
-      setTimeout(() => {
-        if(errEl.textContent.startsWith('Para cambiar')) errEl.textContent = '';
-      }, 4000);
-    }
-    return;
-  }
+  const tipo = document.querySelector('input[name="tipo_boleto"]:checked')?.value;
+  const map  = document.getElementById('vmapWrap');
+  const btn  = document.getElementById('cfSubmitBtn');
 
   if(tipo === 'vip'){
+    // VIP: enable map; submit requires a table
     map.style.display = '';
-    if(!selectedTable){
+    if(selectedTable){
+      btn.disabled = false;
+      btn.textContent = 'Ir a pagar →';
+    } else {
       btn.disabled = true;
       btn.textContent = 'Selecciona tu mesa en el mapa';
       map.scrollIntoView({ behavior:'smooth', block:'start' });
     }
   } else {
-    // General: hide map, no table assigned (llegada libre)
-    map.style.display = 'none';
+    // General: auto-deselect any table, clear mesa, hide & disable map
+    if(selectedTable){
+      document.querySelectorAll(`#vmapSvg circle[data-t="${selectedTable.n}"]`)
+        .forEach(el => deselectCircle(el));
+      selectedTable = null;
+    }
     document.getElementById('cf-mesa').value = '';
     document.getElementById('vmapSelectedBar').textContent = 'Haz clic en una mesa para seleccionarla';
-    unlockRadios();
+    map.style.display = 'none';
     btn.disabled = false;
     btn.textContent = 'Ir a pagar →';
   }
@@ -2427,22 +2411,6 @@ document.querySelectorAll('input[name="tipo_boleto"]').forEach(r =>
   r.addEventListener('change', applyTicketTypeUI)
 );
 applyTicketTypeUI();
-
-// ── Radio lock helpers ─────────────────────────────────────────────────────
-function lockRadioToType(type) {
-  const lockGen = type === 'vip';
-  const lockVip = type === 'gen';
-  document.getElementById('rcGeneral').classList.toggle('locked', lockGen);
-  document.getElementById('rcVip').classList.toggle('locked', lockVip);
-  document.querySelector('input[name="tipo_boleto"][value="general"]').disabled = lockGen;
-  document.querySelector('input[name="tipo_boleto"][value="vip"]').disabled     = lockVip;
-}
-function unlockRadios() {
-  document.getElementById('rcGeneral').classList.remove('locked');
-  document.getElementById('rcVip').classList.remove('locked');
-  document.querySelector('input[name="tipo_boleto"][value="general"]').disabled = false;
-  document.querySelector('input[name="tipo_boleto"][value="vip"]').disabled     = false;
-}
 
 // ── Occupied seats ─────────────────────────────────────────────────────────
 async function loadOccupiedSeats() {
