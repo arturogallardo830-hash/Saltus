@@ -1617,7 +1617,7 @@ footer{
     </div>
 
     <!-- ── VENUE MAP ── -->
-    <div class="vmap-wrap">
+    <div class="vmap-wrap" id="vmapWrap" style="display:none;">
       <div class="vmap-header">
         <div class="vmap-title">Mapa del Venue — Alboa</div>
         <div class="vmap-hint">Haz clic en una mesa para seleccionarla</div>
@@ -1658,17 +1658,17 @@ footer{
         <label class="cf-label">Tipo de boleto</label>
         <div class="cf-radio-group">
           <label class="cf-radio-card" id="rcGeneral">
-            <input type="radio" name="tipo_boleto" value="general" required>
+            <input type="radio" name="tipo_boleto" value="general" checked required>
             <div class="cf-radio-inner">
               <span class="cf-radio-name">General</span>
-              <span class="cf-radio-price">$200 MXN</span>
+              <span class="cf-radio-price">$200 MXN · Llegada libre</span>
             </div>
           </label>
           <label class="cf-radio-card" id="rcVip">
             <input type="radio" name="tipo_boleto" value="vip">
             <div class="cf-radio-inner">
               <span class="cf-radio-name">VIP</span>
-              <span class="cf-radio-price">$350 MXN</span>
+              <span class="cf-radio-price">$350 MXN · Mesa asignada</span>
             </div>
           </label>
         </div>
@@ -1688,8 +1688,8 @@ footer{
         <span class="cf-total-value" id="cfTotal">—</span>
       </div>
 
-      <button type="submit" class="t-btn t-btn-gold cf-submit" id="cfSubmitBtn" disabled>
-        Selecciona tu lugar en el mapa
+      <button type="submit" class="t-btn t-btn-gold cf-submit" id="cfSubmitBtn">
+        Ir a pagar →
       </button>
       <p class="cf-secure">🔒 Pago seguro procesado por Stripe</p>
       <p id="cfError" class="cf-error" aria-live="polite"></p>
@@ -2299,8 +2299,9 @@ function pickTable(tableN, type){
     document.getElementById('vmapSelectedBar').textContent = 'Haz clic en una mesa para seleccionarla';
     document.getElementById('cf-mesa').value = '';
     unlockRadios();
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Selecciona tu lugar en el mapa';
+    const vipChecked = document.querySelector('input[name="tipo_boleto"]:checked')?.value === 'vip';
+    submitBtn.disabled = vipChecked;
+    submitBtn.textContent = vipChecked ? 'Selecciona tu mesa en el mapa' : 'Ir a pagar →';
   } else {
     selectedTable = tableDef;
     document.querySelectorAll(`#vmapSvg circle[data-t="${tableN}"]`)
@@ -2359,6 +2360,38 @@ document.querySelectorAll('input[name="tipo_boleto"]').forEach(r =>
   r.addEventListener('change', updateTotal)
 );
 document.getElementById('cf-cantidad').addEventListener('input', updateTotal);
+
+// ── Show/hide map based on ticket type ─────────────────────────────────────
+function applyTicketTypeUI(){
+  const tipo = document.querySelector('input[name="tipo_boleto"]:checked')?.value;
+  const map  = document.getElementById('vmapWrap');
+  const btn  = document.getElementById('cfSubmitBtn');
+  if(tipo === 'vip'){
+    map.style.display = '';
+    if(!selectedTable){
+      btn.disabled = true;
+      btn.textContent = 'Selecciona tu mesa en el mapa';
+      map.scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+  } else {
+    // General: hide map, clear any previous selection, free arrival
+    map.style.display = 'none';
+    if(selectedTable){
+      document.querySelectorAll(`#vmapSvg circle[data-t="${selectedTable.n}"]`)
+        .forEach(el => deselectCircle(el));
+      selectedTable = null;
+    }
+    document.getElementById('cf-mesa').value = '';
+    document.getElementById('vmapSelectedBar').textContent = 'Haz clic en una mesa para seleccionarla';
+    unlockRadios();
+    btn.disabled = false;
+    btn.textContent = 'Ir a pagar →';
+  }
+}
+document.querySelectorAll('input[name="tipo_boleto"]').forEach(r =>
+  r.addEventListener('change', applyTicketTypeUI)
+);
+applyTicketTypeUI();
 
 // ── Radio lock helpers ─────────────────────────────────────────────────────
 function lockRadioToType(type) {

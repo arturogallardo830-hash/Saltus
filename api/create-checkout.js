@@ -36,6 +36,11 @@ module.exports = async function handler(req, res) {
   const unit_price = PRICES[tipo_boleto];
   const total = (unit_price / 100) * qty; // pesos MXN
 
+  // General tickets have no assigned table (llegada libre)
+  const mesaValue = tipo_boleto === "general"
+    ? null
+    : (mesa && String(mesa).trim() ? String(mesa).trim() : null);
+
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -60,7 +65,7 @@ module.exports = async function handler(req, res) {
         email,
         tipo_boleto,
         cantidad: qty,
-        mesa: mesa || "",
+        mesa: mesaValue == null ? "" : String(mesaValue),
       },
       success_url: `${req.headers.origin || "https://saltus.vercel.app"}/confirmacion.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.origin || "https://saltus.vercel.app"}/`,
@@ -79,7 +84,7 @@ module.exports = async function handler(req, res) {
       Email: email,
       tipo_boleto,
       cantidad: qty,
-      mesa: mesa || null,
+      mesa: mesaValue,
       total,
       status: "pending",
       created_at: new Date().toISOString(),

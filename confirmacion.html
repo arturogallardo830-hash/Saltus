@@ -489,7 +489,9 @@ body{
       const tipo     = data.tipo_boleto
         ? data.tipo_boleto.charAt(0).toUpperCase() + data.tipo_boleto.slice(1)
         : "—";
-      const mesa     = data.mesa ? "Mesa #" + data.mesa : "—";
+      const mesa     = data.mesa
+        ? "Mesa #" + data.mesa
+        : (data.tipo_boleto === "general" ? "Llegada libre — sin mesa asignada" : "—");
       const mesaRaw  = data.mesa || "";
       const cantidad = data.cantidad || "—";
       const total    = data.total != null
