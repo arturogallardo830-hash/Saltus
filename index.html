@@ -563,6 +563,9 @@ a:focus-visible, button:focus-visible{
 .vmap-dot-sel{background:var(--gold);}
 .vmap-svg-wrap{overflow-x:auto;}
 .vmap-svg{width:100%;min-width:460px;display:block;cursor:default;}
+/* General-floor tables are never selectable in the VIP-only flow */
+.vmap-svg g.gen-table{opacity:.32;}
+.vmap-svg circle[data-type="gen"]{pointer-events:none !important;}
 
 /* SVG zones */
 .vmap-zone rect{transition:fill .18s,stroke .18s;}
@@ -1635,7 +1638,7 @@ footer{
       </div>
       <div class="vmap-legend">
         <div class="vmap-leg"><div class="vmap-dot vmap-dot-vip"></div>Mesa VIP Palco · $350 MXN</div>
-        <div class="vmap-leg"><div class="vmap-dot vmap-dot-gen"></div>Mesa General · $200 MXN</div>
+        <div class="vmap-leg"><div class="vmap-dot vmap-dot-gen"></div>Zona general · No asignada</div>
         <div class="vmap-leg"><div class="vmap-dot vmap-dot-sel"></div>Mesa seleccionada</div>
       </div>
       <div class="vmap-svg-wrap">
@@ -2250,6 +2253,7 @@ function buildMap(){
   TABLES.forEach(({n,x,y,type,s,w,h,rect,seats})=>{
     const isVip=type==='vip';
     const g=svgEl('g');
+    if(!isVip) g.setAttribute('class','gen-table');
     if(rect){
       g.appendChild(sa(svgEl('rect'),
         {x:x-w/2,y:y-h/2,width:w,height:h,rx:3,
@@ -2290,6 +2294,8 @@ function pickTable(tableN, type){
   // Map only active when VIP is selected
   const currentTipo = document.querySelector('input[name="tipo_boleto"]:checked')?.value;
   if(currentTipo !== 'vip') return;
+  // Only VIP tables are selectable; gen-floor tables are display-only
+  if(type !== 'vip') return;
 
   const tableDef = TABLES.find(t => t.n === tableN);
   if(!tableDef) return;
